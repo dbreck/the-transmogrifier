@@ -2,6 +2,9 @@
 
 **Stop wasting hours converting Figma exports.** Batch-process images to WebP in seconds—no subscriptions, no cloud uploads, just fast local processing.
 
+[![Download](https://img.shields.io/badge/Download-v1.0.0-blue?style=for-the-badge&logo=apple)](https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.0/The.Transmogrifier.1.0.dmg)
+[![Latest Release](https://img.shields.io/github/v/release/dbreck/the-transmogrifier?style=for-the-badge)](https://github.com/dbreck/the-transmogrifier/releases/latest)
+
 ![macOS](https://img.shields.io/badge/macOS-11.0+-blue)
 ![Swift](https://img.shields.io/badge/Swift-5.0+-orange)
 ![SwiftUI](https://img.shields.io/badge/SwiftUI-Native-green)
@@ -135,11 +138,26 @@ After using The Transmogrifier:
 
 ## Installation
 
-### Download
-1. [Download the latest DMG](#) *(link TBD)*
-2. Open the DMG
-3. Drag The Transmogrifier to your Applications folder
-4. Launch and go
+### Download the App
+
+**[⬇️ Download The Transmogrifier v1.0.0 (DMG)](https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.0/The.Transmogrifier.1.0.dmg)**
+
+Or [view all releases](https://github.com/dbreck/the-transmogrifier/releases)
+
+### Install
+1. Download and open the DMG
+2. Drag **The Transmogrifier** to your **Applications** folder
+3. Launch from Applications
+
+### First Launch (macOS Security)
+If macOS blocks the app with "can't be opened because it is from an unidentified developer":
+
+1. **Control-click** (or right-click) the app in Applications
+2. Select **Open** from the menu
+3. Click **Open** in the security dialog
+4. The app will now launch normally (you only need to do this once)
+
+Alternatively, you can go to **System Settings → Privacy & Security** and click **Open Anyway**.
 
 ### Build from Source
 ```bash
@@ -233,4 +251,4 @@ Having issues? [Open an issue](https://github.com/dbreck/the-transmogrifier/issu
 ---
 
 **Stop fighting with image converters. Start shipping faster websites.**  
-[Download The Transmogrifier](#) • [View Documentation](#) • [Report Issues](https://github.com/dbreck/the-transmogrifier/issues)
+[Download The Transmogrifier](https://github.com/dbreck/the-transmogrifier/releases/latest) • [View Documentation](#usage) • [Report Issues](https://github.com/dbreck/the-transmogrifier/issues)
