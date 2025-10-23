@@ -2,7 +2,7 @@
 
 **Stop wasting hours converting Figma exports.** Batch-process images to WebP in seconds—no subscriptions, no cloud uploads, just fast local processing.
 
-[![Download](https://img.shields.io/badge/Download-v1.0.0-blue?style=for-the-badge&logo=apple)](https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.0/The.Transmogrifier.1.0.dmg)
+[![Download](https://img.shields.io/badge/Download-v1.0.1-blue?style=for-the-badge&logo=apple)](https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.1/The.Transmogrifier.1.0.1.dmg)
 [![Latest Release](https://img.shields.io/github/v/release/dbreck/the-transmogrifier?style=for-the-badge)](https://github.com/dbreck/the-transmogrifier/releases/latest)
 
 ![macOS](https://img.shields.io/badge/macOS-11.0+-blue)
@@ -29,11 +29,11 @@ You export beautiful designs from Figma as PNG or JPG. Then you're stuck:
 **The Transmogrifier** is a native macOS batch image processor built for designers and developers who need speed without complexity.
 
 ### What It Does
-✅ **Converts any image format to WebP, JPG, or PNG**—including TIFFs, ICNs, and more  
-✅ **Batch processes entire folders**—drag, drop, done  
-✅ **Preview before processing**—see compression quality before committing  
-✅ **Save workflow presets**—"Figma to WebP", "Social Media", "Client XYZ"  
-✅ **Track file size savings**—see exactly how much space you've saved  
+✅ **Converts any image format to WebP, JPG, or PNG**—including HEIC, TIFFs, ICNs, and more
+✅ **Batch processes entire folders**—drag, drop, done
+✅ **Preview before processing**—see compression quality before committing
+✅ **Save workflow presets**—"Figma to WebP", "Social Media", "Client XYZ"
+✅ **Track file size savings**—see exactly how much space you've saved
 ✅ **100% local processing**—no cloud uploads, no subscriptions, no internet required
 
 ### Why It Works
@@ -100,7 +100,7 @@ After using The Transmogrifier:
 
 ### Batch Processing
 - Drag folders of images and process them all at once
-- Supports: JPG, PNG, TIFF, BMP, GIF, ICNS, ICO
+- Supports: JPG, PNG, HEIC, TIFF, BMP, GIF, ICNS, ICO
 - Outputs: WebP, JPG, PNG
 
 ### Smart Compression
@@ -140,7 +140,7 @@ After using The Transmogrifier:
 
 ### Download the App
 
-**[⬇️ Download The Transmogrifier v1.0.0 (DMG)](https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.0/The.Transmogrifier.1.0.dmg)**
+**[⬇️ Download The Transmogrifier v1.0.1 (DMG)](https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.1/The.Transmogrifier.1.0.1.dmg)**
 
 Or [view all releases](https://github.com/dbreck/the-transmogrifier/releases)
 

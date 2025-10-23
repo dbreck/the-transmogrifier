@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Changelog - The Transmogrifier">
+  <!-- Hero -->
+  <section class="py-24 bg-gradient-to-br from-gray-900 via-blue-900/20 to-gray-900">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+      <h1 class="text-5xl lg:text-6xl font-bold mb-6">Changelog</h1>
+      <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+        Track new features, improvements, and bug fixes.
+      </p>
+    </div>
+  </section>
+
+  <!-- Changelog Entries -->
+  <section class="py-24">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 space-y-12">
+      
+      <!-- Version 1.0.0 -->
+      <div class="relative">
+        <!-- Version badge -->
+        <div class="flex items-center space-x-4 mb-6">
+          <div class="inline-flex items-center space-x-2 px-4 py-2 bg-accent-green/10 border border-accent-green/20 rounded-full text-sm text-accent-green">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <span class="font-medium">Current Version</span>
+          </div>
+          <span class="text-gray-500">October 21, 2025</span>
+        </div>
+        
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-3xl font-bold">v1.0.0 - Initial Release</h2>
+            <a 
+              href="https://github.com/dbreck/the-transmogrifier/releases/tag/v1.0.0" 
+              class="text-blue-600 hover:text-blue-700 text-sm"
+            >
+              View on GitHub →
+            </a>
+          </div>
+          
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-lg font-semibold mb-3 text-accent-green">✨ Features</h3>
+              <ul class="space-y-2 text-gray-400">
+                <li class="flex items-start space-x-2">
+                  <span class="text-accent-green mt-1">•</span>
+                  <span>Batch image processing for JPG, PNG, TIFF, BMP, GIF, ICNS, ICO</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-accent-green mt-1">•</span>
+                  <span>Export to WebP, JPG, or PNG formats</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-accent-green mt-1">•</span>
+                  <span>Smart compression with visual before/after preview</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-accent-green mt-1">•</span>
+                  <span>Preset management (save/load custom workflows)</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-accent-green mt-1">•</span>
+                  <span>Built-in presets: High Quality, Web Optimized, Social Media</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-accent-green mt-1">•</span>
+                  <span>Processing history with file size savings tracking</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-accent-green mt-1">•</span>
+                  <span>Drag-and-drop interface</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-accent-green mt-1">•</span>
+                  <span>Dark mode UI matching macOS design language</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-accent-green mt-1">•</span>
+                  <span>100% local processing (no cloud, no internet required)</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-accent-green mt-1">•</span>
+                  <span>Native SwiftUI app with hardware acceleration</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="mt-8 pt-6 border-t border-gray-600">
+            <a 
+              href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.0/The.Transmogrifier.1.0.dmg"
+              class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
+            >
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download v1.0.0
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Future releases will be added here -->
+      <div class="text-center py-12">
+        <p class="text-gray-500">More releases coming soon...</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="py-24 bg-gray-800/30">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <h2 class="text-3xl font-bold mb-8">Roadmap</h2>
+      <div class="space-y-4">
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
+          <div class="flex items-start space-x-3">
+            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
+            <div>
+              <h3 class="font-semibold mb-1">Batch rename output files</h3>
+              <p class="text-sm text-gray-400">Custom naming templates for processed images</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
+          <div class="flex items-start space-x-3">
+            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
+            <div>
+              <h3 class="font-semibold mb-1">AVIF format support</h3>
+              <p class="text-sm text-gray-400">Next-generation image format with even better compression</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
+          <div class="flex items-start space-x-3">
+            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
+            <div>
+              <h3 class="font-semibold mb-1">Image metadata preservation options</h3>
+              <p class="text-sm text-gray-400">Choose which EXIF data to keep or remove</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
+          <div class="flex items-start space-x-3">
+            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
+            <div>
+              <h3 class="font-semibold mb-1">Keyboard shortcuts for processing</h3>
+              <p class="text-sm text-gray-400">Quick access to common actions</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
+          <div class="flex items-start space-x-3">
+            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
+            <div>
+              <h3 class="font-semibold mb-1">Watch folder for auto-processing</h3>
+              <p class="text-sm text-gray-400">Automatically process images dropped into a folder</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
+          <div class="flex items-start space-x-3">
+            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
+            <div>
+              <h3 class="font-semibold mb-1">CLI version for automation</h3>
+              <p class="text-sm text-gray-400">Command-line tool for scripts and build pipelines</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-8 text-center">
+        <p class="text-gray-400 mb-4">Have a feature request?</p>
+        <a 
+          href="https://github.com/dbreck/the-transmogrifier/issues/new"
+          class="inline-flex items-center text-blue-600 hover:text-blue-700"
+        >
+          Submit an idea on GitHub →
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

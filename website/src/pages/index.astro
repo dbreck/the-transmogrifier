@@ -1,0 +1,519 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="The Transmogrifier - Stop Wasting Hours Converting Figma Exports">
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden">
+    <!-- Gradient background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/20 to-gray-900"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-8 py-24 lg:py-32">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Left: Copy -->
+        <div class="space-y-8">
+          <div class="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600/10 border border-blue-600/20 rounded-full text-sm text-blue-600">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <span class="font-medium">Native macOS App • $9.99</span>
+          </div>
+          
+          <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
+            Stop wasting hours converting <span class="gradient-text">Figma exports</span>
+          </h1>
+          
+          <p class="text-xl text-gray-400 leading-relaxed">
+            A transmogrifier is a tool that transforms something in a surprising way. Ours turns image processing busywork into a 30-second task.
+          </p>
+          
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a
+              href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.1/The.Transmogrifier.1.0.1.dmg"
+              class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
+            >
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download for macOS
+            </a>
+            <a 
+              href="https://github.com/dbreck/the-transmogrifier"
+              class="inline-flex items-center justify-center px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg font-semibold text-lg transition-colors"
+            >
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+              </svg>
+              View on GitHub
+            </a>
+          </div>
+          
+          <!-- Trust Signals -->
+          <div class="flex flex-wrap gap-6 text-sm text-gray-400">
+            <div class="flex items-center space-x-2">
+              <svg class="w-5 h-5 text-accent-green" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span>macOS 11.0+</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <svg class="w-5 h-5 text-accent-green" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span>Native SwiftUI</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <svg class="w-5 h-5 text-accent-green" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span>100% Local Processing</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right: App Screenshot Placeholder -->
+        <div class="relative">
+          <div class="relative rounded-2xl overflow-hidden shadow-app-lg border border-gray-600 bg-gray-800">
+            <!-- App Screenshot -->
+            <img src="/transmogrifier-ui-01.png" alt="The Transmogrifier app interface showing batch image processing" class="w-full h-auto" />
+          </div>
+          <!-- Floating accent -->
+          <div class="absolute -bottom-4 -right-4 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Problem Section -->
+  <section class="py-24 bg-gray-800/30">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl lg:text-5xl font-bold mb-6">You create beautiful work. Then comes the busywork.</h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          Figma exports look perfect. But getting them web-ready? That's where the workflow breaks down.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Problem 1 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
+          <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold">No WebP in Figma</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Figma still doesn't export WebP, even though it's the web standard for performance
+          </p>
+        </div>
+        
+        <!-- Problem 2 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
+          <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold">One at a Time</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Most tools process images individually. 50 images? That's 50 manual conversions.
+          </p>
+        </div>
+        
+        <!-- Problem 3 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
+          <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold">File Size Bloat</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            PNG exports are huge. Your sites load slower, Google penalizes you, users bounce.
+          </p>
+        </div>
+        
+        <!-- Problem 4 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
+          <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold">Repetitive Work</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Every project: export, convert, compress, rename. 15+ minutes of work that should be automated.
+          </p>
+        </div>
+      </div>
+      
+      <div class="mt-12 text-center">
+        <p class="text-2xl font-semibold text-gray-300">
+          Image optimization shouldn't take longer than the design.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Solution: 3-Step Workflow -->
+  <section class="py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl lg:text-5xl font-bold mb-6">Your 3-step workflow</h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          Fast, simple, automated. The way image processing should work.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="relative">
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-6 h-full">
+            <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold">
+              1
+            </div>
+            <h3 class="text-2xl font-semibold">Drag in your images</h3>
+            <p class="text-gray-400 leading-relaxed">
+              Drop files or entire folders. Process dozens of images at once.
+            </p>
+          </div>
+          <!-- Arrow connector (hidden on mobile) -->
+          <div class="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="relative">
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-6 h-full">
+            <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold">
+              2
+            </div>
+            <h3 class="text-2xl font-semibold">Choose format & compression</h3>
+            <p class="text-gray-400 leading-relaxed">
+              Pick WebP, JPG, or PNG. Adjust compression. Or use a saved preset.
+            </p>
+          </div>
+          <!-- Arrow connector (hidden on mobile) -->
+          <div class="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-6 h-full">
+          <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold">
+            3
+          </div>
+          <h3 class="text-2xl font-semibold">Click Process Images</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Done. Your optimized images are ready for upload.
+          </p>
+        </div>
+      </div>
+      
+      <div class="mt-16 text-center">
+        <div class="inline-flex items-center space-x-3 px-6 py-3 bg-accent-green/10 border border-accent-green/20 rounded-full">
+          <svg class="w-5 h-5 text-accent-green" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-semibold text-accent-green">25-35% smaller files, same quality</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="py-24 bg-gray-800/30">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl lg:text-5xl font-bold mb-6">Built for speed and control</h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          Everything you need to optimize images fast—and nothing you don't.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
+          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold">Batch Processing</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Drag folders of images and process them all at once. Supports JPG, PNG, HEIC, TIFF, BMP, GIF, ICNS, ICO.
+          </p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
+          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold">Smart Compression</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Visual slider for quality vs. file size. Preview before/after. Click to inspect full-size quality.
+          </p>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
+          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold">Preset Management</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Save your favorite settings as presets. "Figma to WebP", "Social Media", "Client XYZ"—one click to apply.
+          </p>
+        </div>
+        
+        <!-- Feature 4 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
+          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold">Processing History</h3>
+          <p class="text-gray-400 leading-relaxed">
+            See every file processed with before/after sizes. Track file size savings across all batches.
+          </p>
+        </div>
+        
+        <!-- Feature 5 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
+          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold">Native macOS Performance</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Built with SwiftUI. Hardware-accelerated with Core Image. Processes 50+ images in seconds.
+          </p>
+        </div>
+        
+        <!-- Feature 6 -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
+          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold">100% Local & Private</h3>
+          <p class="text-gray-400 leading-relaxed">
+            All processing happens on your Mac. No cloud uploads. No tracking. No internet required.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases Section -->
+  <section class="py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl lg:text-5xl font-bold mb-6">Built for real workflows</h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          From Figma exports to social media, handle your most common image tasks in seconds.
+        </p>
+      </div>
+      
+      <div class="space-y-8">
+        <!-- Use Case 1: Figma to WebP -->
+        <div class="bg-gradient-to-r from-blue-600/10 to-transparent border border-blue-600/20 rounded-xl p-8">
+          <div class="max-w-4xl">
+            <div class="flex items-start space-x-4 mb-4">
+              <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-2xl font-semibold mb-2">Figma → WebP (The #1 Use Case)</h3>
+                <p class="text-gray-400 mb-4">Figma still doesn't export to WebP. We do.</p>
+                
+                <div class="grid md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-accent-red font-medium mb-2">❌ Before:</p>
+                    <p class="text-gray-400">Export PNG from Figma → Open online converter → Upload images → Wait → Download → Repeat for next batch</p>
+                  </div>
+                  <div>
+                    <p class="text-accent-green font-medium mb-2">✅ After:</p>
+                    <p class="text-gray-400">Export PNG from Figma → Drag to Transmogrifier → Done</p>
+                  </div>
+                </div>
+                
+                <div class="mt-4 inline-flex items-center space-x-2 text-accent-green text-sm font-medium">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Result: 25-35% smaller files, same quality. Faster websites, better SEO.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Use Case 2: Web Optimization -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+          <div class="max-w-4xl">
+            <h3 class="text-xl font-semibold mb-2">🌐 Web Optimization</h3>
+            <p class="text-gray-400">Batch-compress hero images to &lt; 200 KB. Convert TIFFs to web-ready formats. Resize and optimize dozens of images at once.</p>
+          </div>
+        </div>
+        
+        <!-- Use Case 3: Social Media -->
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+          <div class="max-w-4xl">
+            <h3 class="text-xl font-semibold mb-2">📱 Social Media Prep</h3>
+            <p class="text-gray-400">Resize 50 images to 1080×1080 for Instagram in seconds. Use the built-in Social Media preset or create your own for each platform.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success vs. Failure (Transformation) -->
+  <section class="py-24 bg-gray-800/30">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl lg:text-5xl font-bold mb-6">From tedious busywork → automated efficiency</h2>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+        <!-- Failure State -->
+        <div class="space-y-6">
+          <div class="text-center mb-6">
+            <div class="inline-flex items-center space-x-2 px-4 py-2 bg-accent-red/10 border border-accent-red/20 rounded-full text-sm text-accent-red mb-4">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <span class="font-medium">Without The Transmogrifier</span>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <svg class="w-5 h-5 text-accent-red mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <p class="text-gray-400">Your websites load slower than competitors (Google penalizes slow sites)</p>
+            </div>
+            <div class="flex items-start space-x-3">
+              <svg class="w-5 h-5 text-accent-red mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <p class="text-gray-400">You waste billable hours on repetitive tasks</p>
+            </div>
+            <div class="flex items-start space-x-3">
+              <svg class="w-5 h-5 text-accent-red mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <p class="text-gray-400">Your clients get bloated files instead of optimized assets</p>
+            </div>
+            <div class="flex items-start space-x-3">
+              <svg class="w-5 h-5 text-accent-red mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <p class="text-gray-400">You're stuck in outdated workflows while others automate</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Success State -->
+        <div class="space-y-6">
+          <div class="text-center mb-6">
+            <div class="inline-flex items-center space-x-2 px-4 py-2 bg-accent-green/10 border border-accent-green/20 rounded-full text-sm text-accent-green mb-4">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span class="font-medium">With The Transmogrifier</span>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <p class="text-gray-300">Your Figma-to-web workflow takes 30 seconds instead of 15 minutes</p>
+            </div>
+            <div class="flex items-start space-x-3">
+              <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <p class="text-gray-300">Your websites load 25-35% faster with WebP images</p>
+            </div>
+            <div class="flex items-start space-x-3">
+              <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <p class="text-gray-300">You never manually convert images again—just drag, process, deploy</p>
+            </div>
+            <div class="flex items-start space-x-3">
+              <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <p class="text-gray-300">You reclaim hours per week for actual design work</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-16 text-center">
+        <p class="text-2xl text-gray-300 font-semibold mb-4">Time is money. Automate this.</p>
+        <a
+          href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.1/The.Transmogrifier.1.0.1.dmg"
+          class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Download for macOS
+        </a>
+        <p class="mt-4 text-sm text-gray-400">Free • macOS 11.0+ • Native SwiftUI</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="py-24">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+        Stop fighting with image converters.<br />
+        <span class="gradient-text">Start shipping faster websites.</span>
+      </h2>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+        <a
+          href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.1/The.Transmogrifier.1.0.1.dmg"
+          class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Download for macOS
+        </a>
+        <a 
+          href="/docs"
+          class="inline-flex items-center justify-center px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg font-semibold text-lg transition-colors"
+        >
+          View Documentation
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

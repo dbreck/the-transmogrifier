@@ -40,6 +40,7 @@ class FileSelectionViewModel: ObservableObject {
             UTType.bmp,
             UTType.gif,
             UTType.tiff,
+            UTType.heic,
             UTType.icns,
             UTType.ico
         ]
@@ -78,6 +79,7 @@ class FileSelectionViewModel: ObservableObject {
                     .bmp,
                     .gif,
                     .tiff,
+                    .heic,
                     .icns,
                     .ico
                 ]

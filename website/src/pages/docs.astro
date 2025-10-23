@@ -1,0 +1,314 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Documentation - The Transmogrifier">
+  <!-- Hero -->
+  <section class="py-24 bg-gradient-to-br from-gray-900 via-blue-900/20 to-gray-900">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+      <h1 class="text-5xl lg:text-6xl font-bold mb-6">Documentation</h1>
+      <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+        Everything you need to know to optimize images fast.
+      </p>
+    </div>
+  </section>
+
+  <!-- Table of Contents -->
+  <section class="py-12 bg-gray-800/30">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+        <h2 class="text-2xl font-bold mb-6">Quick Navigation</h2>
+        <div class="grid md:grid-cols-3 gap-4">
+          <a href="#quick-start" class="text-blue-600 hover:text-blue-700">Quick Start Guide</a>
+          <a href="#installation" class="text-blue-600 hover:text-blue-700">Installation</a>
+          <a href="#workflow" class="text-blue-600 hover:text-blue-700">Basic Workflow</a>
+          <a href="#formats" class="text-blue-600 hover:text-blue-700">Supported Formats</a>
+          <a href="#compression" class="text-blue-600 hover:text-blue-700">Compression Settings</a>
+          <a href="#presets" class="text-blue-600 hover:text-blue-700">Managing Presets</a>
+          <a href="#troubleshooting" class="text-blue-600 hover:text-blue-700">Troubleshooting</a>
+          <a href="#keyboard" class="text-blue-600 hover:text-blue-700">Keyboard Shortcuts</a>
+          <a href="#faq" class="text-blue-600 hover:text-blue-700">FAQ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Documentation Content -->
+  <section class="py-24">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 space-y-16">
+      
+      <!-- Quick Start -->
+      <div id="quick-start" class="scroll-mt-24">
+        <h2 class="text-3xl font-bold mb-6">Quick Start Guide</h2>
+        <div class="prose prose-invert max-w-none">
+          <p class="text-gray-400 text-lg mb-6">Get up and running in 60 seconds:</p>
+          
+          <div class="space-y-6">
+            <div class="bg-gray-800 border-l-4 border-blue-600 p-6 rounded-r-lg">
+              <h3 class="text-xl font-semibold mb-2">1. Add Images</h3>
+              <p class="text-gray-400">Drag and drop image files or folders onto the File Selection area, or click Browse Files.</p>
+            </div>
+            
+            <div class="bg-gray-800 border-l-4 border-blue-600 p-6 rounded-r-lg">
+              <h3 class="text-xl font-semibold mb-2">2. Choose Settings</h3>
+              <p class="text-gray-400">Set your output format (WebP, JPG, PNG), dimensions, and compression level. Or select a preset.</p>
+            </div>
+            
+            <div class="bg-gray-800 border-l-4 border-blue-600 p-6 rounded-r-lg">
+              <h3 class="text-xl font-semibold mb-2">3. Preview (Optional)</h3>
+              <p class="text-gray-400">Click the Process arrow in Preview to test settings on a single image. Click the result to inspect quality.</p>
+            </div>
+            
+            <div class="bg-gray-800 border-l-4 border-blue-600 p-6 rounded-r-lg">
+              <h3 class="text-xl font-semibold mb-2">4. Select Output Folder</h3>
+              <p class="text-gray-400">Click Browse next to Output Folder to choose where processed images will be saved.</p>
+            </div>
+            
+            <div class="bg-gray-800 border-l-4 border-blue-600 p-6 rounded-r-lg">
+              <h3 class="text-xl font-semibold mb-2">5. Process All</h3>
+              <p class="text-gray-400">Click Process Images. Done! Check the History tab to see file size savings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Installation -->
+      <div id="installation" class="scroll-mt-24">
+        <h2 class="text-3xl font-bold mb-6">Installation</h2>
+        <div class="space-y-6">
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4">Download & Install</h3>
+            <ol class="space-y-3 text-gray-400 list-decimal list-inside">
+              <li><a href="https://github.com/dbreck/the-transmogrifier/releases/latest" class="text-blue-600 hover:text-blue-700">Download the latest DMG</a></li>
+              <li>Open the DMG file</li>
+              <li>Drag <strong class="text-white">The Transmogrifier</strong> to your <strong class="text-white">Applications</strong> folder</li>
+              <li>Launch from Applications</li>
+            </ol>
+          </div>
+          
+          <div class="bg-accent-yellow/10 border border-accent-yellow/20 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4 text-accent-yellow">⚠️ First Launch Security Warning</h3>
+            <p class="text-gray-400 mb-4">macOS may block the app because it's not signed with an Apple Developer ID. To bypass:</p>
+            <ol class="space-y-2 text-gray-400 list-decimal list-inside">
+              <li><strong class="text-white">Control-click</strong> (or right-click) the app in Applications</li>
+              <li>Select <strong class="text-white">Open</strong> from the menu</li>
+              <li>Click <strong class="text-white">Open</strong> in the security dialog</li>
+              <li>The app will now launch normally (you only need to do this once)</li>
+            </ol>
+          </div>
+          
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4">System Requirements</h3>
+            <ul class="space-y-2 text-gray-400">
+              <li><strong class="text-white">macOS:</strong> 11.0 (Big Sur) or later</li>
+              <li><strong class="text-white">Architecture:</strong> Intel or Apple Silicon</li>
+              <li><strong class="text-white">Disk Space:</strong> ~15 MB</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supported Formats -->
+      <div id="formats" class="scroll-mt-24">
+        <h2 class="text-3xl font-bold mb-6">Supported File Formats</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4">Input Formats</h3>
+            <ul class="space-y-2 text-gray-400">
+              <li>✅ JPEG / JPG</li>
+              <li>✅ PNG</li>
+              <li>✅ TIFF / TIF</li>
+              <li>✅ BMP</li>
+              <li>✅ GIF</li>
+              <li>✅ ICNS (macOS icons)</li>
+              <li>✅ ICO (Windows icons)</li>
+            </ul>
+          </div>
+          
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4">Output Formats</h3>
+            <ul class="space-y-2 text-gray-400">
+              <li><strong class="text-white">WebP</strong> - Modern web format, excellent compression</li>
+              <li><strong class="text-white">JPG</strong> - Universal format, good for photos</li>
+              <li><strong class="text-white">PNG</strong> - Lossless, supports transparency</li>
+            </ul>
+            <p class="text-sm text-gray-500 mt-4">💡 Tip: WebP typically produces 25-35% smaller files than JPG at the same quality.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compression -->
+      <div id="compression" class="scroll-mt-24">
+        <h2 class="text-3xl font-bold mb-6">Understanding Compression</h2>
+        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-6">
+          <p class="text-gray-400">The compression slider controls the trade-off between file size and image quality:</p>
+          
+          <div class="space-y-4">
+            <div class="flex items-start space-x-4">
+              <div class="w-24 text-accent-green font-semibold flex-shrink-0">0-20%</div>
+              <div>
+                <p class="text-white font-medium">Minimal Compression</p>
+                <p class="text-gray-400 text-sm">Maximum quality, larger files. Best for print or archival.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-4">
+              <div class="w-24 text-accent-yellow font-semibold flex-shrink-0">30-60%</div>
+              <div>
+                <p class="text-white font-medium">Balanced</p>
+                <p class="text-gray-400 text-sm">Good quality, reasonable file sizes. Best for most use cases.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-4">
+              <div class="w-24 text-accent-red font-semibold flex-shrink-0">70-100%</div>
+              <div>
+                <p class="text-white font-medium">Maximum Compression</p>
+                <p class="text-gray-400 text-sm">Smaller files, visible quality loss. Use cautiously.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-blue-600/10 border border-blue-600/20 rounded-lg p-6 mt-6">
+            <p class="text-blue-600 font-semibold mb-2">💡 Recommended Settings</p>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li><strong class="text-white">Web images:</strong> 60-75% compression (WebP format)</li>
+              <li><strong class="text-white">Photography:</strong> 20-40% compression (JPG format)</li>
+              <li><strong class="text-white">Graphics/logos:</strong> 10-30% compression (PNG format)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presets -->
+      <div id="presets" class="scroll-mt-24">
+        <h2 class="text-3xl font-bold mb-6">Managing Presets</h2>
+        <div class="space-y-6">
+          <p class="text-gray-400">Presets save your favorite settings for quick reuse.</p>
+          
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4">Built-in Presets</h3>
+            <div class="space-y-3">
+              <div class="bg-gray-700 rounded-lg p-4">
+                <p class="font-semibold mb-1">High Quality</p>
+                <p class="text-sm text-gray-400">300 DPI • WebP format • Minimal compression</p>
+              </div>
+              <div class="bg-gray-700 rounded-lg p-4">
+                <p class="font-semibold mb-1">Web Optimized</p>
+                <p class="text-sm text-gray-400">72 DPI • 1920px wide • WebP format • Balanced compression</p>
+              </div>
+              <div class="bg-gray-700 rounded-lg p-4">
+                <p class="font-semibold mb-1">Social Media</p>
+                <p class="text-sm text-gray-400">72 DPI • 1080×1080px • JPG format • Medium compression</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4">Creating Custom Presets</h3>
+            <ol class="space-y-3 text-gray-400 list-decimal list-inside">
+              <li>Set your desired output format, dimensions, and compression</li>
+              <li>Select an output folder (this will be saved with the preset)</li>
+              <li>Click the <strong class="text-white">Save</strong> button next to the Presets dropdown</li>
+              <li>Enter a name for your preset (e.g., "Figma to WebP")</li>
+              <li>Your preset now appears in the dropdown menu</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Troubleshooting -->
+      <div id="troubleshooting" class="scroll-mt-24">
+        <h2 class="text-3xl font-bold mb-6">Troubleshooting</h2>
+        <div class="space-y-6">
+          
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4">App won't open (Security warning)</h3>
+            <p class="text-gray-400 mb-4">macOS is blocking the app because it's not signed with an Apple Developer ID.</p>
+            <p class="text-white font-medium mb-2">Solution:</p>
+            <ol class="space-y-2 text-gray-400 list-decimal list-inside">
+              <li>Control-click (or right-click) the app in Applications</li>
+              <li>Select "Open" from the menu</li>
+              <li>Click "Open" in the security dialog</li>
+            </ol>
+          </div>
+          
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4">Images look blurry or low quality</h3>
+            <p class="text-gray-400 mb-4">Compression is set too high.</p>
+            <p class="text-white font-medium mb-2">Solution:</p>
+            <ul class="space-y-2 text-gray-400 list-disc list-inside">
+              <li>Lower the compression slider (drag left)</li>
+              <li>Use the Preview feature to test quality before batch processing</li>
+              <li>Click the preview image to inspect full-size</li>
+            </ul>
+          </div>
+          
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4">WebP format not working</h3>
+            <p class="text-gray-400 mb-4">Your macOS version may not have native WebP support.</p>
+            <p class="text-white font-medium mb-2">Solution:</p>
+            <ul class="space-y-2 text-gray-400 list-disc list-inside">
+              <li>Update to macOS 11 (Big Sur) or later</li>
+              <li>Use JPG or PNG format instead</li>
+            </ul>
+          </div>
+          
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-4">Need more help?</h3>
+            <p class="text-gray-400 mb-4">Check the app's built-in help (⌘?) or open an issue on GitHub.</p>
+            <a href="https://github.com/dbreck/the-transmogrifier/issues" class="inline-flex items-center text-blue-600 hover:text-blue-700">
+              Report an issue on GitHub →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div id="faq" class="scroll-mt-24">
+        <h2 class="text-3xl font-bold mb-6">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          <details class="bg-gray-800 border border-gray-600 rounded-xl p-6 group">
+            <summary class="text-lg font-semibold cursor-pointer list-none flex items-center justify-between">
+              <span>How many images can I process at once?</span>
+              <svg class="w-5 h-5 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="text-gray-400 mt-4">No artificial limits. The only limit is your Mac's hardware. Processing 20-50 images at once performs best.</p>
+          </details>
+          
+          <details class="bg-gray-800 border border-gray-600 rounded-xl p-6 group">
+            <summary class="text-lg font-semibold cursor-pointer list-none flex items-center justify-between">
+              <span>Does this work offline?</span>
+              <svg class="w-5 h-5 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="text-gray-400 mt-4">Yes! All processing happens locally on your Mac. No internet connection required.</p>
+          </details>
+          
+          <details class="bg-gray-800 border border-gray-600 rounded-xl p-6 group">
+            <summary class="text-lg font-semibold cursor-pointer list-none flex items-center justify-between">
+              <span>Are my images sent to a server?</span>
+              <svg class="w-5 h-5 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="text-gray-400 mt-4">Absolutely not. All processing happens 100% locally on your Mac. No data leaves your computer.</p>
+          </details>
+          
+          <details class="bg-gray-800 border border-gray-600 rounded-xl p-6 group">
+            <summary class="text-lg font-semibold cursor-pointer list-none flex items-center justify-between">
+              <span>Can I batch rename output files?</span>
+              <svg class="w-5 h-5 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="text-gray-400 mt-4">Not yet, but it's on the roadmap! Currently, output files keep their original names with the new extension.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
