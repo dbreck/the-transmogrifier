@@ -19,7 +19,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <span class="font-medium">Native macOS App • $9.99</span>
           </div>
           
-          <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
+          <h1 class="text-5xl lg:text-6xl lg:leading-[1.1] font-bold leading-tight">
             Stop wasting hours converting <span class="gradient-text">Figma exports</span>
           </h1>
           
@@ -74,10 +74,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         
         <!-- Right: App Screenshot Placeholder -->
         <div class="relative">
-          <div class="relative rounded-2xl overflow-hidden shadow-app-lg border border-gray-600 bg-gray-800">
-            <!-- App Screenshot -->
-            <img src="/transmogrifier-ui-01.png" alt="The Transmogrifier app interface showing batch image processing" class="w-full h-auto" />
-          </div>
+          <!-- App Screenshot -->
+          <img src="/transmogrifier-ui-01.png" alt="The Transmogrifier app interface showing batch image processing" class="w-full h-auto" />
           <!-- Floating accent -->
           <div class="absolute -bottom-4 -right-4 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl"></div>
         </div>
