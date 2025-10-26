@@ -75,7 +75,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <!-- Right: App Screenshot Placeholder -->
         <div class="relative">
           <!-- App Screenshot -->
-          <img src="/transmogrifier-ui-01.png" alt="The Transmogrifier app interface showing batch image processing" class="w-full h-auto" />
+          <img src="/transmogrifier-ui-02.webp" alt="The Transmogrifier app interface showing batch image processing" class="w-full h-auto" />
           <!-- Floating accent -->
           <div class="absolute -bottom-4 -right-4 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl"></div>
         </div>
@@ -87,7 +87,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="py-24 bg-gray-800/30">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl font-bold mb-6">You create beautiful work. Then comes the busywork.</h2>
+        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">You create beautiful work. Then comes the busywork.</h2>
         <p class="text-xl text-gray-400 max-w-3xl mx-auto">
           Figma exports look perfect. But getting them web-ready? That's where the workflow breaks down.
         </p>
@@ -159,7 +159,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="py-24">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl font-bold mb-6">Your 3-step workflow</h2>
+        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">Your 3-step workflow</h2>
         <p class="text-xl text-gray-400 max-w-3xl mx-auto">
           Fast, simple, automated. The way image processing should work.
         </p>
@@ -168,51 +168,63 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Step 1 -->
         <div class="relative">
-          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-6 h-full">
-            <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold">
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 pb-0 h-full flex flex-col overflow-hidden">
+            <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold mb-6">
               1
             </div>
-            <h3 class="text-2xl font-semibold">Drag in your images</h3>
-            <p class="text-gray-400 leading-relaxed">
+            <h3 class="text-2xl font-semibold mb-6">Drag in your images</h3>
+            <p class="text-gray-400 leading-relaxed mb-6">
               Drop files or entire folders. Process dozens of images at once.
             </p>
+            <div class="flex-1 min-h-64 rounded-b-xl overflow-hidden -mx-8" style="background-image: url('/transmogrifier-ui-01.webp'); background-size: 303%; background-position: 6% 22%;">
+            </div>
           </div>
           <!-- Arrow connector (hidden on mobile) -->
-          <div class="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2">
-            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
+          <div class="hidden md:block absolute top-32 z-10" style="right: -3rem;">
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
           </div>
         </div>
-        
+
         <!-- Step 2 -->
         <div class="relative">
-          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-6 h-full">
-            <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold">
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 pb-0 h-full flex flex-col overflow-hidden">
+            <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold mb-6">
               2
             </div>
-            <h3 class="text-2xl font-semibold">Choose format & compression</h3>
-            <p class="text-gray-400 leading-relaxed">
-              Pick WebP, JPG, or PNG. Adjust compression. Or use a saved preset.
+            <h3 class="text-2xl font-semibold mb-6">Tune format & compression</h3>
+            <p class="text-gray-400 leading-relaxed mb-6">
+              Pick WebP, JPG, or PNG. Adjust compression. Or load a preset.
             </p>
+            <div class="flex-1 min-h-64 rounded-b-xl overflow-hidden -mx-8" style="background-image: url('/transmogrifier-ui-04.webp'); background-size: 255%; background-position: 50% 66%;">
+            </div>
           </div>
           <!-- Arrow connector (hidden on mobile) -->
-          <div class="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2">
-            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
+          <div class="hidden md:block absolute top-32 z-10" style="right: -3rem;">
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
           </div>
         </div>
-        
+
         <!-- Step 3 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-6 h-full">
-          <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold">
-            3
+        <div class="relative">
+          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 pb-0 h-full flex flex-col overflow-hidden">
+            <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold mb-6">
+              3
+            </div>
+            <h3 class="text-2xl font-semibold mb-6">Click Process Images</h3>
+            <p class="text-gray-400 leading-relaxed mb-6">
+              Done. Your optimized images are ready for upload and sharing.
+            </p>
+            <div class="flex-1 min-h-64 rounded-b-xl overflow-hidden -mx-8" style="background-image: url('/transmogrifier-ui-05.webp'); background-size: 248%; background-position: 20% 84%;">
+            </div>
           </div>
-          <h3 class="text-2xl font-semibold">Click Process Images</h3>
-          <p class="text-gray-400 leading-relaxed">
-            Done. Your optimized images are ready for upload.
-          </p>
         </div>
       </div>
       
@@ -231,7 +243,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="py-24 bg-gray-800/30">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl font-bold mb-6">Built for speed and control</h2>
+        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">Built for speed and control</h2>
         <p class="text-xl text-gray-400 max-w-3xl mx-auto">
           Everything you need to optimize images fast—and nothing you don't.
         </p>
@@ -323,7 +335,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="py-24">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl font-bold mb-6">Built for real workflows</h2>
+        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">Built for real workflows</h2>
         <p class="text-xl text-gray-400 max-w-3xl mx-auto">
           From Figma exports to social media, handle your most common image tasks in seconds.
         </p>
@@ -388,7 +400,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="py-24 bg-gray-800/30">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl font-bold mb-6">From tedious busywork → automated efficiency</h2>
+        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">From tedious busywork → automated efficiency</h2>
       </div>
       
       <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
@@ -490,7 +502,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Final CTA -->
   <section class="py-24">
     <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-      <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+      <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">
         Stop fighting with image converters.<br />
         <span class="gradient-text">Start shipping faster websites.</span>
       </h2>

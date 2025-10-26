@@ -4,14 +4,26 @@
 
 @layer utilities {
   .bg-gradient-blue {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, #d8e4f8 0%, #1d4ed8 100%);
   }
-  
+
   .gradient-text {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, #d8e4f8 0%, #1d4ed8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     display: inline-block;
+  }
+
+  .text-accent-red {
+    color: #f0429f;
+  }
+
+  .bg-accent-red\/10 {
+    background-color: rgba(240, 66, 159, 0.1);
+  }
+
+  .border-accent-red\/20 {
+    border-color: rgba(240, 66, 159, 0.2);
   }
 }

@@ -154,11 +154,362 @@ const { title, description = "Stop wasting hours converting Figma exports. Batch
       </div>
     </footer>
 
+    <!-- Color Configuration Panel -->
+    <div id="color-config-panel" class="fixed top-0 right-0 h-full w-96 bg-gray-900 border-l border-gray-600 shadow-2xl transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
+      <div class="p-6 space-y-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold">Color Configuration</h2>
+          <button id="close-config-panel" class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Base Colors -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-blue-600">Base Colors</h3>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2">Background (gray-900)</label>
+            <input type="color" id="color-bg-900" value="#111827" class="w-full h-10 rounded cursor-pointer" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2">Card Background (gray-800)</label>
+            <input type="color" id="color-bg-800" value="#1f2937" class="w-full h-10 rounded cursor-pointer" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2">Border (gray-600)</label>
+            <input type="color" id="color-border-600" value="#4b5563" class="w-full h-10 rounded cursor-pointer" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2">Text Gray (gray-400)</label>
+            <input type="color" id="color-text-400" value="#9ca3af" class="w-full h-10 rounded cursor-pointer" />
+          </div>
+        </div>
+
+        <!-- Accent Colors -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-blue-600">Accent Colors</h3>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2">Primary Blue</label>
+            <input type="color" id="color-blue-600" value="#2563eb" class="w-full h-10 rounded cursor-pointer" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2">Blue Hover</label>
+            <input type="color" id="color-blue-700" value="#1d4ed8" class="w-full h-10 rounded cursor-pointer" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2">Accent Green</label>
+            <input type="color" id="color-accent-green" value="#10b981" class="w-full h-10 rounded cursor-pointer" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2">Accent Red</label>
+            <input type="color" id="color-accent-red" value="#ef4444" class="w-full h-10 rounded cursor-pointer" />
+          </div>
+        </div>
+
+        <!-- Gradient Colors -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-blue-600">Gradient Colors</h3>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2">Gradient Start</label>
+            <input type="color" id="color-gradient-start" value="#3b82f6" class="w-full h-10 rounded cursor-pointer" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2">Gradient End</label>
+            <input type="color" id="color-gradient-end" value="#1d4ed8" class="w-full h-10 rounded cursor-pointer" />
+          </div>
+        </div>
+
+        <!-- Save/Load Schemes -->
+        <div class="space-y-4 border-t border-gray-600 pt-6">
+          <h3 class="text-lg font-semibold text-blue-600">Saved Schemes</h3>
+
+          <div>
+            <input type="text" id="scheme-name" placeholder="Enter scheme name..." class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white" />
+          </div>
+
+          <button id="save-scheme" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors">
+            Save Current Scheme
+          </button>
+
+          <div id="saved-schemes" class="space-y-2 max-h-64 overflow-y-auto">
+            <!-- Saved schemes will appear here -->
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-3">
+          <button id="mix-colors" class="w-full px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg font-semibold transition-all hover:scale-105 shadow-lg">
+            🎨 Mix It!
+          </button>
+
+          <button id="reset-colors" class="w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition-colors">
+            Reset to Default
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toggle Button (floating) - HIDDEN -->
+    <button id="toggle-config-panel" class="hidden fixed bottom-6 right-6 w-14 h-14 bg-blue-600 hover:bg-blue-700 rounded-full shadow-lg flex items-center justify-center z-40 transition-all hover:scale-110">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    </button>
+
     <!-- Mobile menu toggle script -->
     <script>
       document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
         document.getElementById('mobile-menu')?.classList.toggle('hidden');
       });
+    </script>
+
+    <!-- Color Configuration Script -->
+    <script>
+      // Toggle panel
+      const panel = document.getElementById('color-config-panel');
+      const toggleBtn = document.getElementById('toggle-config-panel');
+      const closeBtn = document.getElementById('close-config-panel');
+
+      toggleBtn?.addEventListener('click', () => {
+        panel?.classList.toggle('translate-x-full');
+      });
+
+      closeBtn?.addEventListener('click', () => {
+        panel?.classList.add('translate-x-full');
+      });
+
+      // Color inputs
+      const colorInputs = {
+        'color-bg-900': '--color-bg-900',
+        'color-bg-800': '--color-bg-800',
+        'color-border-600': '--color-border-600',
+        'color-text-400': '--color-text-400',
+        'color-blue-600': '--color-blue-600',
+        'color-blue-700': '--color-blue-700',
+        'color-accent-green': '--color-accent-green',
+        'color-accent-red': '--color-accent-red',
+        'color-gradient-start': '--color-gradient-start',
+        'color-gradient-end': '--color-gradient-end',
+      };
+
+      // Apply colors
+      function applyColors(colors) {
+        Object.entries(colors).forEach(([id, cssVar]) => {
+          const input = document.getElementById(id);
+          const color = input?.value;
+          if (color) {
+            document.documentElement.style.setProperty(cssVar, color);
+
+            // Update specific elements
+            if (id === 'color-bg-900') {
+              document.body.style.backgroundColor = color;
+            } else if (id === 'color-bg-800') {
+              document.querySelectorAll('.bg-gray-800').forEach(el => {
+                el.style.backgroundColor = color;
+              });
+            } else if (id === 'color-border-600') {
+              document.querySelectorAll('.border-gray-600').forEach(el => {
+                el.style.borderColor = color;
+              });
+            } else if (id === 'color-text-400') {
+              document.querySelectorAll('.text-gray-400').forEach(el => {
+                el.style.color = color;
+              });
+            } else if (id === 'color-blue-600') {
+              document.querySelectorAll('.bg-blue-600, .text-blue-600').forEach(el => {
+                if (el.classList.contains('bg-blue-600')) {
+                  el.style.backgroundColor = color;
+                } else {
+                  el.style.color = color;
+                }
+              });
+            } else if (id === 'color-blue-700') {
+              document.querySelectorAll('.hover\\:bg-blue-700').forEach(el => {
+                el.addEventListener('mouseenter', () => el.style.backgroundColor = color);
+                el.addEventListener('mouseleave', () => el.style.backgroundColor = document.getElementById('color-blue-600')?.value || '#2563eb');
+              });
+            } else if (id === 'color-accent-green') {
+              document.querySelectorAll('.text-accent-green').forEach(el => {
+                el.style.color = color;
+              });
+            } else if (id === 'color-gradient-start' || id === 'color-gradient-end') {
+              const start = document.getElementById('color-gradient-start')?.value;
+              const end = document.getElementById('color-gradient-end')?.value;
+              const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
+              document.querySelectorAll('.bg-gradient-blue').forEach(el => {
+                el.style.background = gradient;
+              });
+              document.querySelectorAll('.gradient-text').forEach(el => {
+                el.style.background = gradient;
+                el.style.webkitBackgroundClip = 'text';
+                el.style.backgroundClip = 'text';
+              });
+            }
+          }
+        });
+      }
+
+      // Listen to color changes
+      Object.keys(colorInputs).forEach(id => {
+        document.getElementById(id)?.addEventListener('input', () => {
+          applyColors(colorInputs);
+        });
+      });
+
+      // Save scheme
+      document.getElementById('save-scheme')?.addEventListener('click', () => {
+        const name = document.getElementById('scheme-name')?.value;
+        if (!name) {
+          alert('Please enter a scheme name');
+          return;
+        }
+
+        const scheme = {};
+        Object.keys(colorInputs).forEach(id => {
+          scheme[id] = document.getElementById(id)?.value;
+        });
+
+        const schemes = JSON.parse(localStorage.getItem('colorSchemes') || '{}');
+        schemes[name] = scheme;
+        localStorage.setItem('colorSchemes', JSON.stringify(schemes));
+
+        document.getElementById('scheme-name').value = '';
+        loadSavedSchemes();
+      });
+
+      // Load saved schemes
+      function loadSavedSchemes() {
+        const schemes = JSON.parse(localStorage.getItem('colorSchemes') || '{}');
+        const container = document.getElementById('saved-schemes');
+        if (!container) return;
+
+        container.innerHTML = '';
+        Object.entries(schemes).forEach(([name, colors]) => {
+          const div = document.createElement('div');
+          div.className = 'flex items-center justify-between p-3 bg-gray-800 rounded-lg';
+          div.innerHTML = `
+            <span class="font-medium">${name}</span>
+            <div class="flex gap-2">
+              <button class="load-scheme px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm transition-colors" data-name="${name}">Load</button>
+              <button class="delete-scheme px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm transition-colors" data-name="${name}">Delete</button>
+            </div>
+          `;
+          container.appendChild(div);
+        });
+
+        // Add event listeners
+        document.querySelectorAll('.load-scheme').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const name = e.target.dataset.name;
+            const scheme = schemes[name];
+            Object.entries(scheme).forEach(([id, value]) => {
+              const input = document.getElementById(id);
+              if (input) input.value = value;
+            });
+            applyColors(colorInputs);
+          });
+        });
+
+        document.querySelectorAll('.delete-scheme').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const name = e.target.dataset.name;
+            delete schemes[name];
+            localStorage.setItem('colorSchemes', JSON.stringify(schemes));
+            loadSavedSchemes();
+          });
+        });
+      }
+
+      // Reset to default
+      document.getElementById('reset-colors')?.addEventListener('click', () => {
+        document.getElementById('color-bg-900').value = '#111827';
+        document.getElementById('color-bg-800').value = '#1f2937';
+        document.getElementById('color-border-600').value = '#4b5563';
+        document.getElementById('color-text-400').value = '#9ca3af';
+        document.getElementById('color-blue-600').value = '#2563eb';
+        document.getElementById('color-blue-700').value = '#1d4ed8';
+        document.getElementById('color-accent-green').value = '#10b981';
+        document.getElementById('color-accent-red').value = '#ef4444';
+        document.getElementById('color-gradient-start').value = '#3b82f6';
+        document.getElementById('color-gradient-end').value = '#1d4ed8';
+        applyColors(colorInputs);
+      });
+
+      // Mix It! - Generate harmonious color scheme
+      document.getElementById('mix-colors')?.addEventListener('click', () => {
+        // Generate a base hue (0-360)
+        const baseHue = Math.floor(Math.random() * 360);
+
+        // Helper function to convert HSL to Hex
+        function hslToHex(h, s, l) {
+          l /= 100;
+          const a = s * Math.min(l, 1 - l) / 100;
+          const f = n => {
+            const k = (n + h / 30) % 12;
+            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+            return Math.round(255 * color).toString(16).padStart(2, '0');
+          };
+          return `#${f(0)}${f(8)}${f(4)}`;
+        }
+
+        // Generate harmonious colors using color theory
+        // Base: Very dark background (almost black with a hint of base hue)
+        const bg900 = hslToHex(baseHue, 15, 9);
+        // Card background: Slightly lighter
+        const bg800 = hslToHex(baseHue, 15, 14);
+        // Border: Medium darkness with more saturation
+        const border600 = hslToHex(baseHue, 20, 35);
+        // Text: Light gray with slight hue
+        const text400 = hslToHex(baseHue, 10, 65);
+
+        // Primary accent: Complementary color (opposite on color wheel)
+        const accentHue = (baseHue + 180) % 360;
+        const blue600 = hslToHex(accentHue, 70, 55);
+        const blue700 = hslToHex(accentHue, 75, 45);
+
+        // Triadic colors for variety (120 degrees apart)
+        const triadicHue1 = (baseHue + 120) % 360;
+        const triadicHue2 = (baseHue + 240) % 360;
+        const accentGreen = hslToHex(triadicHue1, 65, 50);
+        const accentRed = hslToHex(triadicHue2, 70, 55);
+
+        // Gradients: Use analogous colors (30 degrees apart)
+        const gradientStartHue = (accentHue - 30 + 360) % 360;
+        const gradientEndHue = (accentHue + 30) % 360;
+        const gradientStart = hslToHex(gradientStartHue, 70, 60);
+        const gradientEnd = hslToHex(gradientEndHue, 75, 50);
+
+        // Apply the generated colors
+        document.getElementById('color-bg-900').value = bg900;
+        document.getElementById('color-bg-800').value = bg800;
+        document.getElementById('color-border-600').value = border600;
+        document.getElementById('color-text-400').value = text400;
+        document.getElementById('color-blue-600').value = blue600;
+        document.getElementById('color-blue-700').value = blue700;
+        document.getElementById('color-accent-green').value = accentGreen;
+        document.getElementById('color-accent-red').value = accentRed;
+        document.getElementById('color-gradient-start').value = gradientStart;
+        document.getElementById('color-gradient-end').value = gradientEnd;
+
+        // Apply to the page
+        applyColors(colorInputs);
+      });
+
+      // Load schemes on page load
+      loadSavedSchemes();
     </script>
   </body>
 </html>
