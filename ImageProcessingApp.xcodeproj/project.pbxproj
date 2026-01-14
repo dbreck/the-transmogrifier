@@ -55,6 +55,7 @@
 		133DB6CC2A82A0F4008D28A7 /* FileSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSelectionView.swift; sourceTree = "<group>"; };
 		133DB6CD2A82A0F4008D28A7 /* ProcessingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingSettingsView.swift; sourceTree = "<group>"; };
 		133DB6CE2A82A0F4008D28A7 /* ProcessingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingSettingsViewModel.swift; sourceTree = "<group>"; };
+		133DB6CF2A82A0F4008D28A7 /* ImageProcessingAppStyleGuide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ImageProcessingAppStyleGuide.md; sourceTree = "<group>"; };
 		76BDF88F2EA53C0400B2B43C /* HelpContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpContent.swift; sourceTree = "<group>"; };
 		76BDF8902EA53C0400B2B43C /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		76BDF8912EA53C0400B2B43C /* OnboardingTourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTourView.swift; sourceTree = "<group>"; };
@@ -93,32 +94,97 @@
 		133DB6792A82A0F4008D28A7 /* ImageProcessingApp */ = {
 			isa = PBXGroup;
 			children = (
+				76000001000000000000001 /* App */,
+				76000002000000000000001 /* Views */,
+				76000003000000000000001 /* ViewModels */,
+				76000004000000000000001 /* Models */,
+				76000005000000000000001 /* Services */,
+				76000006000000000000001 /* Design */,
+				76000007000000000000001 /* Content */,
+				76000008000000000000001 /* Resources */,
+			);
+			path = ImageProcessingApp;
+			sourceTree = "<group>";
+		};
+		76000001000000000000001 /* App */ = {
+			isa = PBXGroup;
+			children = (
 				133DB67A2A82A0F4008D28A7 /* ImageProcessingApp.swift */,
-				133DB6902A82A0F4008D28A7 /* AppearanceManager.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		76000002000000000000001 /* Views */ = {
+			isa = PBXGroup;
+			children = (
 				133DB6912A82A0F4008D28A7 /* ContentView.swift */,
-				133DB6922A82A0F4008D28A7 /* FileSelectionViewModel.swift */,
-				133DB6932A82A0F4008D28A7 /* HistoryManager.swift */,
-				76BDF88F2EA53C0400B2B43C /* HelpContent.swift */,
-				76BDF8902EA53C0400B2B43C /* HelpView.swift */,
-				76BDF8952EA53C0400B2B43D /* HelpWindowManager.swift */,
-				76BDF8912EA53C0400B2B43C /* OnboardingTourView.swift */,
-				133DB6942A82A0F4008D28A7 /* HistoryRecord.swift */,
-				133DB6952A82A0F4008D28A7 /* HistoryView.swift */,
-				133DB6962A82A0F4008D28A7 /* ImageProcessingEngine.swift */,
-				133DB6972A82A0F4008D28A7 /* Preset.swift */,
-				133DB6982A82A0F4008D28A7 /* PresetManager.swift */,
-				133DB6992A82A0F4008D28A7 /* PreviewView.swift */,
-				133DB69A2A82A0F4008D28A7 /* PreviewViewModel.swift */,
-				133DB6CE2A82A0F4008D28A7 /* ProcessingSettingsViewModel.swift */,
-				133DB6CB2A82A0F4008D28A7 /* DesignSystem.swift */,
 				133DB6CC2A82A0F4008D28A7 /* FileSelectionView.swift */,
 				133DB6CD2A82A0F4008D28A7 /* ProcessingSettingsView.swift */,
+				133DB6992A82A0F4008D28A7 /* PreviewView.swift */,
+				133DB6952A82A0F4008D28A7 /* HistoryView.swift */,
+				76BDF8902EA53C0400B2B43C /* HelpView.swift */,
+				76BDF8912EA53C0400B2B43C /* OnboardingTourView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		76000003000000000000001 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				133DB6922A82A0F4008D28A7 /* FileSelectionViewModel.swift */,
+				133DB6CE2A82A0F4008D28A7 /* ProcessingSettingsViewModel.swift */,
+				133DB69A2A82A0F4008D28A7 /* PreviewViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		76000004000000000000001 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				133DB6972A82A0F4008D28A7 /* Preset.swift */,
+				133DB6942A82A0F4008D28A7 /* HistoryRecord.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		76000005000000000000001 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				133DB6962A82A0F4008D28A7 /* ImageProcessingEngine.swift */,
+				133DB6982A82A0F4008D28A7 /* PresetManager.swift */,
+				133DB6932A82A0F4008D28A7 /* HistoryManager.swift */,
+				133DB6902A82A0F4008D28A7 /* AppearanceManager.swift */,
+				76BDF8952EA53C0400B2B43D /* HelpWindowManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		76000006000000000000001 /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				133DB6CB2A82A0F4008D28A7 /* DesignSystem.swift */,
+				133DB6CF2A82A0F4008D28A7 /* ImageProcessingAppStyleGuide.md */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+		76000007000000000000001 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				76BDF88F2EA53C0400B2B43C /* HelpContent.swift */,
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
+		76000008000000000000001 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				133DB67C2A82A0F4008D28A7 /* Assets.xcassets */,
 				133DB67E2A82A0F4008D28A7 /* Preview Assets.xcassets */,
 				133DB6802A82A0F4008D28A7 /* Info.plist */,
 				133DB6812A82A0F4008D28A7 /* ImageProcessingApp.entitlements */,
 			);
-			path = ImageProcessingApp;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +203,10 @@
 			dependencies = (
 			);
 			name = "The Transmogrifier";
+			packageProductDependencies = (
+				761106232E4A5DA6000EB990 /* libwebp */,
+				76BDF88D2EA53B9900B2B43C /* MarkdownUI */,
+			);
 			productName = "The Transmogrifier";
 			productReference = 133DB6772A82A0F4008D28A7 /* The Transmogrifier.app */;
 			productType = "com.apple.product-type.application";
@@ -253,7 +323,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = ImageProcessingApp/ImageProcessingApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ImageProcessingApp/Resources/ImageProcessingApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				COPY_PHASE_STRIP = NO;
@@ -268,7 +338,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = ImageProcessingApp/Info.plist;
+				INFOPLIST_FILE = ImageProcessingApp/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "The Transmogrifier";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -319,7 +389,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = ImageProcessingApp/ImageProcessingApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ImageProcessingApp/Resources/ImageProcessingApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				COPY_PHASE_STRIP = NO;
@@ -329,7 +399,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
-				INFOPLIST_FILE = ImageProcessingApp/Info.plist;
+				INFOPLIST_FILE = ImageProcessingApp/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "The Transmogrifier";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
