@@ -91,6 +91,12 @@ Colors must match the app exactly (defined in `Design/DesignSystem.swift` and `t
 
 See `ImageProcessingApp/Design/ImageProcessingAppStyleGuide.md` for full design specs.
 
+## UI Features
+
+- Dark mode only (forced via `.preferredColorScheme(.dark)`)
+- Hidden title bar with compact toolbar style
+- Onboarding tour available via Help menu → Show Tour
+
 ## Key Patterns
 
 - All SwiftUI views use `@MainActor` for thread safety
