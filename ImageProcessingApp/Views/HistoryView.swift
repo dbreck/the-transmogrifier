@@ -107,8 +107,6 @@ struct HistoryRowView: View {
     }
 }
 
-struct HistoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        HistoryView(historyManager: HistoryManager())
-    }
+#Preview {
+    HistoryView(historyManager: HistoryManager())
 }

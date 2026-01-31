@@ -120,6 +120,18 @@ class ImageProcessingEngine: ObservableObject {
 
             for (index, inputURL) in inputURLs.enumerated() {
                 group.addTask {
+                    // Check for cancellation before starting each file
+                    if Task.isCancelled {
+                        return (index, ImageProcessingResult(
+                            inputURL: inputURL,
+                            outputURL: nil,
+                            success: false,
+                            error: ImageProcessingError.cancelled,
+                            fileSizeBefore: 0,
+                            fileSizeAfter: 0,
+                            processingTime: 0
+                        ))
+                    }
                     let fileStartTime = CFAbsoluteTimeGetCurrent()
                     do {
                         let desiredFormat = outputFormat.uppercased()
@@ -236,7 +248,10 @@ class ImageProcessingEngine: ObservableObject {
                 }
             }
 
-            for await (i, r) in group { results[i] = r }
+            for await (i, r) in group {
+                results[i] = r
+                if Task.isCancelled { group.cancelAll() }
+            }
             return results
         }
 
@@ -450,6 +465,7 @@ enum ImageProcessingError: Error, LocalizedError {
     case permissionDenied
     case corruptedImageFile
     case unsupportedColorProfile
+    case cancelled
 
     var errorDescription: String? {
         switch self {
@@ -463,6 +479,7 @@ enum ImageProcessingError: Error, LocalizedError {
         case .permissionDenied: return "Permission denied"
         case .corruptedImageFile: return "Corrupted image file"
         case .unsupportedColorProfile: return "Unsupported color profile"
+        case .cancelled: return "Processing was cancelled"
         }
     }
 }

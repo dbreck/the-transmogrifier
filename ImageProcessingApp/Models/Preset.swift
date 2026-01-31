@@ -1,6 +1,5 @@
 import Foundation
 
-// DEBUG LOG: Adding Hashable conformance to fix Picker errors
 struct Preset: Identifiable, Codable, Hashable {
     let id: UUID
     var name: String

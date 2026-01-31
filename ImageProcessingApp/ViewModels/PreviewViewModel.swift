@@ -303,16 +303,7 @@ class PreviewViewModel: ObservableObject {
                 dpi = dpiY
             }
 
-            // Debug: Print all available properties to understand what's available
-            print("DEBUG: Image properties for \(url.lastPathComponent):")
-            for (key, value) in properties {
-                print("  \(key): \(value)")
-            }
         }
-
-        print(
-            "DEBUG: Extracted metadata - Size: \(actualDimensions), DPI: \(dpi), FileSize: \(fileSize)"
-        )
 
         return ImageMetadata(
             fileType: fileType,

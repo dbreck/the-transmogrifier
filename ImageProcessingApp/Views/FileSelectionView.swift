@@ -190,8 +190,6 @@ struct FileSelectionView: View {
                 }
             }
         }
-
-        print("Added \(addedCount) images from folder: \(folderURL.lastPathComponent)")
     }
 }
 

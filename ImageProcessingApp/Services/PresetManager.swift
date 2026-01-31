@@ -10,7 +10,7 @@ class PresetManager: ObservableObject {
     
     init() {
         loadPresets()
-        // DEBUG LOG: Initialize with first preset to avoid nil selection
+        // Initialize with first preset to avoid nil selection
         if !presets.isEmpty {
             selectedPreset = presets.first
         }

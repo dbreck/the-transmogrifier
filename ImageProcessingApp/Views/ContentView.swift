@@ -18,6 +18,8 @@ struct ContentView: View {
     // Overwrite warning
     @State private var showingOverwriteAlert = false
     @State private var overwriteConflictCount = 0
+    // Processing task handle for cancellation
+    @State private var processingTask: Task<Void, Never>? = nil
     // Onboarding tour
     @State private var showingOnboardingTour = false
 
@@ -95,7 +97,11 @@ struct ContentView: View {
                                 .frame(maxWidth: .infinity)
 
                                 Button("Cancel") {
-                                    // TODO: hook up cancellation
+                                    processingTask?.cancel()
+                                    processingTask = nil
+                                    isProcessing = false
+                                    progressText = "Processing cancelled."
+                                    progressPercentText = "Cancelled"
                                 }
                                 .buttonStyle(.plain)
                                 .padding(.horizontal, Spacing.md)
@@ -103,7 +109,7 @@ struct ContentView: View {
                                 .background(Color.gray700)
                                 .foregroundColor(.gray300)
                                 .cornerRadius(6)
-                                .disabled(true)
+                                .disabled(!isProcessing)
                             }
                         }
                     }
@@ -213,7 +219,7 @@ struct ContentView: View {
         progressOpacity = 1.0
         let engine = ImageProcessingEngine()
 
-        Task {
+        processingTask = Task {
             let results = await engine.processImages(
                 inputURLs: inputFiles,
                 outputFolder: outputFolder,
@@ -251,6 +257,7 @@ struct ContentView: View {
             }
 
             await MainActor.run {
+                self.processingTask = nil
                 self.isProcessing = false
                 withAnimation(.easeInOut(duration: 0.25)) { self.progressValue = 1.0 }
                 self.progressPercentText = "100%"  // flash 100%
