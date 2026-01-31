@@ -4,9 +4,11 @@ import '../styles/global.css';
 export interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
 }
 
-const { title, description = "Stop wasting hours converting Figma exports. Batch-process images to WebP in seconds—no subscriptions, no cloud uploads, just fast local processing." } = Astro.props;
+const { title, description = "Stop wasting hours converting Figma exports. Batch-process images to WebP in seconds—no subscriptions, no cloud uploads, just fast local processing.", ogImage = "/transmogrifier-ui-01.webp" } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -15,20 +17,45 @@ const { title, description = "Stop wasting hours converting Figma exports. Batch
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/png" href="/app-icon.png" />
-    <link rel="apple-touch-icon" href="/app-icon.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <link rel="canonical" href={canonicalURL} />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(ogImage, Astro.site)} />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "The Transmogrifier",
+      "description": description,
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "macOS 12.0+",
+      "url": "https://thetransmogrifier.app",
+      "downloadUrl": "https://github.com/dbreck/the-transmogrifier/releases/latest",
+      "screenshot": "https://thetransmogrifier.app/transmogrifier-ui-01.webp",
+      "softwareVersion": "1.0.1",
+      "offers": {
+        "@type": "Offer",
+        "price": "9.99",
+        "priceCurrency": "USD"
+      },
+      "featureList": "Batch image processing, WebP/JPG/PNG conversion, Compression controls, Preset management, Processing history",
+      "license": "https://opensource.org/licenses/MIT"
+    })} />
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EGQY1J0Y20"></script>
@@ -149,7 +176,8 @@ const { title, description = "Stop wasting hours converting Figma exports. Batch
         </div>
         
         <div class="border-t border-gray-600 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-          <p>© 2025 The Transmogrifier. MIT License.</p>
+          <p>© <span id="copyright-year">2025</span> The Transmogrifier. MIT License.</p>
+          <script>document.getElementById('copyright-year').textContent = new Date().getFullYear();</script>
         </div>
       </div>
     </footer>
@@ -273,6 +301,50 @@ const { title, description = "Stop wasting hours converting Figma exports. Batch
     <script>
       document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
         document.getElementById('mobile-menu')?.classList.toggle('hidden');
+      });
+    </script>
+
+    <!-- GA4 CTA Event Tracking -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Track all download links (DMG releases)
+        document.querySelectorAll('a[href*="releases/download"]').forEach(link => {
+          link.addEventListener('click', () => {
+            if (typeof gtag === 'function') {
+              gtag('event', 'download', {
+                event_category: 'conversion',
+                event_label: link.textContent?.trim() || 'Download',
+                link_url: link.getAttribute('href'),
+              });
+            }
+          });
+        });
+
+        // Track GitHub repo links
+        document.querySelectorAll('a[href*="github.com/dbreck/the-transmogrifier"]').forEach(link => {
+          if (link.getAttribute('href')?.includes('releases/download')) return; // skip download links
+          link.addEventListener('click', () => {
+            if (typeof gtag === 'function') {
+              gtag('event', 'click', {
+                event_category: 'outbound',
+                event_label: 'github_repo',
+                link_url: link.getAttribute('href'),
+              });
+            }
+          });
+        });
+
+        // Track nav CTA button (Download in header)
+        document.querySelectorAll('nav a[href*="releases/download"]').forEach(link => {
+          link.addEventListener('click', () => {
+            if (typeof gtag === 'function') {
+              gtag('event', 'click', {
+                event_category: 'conversion',
+                event_label: 'nav_download_cta',
+              });
+            }
+          });
+        });
       });
     </script>
 
