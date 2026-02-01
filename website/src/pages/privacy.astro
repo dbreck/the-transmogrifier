@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Privacy Policy - The Transmogrifier">
+  <section class="py-24">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8">
+      <h1 class="text-4xl font-bold mb-8">Privacy Policy</h1>
+      <p class="text-gray-400 mb-12">Last updated: February 1, 2026</p>
+
+      <div class="space-y-10 text-gray-300 leading-relaxed">
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Overview</h2>
+          <p>
+            The Transmogrifier is a native macOS application that processes images entirely on your computer. We are committed to protecting your privacy. This policy explains what data the app collects (none) and how it operates.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Data Collection</h2>
+          <p>
+            The Transmogrifier does <strong class="text-white">not</strong> collect, store, or transmit any personal data. Specifically:
+          </p>
+          <ul class="list-disc list-inside mt-4 space-y-2 text-gray-400">
+            <li>No user accounts or registration required</li>
+            <li>No analytics or usage tracking in the app</li>
+            <li>No crash reporting or telemetry</li>
+            <li>No cookies or local tracking identifiers</li>
+            <li>No advertising or ad-related tracking</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Image Processing</h2>
+          <p>
+            All image processing happens locally on your Mac using Apple's Core Image framework. Your images are never uploaded to any server. The app does not require an internet connection to function.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Local Storage</h2>
+          <p>
+            The app stores the following data locally on your Mac:
+          </p>
+          <ul class="list-disc list-inside mt-4 space-y-2 text-gray-400">
+            <li>Your saved presets (format, compression settings)</li>
+            <li>Processing history (file names, sizes, timestamps)</li>
+            <li>App preferences (window size, last-used settings)</li>
+          </ul>
+          <p class="mt-4">
+            This data is stored in the app's sandboxed container and is not accessible to other applications. You can delete this data at any time by removing the app.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Network Requests</h2>
+          <p>
+            The Transmogrifier makes <strong class="text-white">no network requests</strong>. It operates entirely offline. No data is sent to or received from external servers.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Third-Party Services</h2>
+          <p>
+            The app does not integrate with any third-party services, SDKs, or APIs.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Website Analytics</h2>
+          <p>
+            This website (thetransmogrifier.app) uses Google Analytics to understand visitor traffic. This is separate from the macOS app, which contains no analytics. You can opt out of website analytics by using a browser extension or disabling JavaScript.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Children's Privacy</h2>
+          <p>
+            The app does not collect any personal information from anyone, including children under 13.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Changes to This Policy</h2>
+          <p>
+            If we ever change this privacy policy, we will update this page with the new date. Since the app collects no data, meaningful changes are unlikely.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Contact</h2>
+          <p>
+            If you have questions about this privacy policy, contact us at <a href="mailto:info@thetransmogrifier.app" class="text-blue-600 hover:text-blue-500 transition-colors">info@thetransmogrifier.app</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
