@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The Transmogrifier is a native macOS batch image processor built with SwiftUI. It converts images between formats (WebP, JPG, PNG) with compression controls, preset management, and processing history. The repository also contains a marketing website.
 
-- **App version:** 1.0.1
+- **App version:** 1.1.0 (build 2)
 - **Bundle ID:** `app.thetransmogrifier`
 - **Deployment target:** macOS 12.0
 - **Website:** https://thetransmogrifier.app (Cloudflare Pages, auto-deploys from `master` branch)
@@ -24,9 +24,12 @@ open ImageProcessingApp.xcodeproj
 xcodebuild -project ImageProcessingApp.xcodeproj -scheme "The Transmogrifier" -configuration Release build
 
 # Create DMG for distribution
-./build-dmg.sh 1.0.2                          # Unsigned DMG
-./build-dmg.sh 1.0.2 --sign                   # Code-signed DMG
-./build-dmg.sh 1.0.2 --sign --notarize        # Signed + notarized DMG
+./build-dmg.sh 1.1.0                          # Unsigned DMG
+./build-dmg.sh 1.1.0 --sign                   # Code-signed DMG
+./build-dmg.sh 1.1.0 --sign --notarize        # Signed + notarized DMG
+
+# Archive for Mac App Store
+xcodebuild archive -project ImageProcessingApp.xcodeproj -scheme "The Transmogrifier" -archivePath build/TheTransmogrifier.xcarchive
 ```
 
 ### Marketing Website (Astro)
@@ -101,6 +104,14 @@ Astro 5.x static site with Tailwind CSS. Pages in `src/pages/`, layout in `src/l
 - Canonical tags — computed from `Astro.url.pathname` + `Astro.site`
 - GA4 event tracking — on download links, GitHub links, nav CTAs
 
+**Pages:**
+- `index.astro` — homepage
+- `features.astro` — features page
+- `pricing.astro` — pricing + FAQ
+- `docs.astro` — documentation
+- `changelog.astro` — changelog
+- `privacy.astro` — privacy policy (required for App Store)
+
 **Content sections on index.astro:**
 - Hero with $9.99 badge and CTA buttons
 - Pain points section
@@ -137,22 +148,40 @@ See `ImageProcessingApp/Design/ImageProcessingAppStyleGuide.md` for full design 
 - App entry point: `TransmogrifierApp` in `App/ImageProcessingApp.swift`
 - Help window opens via `NotificationCenter` notification pattern
 
-## Distribution Pipeline
+## Distribution
 
-### build-dmg.sh
+### Mac App Store
+- **App Store Connect ID:** 6758575017
+- **Team ID:** 7DMXWUCLVN
+- **Bundle ID:** `app.thetransmogrifier` (registered in Certificates, Identifiers & Profiles)
+- **SKU:** `thetransmogrifier`
+- **Category:** Graphics & Design (primary), Developer Tools (secondary)
+- **Price:** $9.99 USD
+- **Signing:** Automatic, Apple Development certificate
+- **Privacy:** No data collected (declared in App Privacy)
+- **Privacy Policy:** https://thetransmogrifier.app/privacy/
+- **Support URL:** https://thetransmogrifier.app/docs/
+- Archive via Xcode: Product → Archive → Distribute App → App Store Connect → Upload
+
+### Direct DMG Distribution (build-dmg.sh)
 Parameterized script that builds, optionally signs, and optionally notarizes a DMG:
 - `./build-dmg.sh <version>` — basic unsigned DMG
 - `--sign` — codesigns with Developer ID Application certificate (auto-detected from Keychain)
 - `--notarize` — submits to Apple notary service using stored credentials profile "transmogrifier"
 
 ### Code Signing Prerequisites
-- Requires **Developer ID Application** certificate in Keychain (NOT just Apple Development)
-- Current state: only Apple Development certificate is installed
+- **Developer ID Application** certificate required for direct distribution (NOT installed yet)
 - To create: Keychain Access → Certificate Assistant → Request CSR → upload at developer.apple.com/account/resources/certificates/add → select "Developer ID Application"
 
 ### Notarization Prerequisites
-- Store credentials once: `xcrun notarytool store-credentials "transmogrifier" --apple-id <APPLE_ID> --team-id <TEAM_ID> --password <APP_SPECIFIC_PASSWORD>`
+- Store credentials once: `xcrun notarytool store-credentials "transmogrifier" --apple-id <APPLE_ID> --team-id 7DMXWUCLVN --password <APP_SPECIFIC_PASSWORD>`
 - Create app-specific password at appleid.apple.com
+
+### App Sandbox Entitlements
+- `com.apple.security.app-sandbox` — required for Mac App Store
+- `com.apple.security.files.user-selected.read-write` — drag-and-drop / file picker
+- `com.apple.security.files.downloads.read-write` — saving to Downloads folder
+- Note: `com.apple.security.files.pictures.read-write` is NOT valid for Mac App Store
 
 ## Current Status & Next Steps
 
@@ -170,13 +199,35 @@ Parameterized script that builds, optionally signs, and optionally notarizes a D
 - [x] Fixed favicon references (app-icon.png → favicon.png)
 - [x] Added dynamic copyright year
 
-### Pending — Do Next
-- [ ] **Create Developer ID Application certificate** — User has Apple Developer membership but no Developer ID cert installed. Guide through creation at developer.apple.com, then test `./build-dmg.sh 1.0.2 --sign`
-- [ ] **Set up notarization credentials** — Store keychain profile via `xcrun notarytool store-credentials`, then test `./build-dmg.sh 1.0.2 --sign --notarize`
-- [ ] **Create Buttondown account** — Must use username `thetransmogrifier` (form action URL on website points to this). Register at buttondown.email/register
-- [ ] **Update app-specific password** — Needed for notarization, create at appleid.apple.com
+### Completed (Feb 2026) — v1.1.0 Launch
+- [x] Bumped version to 1.1.0 (build 2) in Info.plist and Xcode project
+- [x] Fixed copyright to "Daniel Breckenridge"
+- [x] Enabled App Sandbox for Mac App Store
+- [x] Set up automatic code signing with team ID 7DMXWUCLVN
+- [x] Removed invalid `files.pictures.read-write` entitlement (not valid for MAS)
+- [x] Added `LSApplicationCategoryType` to Info.plist (Graphics & Design)
+- [x] Registered bundle ID `app.thetransmogrifier` in Apple Developer portal
+- [x] Created App Store Connect record (ID: 6758575017)
+- [x] Filled in all App Store metadata (description, keywords, screenshots, privacy)
+- [x] Created privacy policy page at /privacy/ on website
+- [x] Updated all website download links to v1.1.0
+- [x] Fixed refund email placeholder on pricing page
+- [x] Added privacy policy link to website footer
+- [x] Updated JSON-LD softwareVersion to 1.1.0
+- [x] Generated 2880x1800 App Store screenshots from existing captures
+- [x] Archived and uploaded build to App Store Connect
+- [x] Submitted v1.1.0 for App Store Review
 
-### Future Roadmap (from plan)
+### Pending — Do Next
+- [ ] **Wait for App Store Review** — Typically 24-48 hours. Check status at appstoreconnect.apple.com
+- [ ] **Create Developer ID Application certificate** — Needed for direct DMG distribution (not MAS). Guide through creation at developer.apple.com
+- [ ] **Build signed DMG** — Once Developer ID cert is installed: `./build-dmg.sh 1.1.0 --sign --notarize`
+- [ ] **Create GitHub release** — Tag v1.1.0, attach notarized DMG
+- [ ] **Set up notarization credentials** — `xcrun notarytool store-credentials "transmogrifier" --apple-id <APPLE_ID> --team-id 7DMXWUCLVN --password <APP_SPECIFIC_PASSWORD>`
+- [ ] **Create Buttondown account** — Must use username `thetransmogrifier` (form action URL on website points to this). Register at buttondown.email/register
+- [ ] **Add Mac App Store badge to website** — Once approved, add "Download on the Mac App Store" badge to hero and final CTA sections
+
+### Future Roadmap
 - [ ] Add keyboard shortcuts (Space to process, etc.)
 - [ ] Add AVIF support
 - [ ] Add CLI mode

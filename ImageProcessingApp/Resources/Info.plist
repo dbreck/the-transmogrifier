@@ -26,5 +26,7 @@
 	<string>Copyright © 2025 Daniel Breckenridge. All rights reserved.</string>
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.graphics-design</string>
 </dict>
 </plist>
