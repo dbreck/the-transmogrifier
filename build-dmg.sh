@@ -1,12 +1,30 @@
 #!/bin/bash
 
-# Build and package The Transmogrifier as a DMG
-# Usage: ./build-dmg.sh [version]
+# Build, sign, notarize, and package The Transmogrifier as a DMG
+# Usage: ./build-dmg.sh <version> [--sign] [--notarize]
 # Example: ./build-dmg.sh 1.0.2
+# Example: ./build-dmg.sh 1.0.2 --sign --notarize
+#
+# Prerequisites for --sign:
+#   Developer ID Application certificate installed in Keychain
+#
+# Prerequisites for --notarize:
+#   APPLE_ID and APPLE_TEAM_ID environment variables set
+#   App-specific password stored: xcrun notarytool store-credentials "transmogrifier"
 
 set -e
 
-VERSION="${1:?Usage: ./build-dmg.sh <version>}"
+VERSION="${1:?Usage: ./build-dmg.sh <version> [--sign] [--notarize]}"
+shift
+SIGN=false
+NOTARIZE=false
+for arg in "$@"; do
+  case "$arg" in
+    --sign) SIGN=true ;;
+    --notarize) NOTARIZE=true ;;
+  esac
+done
+
 APP_NAME="The Transmogrifier"
 DMG_NAME="The.Transmogrifier.${VERSION}.dmg"
 SCHEME="The Transmogrifier"
@@ -14,10 +32,27 @@ PROJECT="ImageProcessingApp.xcodeproj"
 VOLUME_NAME="Install The Transmogrifier"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# Find Developer ID certificate if signing
+if $SIGN; then
+  SIGN_IDENTITY=$(security find-identity -v -p codesigning | grep "Developer ID Application" | head -1 | sed 's/.*"\(.*\)".*/\1/')
+  if [ -z "$SIGN_IDENTITY" ]; then
+    echo "Error: No 'Developer ID Application' certificate found."
+    echo "Install one from https://developer.apple.com/account/resources/certificates/add"
+    exit 1
+  fi
+  echo "Signing with: ${SIGN_IDENTITY}"
+fi
+
+TOTAL_STEPS=5
+if $SIGN; then TOTAL_STEPS=$((TOTAL_STEPS + 1)); fi
+if $NOTARIZE; then TOTAL_STEPS=$((TOTAL_STEPS + 1)); fi
+STEP=0
+
 echo "=== Building ${APP_NAME} v${VERSION} ==="
 
-# Step 1: Build Release
-echo "[1/5] Building Release..."
+# Step: Build Release
+STEP=$((STEP + 1))
+echo "[${STEP}/${TOTAL_STEPS}] Building Release..."
 xcodebuild -project "${SCRIPT_DIR}/${PROJECT}" \
   -scheme "${SCHEME}" \
   -configuration Release \
@@ -40,8 +75,19 @@ fi
 
 echo "   Built: ${APP_PATH}"
 
-# Step 2: Create background image
-echo "[2/5] Creating DMG background..."
+# Step: Code sign the app
+if $SIGN; then
+  STEP=$((STEP + 1))
+  echo "[${STEP}/${TOTAL_STEPS}] Code signing..."
+  codesign --force --deep --options runtime \
+    --sign "${SIGN_IDENTITY}" \
+    "${APP_PATH}"
+  echo "   Signed: $(codesign -dv "${APP_PATH}" 2>&1 | grep 'Authority=')"
+fi
+
+# Step: Create background image
+STEP=$((STEP + 1))
+echo "[${STEP}/${TOTAL_STEPS}] Creating DMG background..."
 python3 << 'PYTHON_SCRIPT'
 from PIL import Image, ImageDraw, ImageFont
 
@@ -79,8 +125,9 @@ draw.text(((width - text_width) // 2, 330), text, fill='#666666', font=text_font
 img.save('/tmp/transmogrifier-dmg-bg.png')
 PYTHON_SCRIPT
 
-# Step 3: Stage DMG contents
-echo "[3/5] Staging DMG contents..."
+# Step: Stage DMG contents
+STEP=$((STEP + 1))
+echo "[${STEP}/${TOTAL_STEPS}] Staging DMG contents..."
 STAGING="/tmp/transmogrifier-dmg-staging"
 rm -rf "${STAGING}" "${SCRIPT_DIR}/${DMG_NAME}" /tmp/transmogrifier-temp.dmg 2>/dev/null || true
 mkdir -p "${STAGING}/.background"
@@ -88,8 +135,9 @@ cp -R "${APP_PATH}" "${STAGING}/"
 ln -s /Applications "${STAGING}/Applications"
 cp /tmp/transmogrifier-dmg-bg.png "${STAGING}/.background/background.png"
 
-# Step 4: Create and style DMG
-echo "[4/5] Creating DMG..."
+# Step: Create and style DMG
+STEP=$((STEP + 1))
+echo "[${STEP}/${TOTAL_STEPS}] Creating DMG..."
 hdiutil create -volname "${VOLUME_NAME}" -srcfolder "${STAGING}" -ov -format UDRW /tmp/transmogrifier-temp.dmg
 
 sleep 1
@@ -135,9 +183,21 @@ done
 
 sleep 2
 
-# Step 5: Compress final DMG
-echo "[5/5] Compressing final DMG..."
+# Step: Compress final DMG
+STEP=$((STEP + 1))
+echo "[${STEP}/${TOTAL_STEPS}] Compressing final DMG..."
 hdiutil convert /tmp/transmogrifier-temp.dmg -format UDZO -imagekey zlib-level=9 -o "${SCRIPT_DIR}/${DMG_NAME}"
+
+# Step: Notarize DMG
+if $NOTARIZE; then
+  STEP=$((STEP + 1))
+  echo "[${STEP}/${TOTAL_STEPS}] Notarizing with Apple..."
+  xcrun notarytool submit "${SCRIPT_DIR}/${DMG_NAME}" \
+    --keychain-profile "transmogrifier" \
+    --wait
+  echo "   Stapling notarization ticket..."
+  xcrun stapler staple "${SCRIPT_DIR}/${DMG_NAME}"
+fi
 
 # Cleanup
 rm -f /tmp/transmogrifier-temp.dmg /tmp/transmogrifier-dmg-bg.png
@@ -147,5 +207,12 @@ echo ""
 echo "=== Done ==="
 echo "DMG: ${SCRIPT_DIR}/${DMG_NAME}"
 ls -lh "${SCRIPT_DIR}/${DMG_NAME}"
+if $SIGN; then
+  echo ""
+  echo "Signature: $(codesign -dv "${SCRIPT_DIR}/${DMG_NAME}" 2>&1 | grep 'Authority=' || echo 'DMG not signed (normal for DMGs)')"
+fi
+if $NOTARIZE; then
+  echo "Notarization: $(xcrun stapler validate "${SCRIPT_DIR}/${DMG_NAME}" 2>&1 | tail -1)"
+fi
 echo ""
 echo "To test: open \"${SCRIPT_DIR}/${DMG_NAME}\""
