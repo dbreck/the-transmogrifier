@@ -98,6 +98,9 @@ iOSInjectionProject/
 # DeleteMe folder
 DeleteMe/
 
+# Temp files
+tmp/
+
 # Astro/Node.js
 website/node_modules/
 website/.astro/
