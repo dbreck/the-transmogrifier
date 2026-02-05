@@ -7,6 +7,7 @@ struct ProcessingSettings {
     let compressionLevel: Float
     let outputFormat: String
     let outputFolder: String
+    let saveAlongsideOriginals: Bool
 }
 
 struct ProcessingSettingsView: View {
@@ -78,27 +79,38 @@ struct ProcessingSettingsView: View {
                     .tint(.blue600)
             }
 
+            // Save alongside originals toggle
+            Toggle(isOn: $settingsViewModel.saveAlongsideOriginals) {
+                Text("Save alongside originals")
+                    .font(.label)
+                    .foregroundColor(.gray400)
+            }
+            .toggleStyle(.switch)
+            .tint(.blue600)
+
             // Bottom Row: Output Folder and Presets (2 columns)
             HStack(spacing: Spacing.lg) {
-                // Output Folder
-                VStack(alignment: .leading, spacing: Spacing.xs) {
-                    Text("Output Folder")
-                        .font(.label)
-                        .foregroundColor(.gray400)
+                // Output Folder (hidden when saving alongside originals)
+                if !settingsViewModel.saveAlongsideOriginals {
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
+                        Text("Output Folder")
+                            .font(.label)
+                            .foregroundColor(.gray400)
 
-                    HStack(spacing: Spacing.xs) {
-                        TransmogrifierTextField(
-                            placeholder: "Choose folder...", text: $settingsViewModel.outputFolder
-                        )
-                        .frame(maxWidth: .infinity)
+                        HStack(spacing: Spacing.xs) {
+                            TransmogrifierTextField(
+                                placeholder: "Choose folder...", text: $settingsViewModel.outputFolder
+                            )
+                            .frame(maxWidth: .infinity)
 
-                        TransmogrifierButton("Browse", style: .secondary) {
-                            selectOutputFolder()
+                            TransmogrifierButton("Browse", style: .secondary) {
+                                selectOutputFolder()
+                            }
+                            .frame(width: 120)
                         }
-                        .frame(width: 120)
                     }
+                    .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
 
                 // Presets
                 VStack(alignment: .leading, spacing: Spacing.xs) {
@@ -216,7 +228,8 @@ struct ProcessingSettingsView: View {
             // Store encoder quality [0..1]
             compressionLevel: Float(1.0 - (settingsViewModel.compression / 100.0)),
             outputFormat: settingsViewModel.outputFormat,
-            outputFolder: settingsViewModel.outputFolder
+            outputFolder: settingsViewModel.outputFolder,
+            saveAlongsideOriginals: settingsViewModel.saveAlongsideOriginals
         )
 
         presetManager.presets.append(preset)

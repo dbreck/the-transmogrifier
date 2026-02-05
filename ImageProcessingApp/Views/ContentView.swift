@@ -178,7 +178,9 @@ struct ContentView: View {
             }
         } message: {
             Text(
-                "This will overwrite \(overwriteConflictCount) existing file(s) in the output folder."
+                processingSettingsVM.saveAlongsideOriginals
+                    ? "This will overwrite \(overwriteConflictCount) existing file(s) alongside the originals."
+                    : "This will overwrite \(overwriteConflictCount) existing file(s) in the output folder."
             )
         }
     }
@@ -193,15 +195,13 @@ struct ContentView: View {
 
         // Check for existing files that would be overwritten (warn once per run)
         let inputFiles = fileSelectionVM.selectedFiles
-        let outputFolder = URL(fileURLWithPath: settings.outputFolder)
+        let saveAlongside = settings.saveAlongsideOriginals
+        let outputFolder: URL? = saveAlongside ? nil : URL(fileURLWithPath: settings.outputFolder)
         let desiredFormat = settings.outputFormat.uppercased()
-        func outURL(for format: String, inputURL: URL) -> URL {
-            outputFolder
-                .appendingPathComponent(inputURL.deletingPathExtension().lastPathComponent)
-                .appendingPathExtension(format.lowercased())
-        }
         let conflicts = inputFiles.filter {
-            FileManager.default.fileExists(atPath: outURL(for: desiredFormat, inputURL: $0).path)
+            let candidate = ImageProcessingEngine.outputURL(
+                for: $0, outputFolder: outputFolder, format: desiredFormat)
+            return FileManager.default.fileExists(atPath: candidate.path)
         }
         if !confirmedOverwrite && !conflicts.isEmpty {
             overwriteConflictCount = conflicts.count
@@ -222,7 +222,7 @@ struct ContentView: View {
         processingTask = Task {
             let results = await engine.processImages(
                 inputURLs: inputFiles,
-                outputFolder: outputFolder,
+                outputFolder: saveAlongside ? nil : outputFolder,
                 maxWidth: Int(settings.maxWidth),
                 maxHeight: Int(settings.maxHeight),
                 compressionQuality: settings.compressionLevel,
@@ -289,7 +289,11 @@ struct ContentView: View {
                 } else if failureCount > 0 {
                     self.progressText = "Processed \(successCount) file(s), \(failureCount) failed."
                 } else {
-                    self.progressText = "Processed \(successCount) file(s) to \(outputFolder.path)."
+                    if saveAlongside {
+                        self.progressText = "Processed \(successCount) file(s) alongside originals."
+                    } else {
+                        self.progressText = "Processed \(successCount) file(s) to \(outputFolder?.path ?? "")."
+                    }
                 }
             }
         }

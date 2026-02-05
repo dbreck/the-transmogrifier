@@ -74,9 +74,26 @@ class ImageProcessingEngine: ObservableObject {
         return imageData
     }
 
+    /// Compute the output URL for a given input file, output folder, and format.
+    /// When `outputFolder` is `nil` the file is placed alongside the original.
+    /// Appends `_converted` when the output would overwrite the input (e.g. PNG→PNG).
+    static func outputURL(for inputURL: URL, outputFolder: URL?, format: String) -> URL {
+        let folder = outputFolder ?? inputURL.deletingLastPathComponent()
+        let baseName = inputURL.deletingPathExtension().lastPathComponent
+        var candidate = folder
+            .appendingPathComponent(baseName)
+            .appendingPathExtension(format.lowercased())
+        if candidate.standardizedFileURL == inputURL.standardizedFileURL {
+            candidate = folder
+                .appendingPathComponent(baseName + "_converted")
+                .appendingPathExtension(format.lowercased())
+        }
+        return candidate
+    }
+
     func processImages(
         inputURLs: [URL],
-        outputFolder: URL,
+        outputFolder: URL?,
         maxWidth: Int,
         maxHeight: Int,
         compressionQuality: Float,
@@ -87,7 +104,7 @@ class ImageProcessingEngine: ObservableObject {
     ) async -> [ImageProcessingResult] {
         let startTime = CFAbsoluteTimeGetCurrent()
 
-        if !FileManager.default.fileExists(atPath: outputFolder.path) {
+        if let outputFolder, !FileManager.default.fileExists(atPath: outputFolder.path) {
             do {
                 try FileManager.default.createDirectory(
                     at: outputFolder, withIntermediateDirectories: true)
@@ -136,11 +153,8 @@ class ImageProcessingEngine: ObservableObject {
                     do {
                         let desiredFormat = outputFormat.uppercased()
                         func makeOutputURL(for format: String) -> URL {
-                            outputFolder
-                                .appendingPathComponent(
-                                    inputURL.deletingPathExtension().lastPathComponent
-                                )
-                                .appendingPathExtension(format.lowercased())
+                            ImageProcessingEngine.outputURL(
+                                for: inputURL, outputFolder: outputFolder, format: format)
                         }
 
                         var attemptFormat = desiredFormat

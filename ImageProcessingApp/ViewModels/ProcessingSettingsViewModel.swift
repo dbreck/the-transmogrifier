@@ -12,8 +12,10 @@ class ProcessingSettingsViewModel: ObservableObject {
     @Published var outputFormat: String = "WebP"
     @Published var outputFolder: String = ""
     @Published var selectedPreset: String = ""
+    @Published var saveAlongsideOriginals: Bool = false
 
     func validateOutputFolder() -> Bool {
+        if saveAlongsideOriginals { return true }
         return !outputFolder.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
@@ -29,7 +31,8 @@ class ProcessingSettingsViewModel: ObservableObject {
             // Map UI compression% (higher = more compression) to encoder quality (lower = more compression)
             compressionLevel: Float(1.0 - (compression / 100.0)),
             outputFormat: outputFormat,
-            outputFolder: outputFolder
+            outputFolder: outputFolder,
+            saveAlongsideOriginals: saveAlongsideOriginals
         )
     }
 
@@ -41,7 +44,8 @@ class ProcessingSettingsViewModel: ObservableObject {
             maxHeight: Int16(maxHeight) ?? 0,
             compressionLevel: Float(1.0 - (compression / 100.0)),
             outputFormat: outputFormat,
-            outputFolder: outputFolder  // not used by preview
+            outputFolder: outputFolder,  // not used by preview
+            saveAlongsideOriginals: saveAlongsideOriginals
         )
     }
 
@@ -75,5 +79,6 @@ class ProcessingSettingsViewModel: ObservableObject {
         compression = Double((1.0 - preset.compressionLevel) * 100)
         outputFormat = preset.outputFormat
         outputFolder = preset.outputFolder
+        saveAlongsideOriginals = preset.saveAlongsideOriginals
     }
 }

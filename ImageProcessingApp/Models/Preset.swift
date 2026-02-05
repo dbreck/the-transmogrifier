@@ -9,10 +9,11 @@ struct Preset: Identifiable, Codable, Hashable {
     var compressionLevel: Float
     var outputFormat: String
     var outputFolder: String
+    var saveAlongsideOriginals: Bool
     var createdAt: Date
     var updatedAt: Date
     var isDefault: Bool
-    
+
     init(
         id: UUID = UUID(),
         name: String,
@@ -22,6 +23,7 @@ struct Preset: Identifiable, Codable, Hashable {
         compressionLevel: Float,
         outputFormat: String,
         outputFolder: String,
+        saveAlongsideOriginals: Bool = false,
         isDefault: Bool = false
     ) {
         self.id = id
@@ -32,11 +34,29 @@ struct Preset: Identifiable, Codable, Hashable {
         self.compressionLevel = compressionLevel
         self.outputFormat = outputFormat
         self.outputFolder = outputFolder
+        self.saveAlongsideOriginals = saveAlongsideOriginals
         self.isDefault = isDefault
         self.createdAt = Date()
         self.updatedAt = Date()
     }
-    
+
+    // Backward-compatible decoding: old presets without saveAlongsideOriginals still load
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        dpi = try container.decode(Int16.self, forKey: .dpi)
+        maxWidth = try container.decode(Int16.self, forKey: .maxWidth)
+        maxHeight = try container.decode(Int16.self, forKey: .maxHeight)
+        compressionLevel = try container.decode(Float.self, forKey: .compressionLevel)
+        outputFormat = try container.decode(String.self, forKey: .outputFormat)
+        outputFolder = try container.decode(String.self, forKey: .outputFolder)
+        saveAlongsideOriginals = try container.decodeIfPresent(Bool.self, forKey: .saveAlongsideOriginals) ?? false
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+        isDefault = try container.decode(Bool.self, forKey: .isDefault)
+    }
+
     mutating func update(
         name: String? = nil,
         dpi: Int16? = nil,
@@ -44,7 +64,8 @@ struct Preset: Identifiable, Codable, Hashable {
         maxHeight: Int16? = nil,
         compressionLevel: Float? = nil,
         outputFormat: String? = nil,
-        outputFolder: String? = nil
+        outputFolder: String? = nil,
+        saveAlongsideOriginals: Bool? = nil
     ) {
         if let name = name { self.name = name }
         if let dpi = dpi { self.dpi = dpi }
@@ -53,6 +74,7 @@ struct Preset: Identifiable, Codable, Hashable {
         if let compressionLevel = compressionLevel { self.compressionLevel = compressionLevel }
         if let outputFormat = outputFormat { self.outputFormat = outputFormat }
         if let outputFolder = outputFolder { self.outputFolder = outputFolder }
+        if let saveAlongsideOriginals = saveAlongsideOriginals { self.saveAlongsideOriginals = saveAlongsideOriginals }
         self.updatedAt = Date()
     }
 }
