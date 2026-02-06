@@ -179,9 +179,9 @@ Parameterized script that builds, optionally signs, and optionally notarizes a D
 
 ### App Sandbox Entitlements
 - `com.apple.security.app-sandbox` — required for Mac App Store
-- `com.apple.security.files.user-selected.read-write` — drag-and-drop / file picker
-- `com.apple.security.files.downloads.read-write` — saving to Downloads folder
+- `com.apple.security.files.user-selected.read-write` — drag-and-drop / file picker; also grants write to sibling files in user-selected directories (enables "save alongside originals")
 - Note: `com.apple.security.files.pictures.read-write` is NOT valid for Mac App Store
+- Note: `com.apple.security.files.downloads.read-write` was removed (not needed with user-selected.read-write)
 
 ## Current Status & Next Steps
 
@@ -227,14 +227,67 @@ Parameterized script that builds, optionally signs, and optionally notarizes a D
 - [ ] **Create Buttondown account** — Must use username `thetransmogrifier` (form action URL on website points to this). Register at buttondown.email/register
 - [ ] **Add Mac App Store badge to website** — Once approved, add "Download on the Mac App Store" badge to hero and final CTA sections
 
+### Completed (Feb 2026) — v1.2 Feature: Save Alongside Originals
+- [x] Added `saveAlongsideOriginals` Bool to Preset model with backward-compatible Codable decoding
+- [x] Added `saveAlongsideOriginals` to ProcessingSettings struct and ProcessingSettingsViewModel
+- [x] Added "Save alongside originals" toggle in ProcessingSettingsView (between compression slider and output folder)
+- [x] Output folder section hides when toggle is on; presets section expands to fill
+- [x] Made `outputFolder` parameter optional (`URL?`) in `ImageProcessingEngine.processImages()`
+- [x] Added `static func outputURL(for:outputFolder:format:)` shared helper for consistent output path calculation
+- [x] Same-format collision handling: appends `_converted` suffix (e.g. `photo_converted.png` for PNG→PNG)
+- [x] Updated ContentView overwrite detection to use per-file directories in alongside mode
+- [x] Contextual completion messages ("alongside originals" vs folder path) and overwrite alert wording
+- [x] Preset save/restore round-trips the toggle state
+- [x] Build verified (xcodebuild Debug), pushed to origin/master (commit 88c14bc)
+
+### Pending — Testing Required for Save Alongside Originals
+- [ ] **Manual QA:** Toggle OFF — verify existing output-folder behavior unchanged
+- [ ] **Manual QA:** Toggle ON — select files from different folders, process, verify outputs appear next to originals
+- [ ] **Manual QA:** Same-format test — toggle ON, select PNG, output format PNG, verify `filename_converted.png`
+- [ ] **Manual QA:** Preset round-trip — save preset with toggle ON, switch away, re-apply, confirm toggle restores
+- [ ] **Manual QA:** Old preset compat — verify any existing user presets still load without error
+- [ ] **Manual QA:** Read-only location — verify graceful error message if source folder is read-only
+
+### Pending — Do Next (Remaining)
+- [ ] **Check App Store Review status** — appstoreconnect.apple.com (v1.1.0 submitted, typically 24-48 hours)
+- [ ] **Commit unstaged changes** — CLAUDE.md, project.pbxproj (build 3), Info.plist (build 3), entitlements (removed downloads.read-write) are modified but not yet committed
+- [ ] **Version bump decision** — Decide if this becomes v1.2.0 for a new App Store submission or stays as a dev build
+- [ ] **Create Developer ID Application certificate** — Needed for direct DMG distribution (not MAS)
+- [ ] **Build signed DMG** — Once Developer ID cert is installed: `./build-dmg.sh <version> --sign --notarize`
+- [ ] **Create GitHub release** — Tag release, attach notarized DMG
+- [ ] **Set up notarization credentials** — `xcrun notarytool store-credentials "transmogrifier" --apple-id <APPLE_ID> --team-id 7DMXWUCLVN --password <APP_SPECIFIC_PASSWORD>`
+- [ ] **Create Buttondown account** — Must use username `thetransmogrifier` (form action URL on website points to this)
+- [ ] **Add Mac App Store badge to website** — Once approved, add badge to hero and final CTA
+
 ### Future Roadmap
-- [ ] Add keyboard shortcuts (Space to process, etc.)
-- [ ] Add AVIF support
-- [ ] Add CLI mode
-- [ ] Add Shortcuts integration
-- [ ] Add Sparkle auto-updates
-- [ ] Create demo video/GIF walkthrough
-- [ ] Add blog/content marketing for SEO traffic
+
+**1. Recursive Subfolder Processing**
+- [ ] When a folder is added, process all images in all subfolders (not just top-level)
+- [ ] Output location choice: "Original file location" (mirrors source structure) or a user-specified output folder (flattens or recreates subfolder structure)
+
+**2. Drop-on-App-Icon Quick Convert**
+- [ ] Dropping files or folders onto The Transmogrifier app icon triggers automatic conversion
+- [ ] Uses pre-configured "quick convert" settings saved in the app (format, quality, etc.)
+- [ ] Outputs to original file locations by default
+- [ ] Should work with single files, multiple files, and folders
+
+## Next Session Guidance
+
+When starting a new session on this project, engage these skills based on the task:
+
+| Task | Skills to Engage |
+|------|-----------------|
+| **Manual QA of "Save alongside originals"** | `apple-build` (build/run), `swiftui-expert` (UI behavior) |
+| **Version bump & App Store submission** | `apple-build` (archive/upload) |
+| **Recursive subfolder processing** | `swiftui-expert` (UI), `swift-concurrency` (async file traversal) |
+| **Drop-on-app-icon quick convert** | `swiftui-expert` (NSApplicationDelegate, onDrop) |
+| **Website updates (changelog, badges)** | `astro-publishing`, `marketing`, `web-quality` |
+| **DMG signing & notarization** | `apple-build` |
+
+**Immediate priorities for next session:**
+1. Run the app and manually test the "Save alongside originals" feature (toggle ON/OFF, same-format collision, preset round-trip)
+2. Commit the remaining unstaged files (CLAUDE.md, project.pbxproj, Info.plist, entitlements)
+3. Decide on version bump (v1.2.0?) and whether to submit a new build to App Store
 
 ## Installed Skills
 
