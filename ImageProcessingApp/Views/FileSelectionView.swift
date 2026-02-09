@@ -3,11 +3,11 @@ import UniformTypeIdentifiers
 import AppKit
 struct FileSelectionView: View {
     @ObservedObject var viewModel: FileSelectionViewModel
-    
+
     @State private var isDragTargeted: Bool = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.md) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             // Drag and drop zone
             VStack(spacing: Spacing.md) {
                 Image(systemName: "arrow.up.doc")
@@ -19,16 +19,16 @@ struct FileSelectionView: View {
                         .font(.label)
                         .foregroundColor(.white)
 
-                    Text("Or click to browse your files")
+                    Text("Or click to browse files and folders")
                         .font(.caption)
                         .foregroundColor(.gray400)
                 }
                 
-                TransmogrifierButton("Browse Files", style: .secondary) {
+                TransmogrifierButton("Browse Files", style: .primary) {
                     viewModel.selectFiles()
                 }
             }
-            .frame(maxWidth: .infinity, minHeight: 180)
+            .frame(maxWidth: .infinity, minHeight: 208)
             .background(.gray800)
             .cornerRadius(8)
             .overlay(
@@ -54,6 +54,14 @@ struct FileSelectionView: View {
                 }
                 return accepted
             }
+
+            Toggle(isOn: $viewModel.includeSubfolders) {
+                Text("Include all subfolders when adding folders")
+                    .font(.caption)
+                    .foregroundColor(.gray400)
+            }
+            .toggleStyle(.switch)
+            .tint(.blue600)
             
             // Error message
             if let errorMessage = viewModel.errorMessage {
@@ -70,6 +78,7 @@ struct FileSelectionView: View {
                 .cornerRadius(4)
             }
         }
+        .frame(maxHeight: .infinity, alignment: .top)
     }
     
     private func handleDroppedFiles(_ providers: [NSItemProvider]) {
@@ -130,66 +139,7 @@ struct FileSelectionView: View {
     }
 
     private func addIfValid(_ url: URL) {
-        DispatchQueue.main.async {
-            var isDirectory: ObjCBool = false
-
-            // Check if it's a directory
-            if FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory), isDirectory.boolValue {
-                // It's a folder - recursively find all image files
-                self.addImagesFromFolder(url)
-            } else {
-                // It's a file - validate and add it
-                if viewModel.validateImageFile(url) {
-                    if !viewModel.selectedFiles.contains(url) {
-                        viewModel.selectedFiles.append(url)
-                    }
-                    if viewModel.selectedFileForPreview == nil {
-                        viewModel.selectedFileForPreview = url
-                    }
-                }
-            }
-        }
-    }
-
-    private func addImagesFromFolder(_ folderURL: URL) {
-        let fileManager = FileManager.default
-
-        // Supported image extensions
-        let imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "tiff", "tif", "heic", "heif", "webp"]
-
-        // Get all files recursively
-        guard let enumerator = fileManager.enumerator(
-            at: folderURL,
-            includingPropertiesForKeys: [.isRegularFileKey],
-            options: [.skipsHiddenFiles]
-        ) else { return }
-
-        var addedCount = 0
-
-        for case let fileURL as URL in enumerator {
-            // Check if it's a regular file (not a directory)
-            guard let resourceValues = try? fileURL.resourceValues(forKeys: [.isRegularFileKey]),
-                  let isRegularFile = resourceValues.isRegularFile,
-                  isRegularFile else {
-                continue
-            }
-
-            // Check if it has an image extension
-            let fileExtension = fileURL.pathExtension.lowercased()
-            if imageExtensions.contains(fileExtension) {
-                if viewModel.validateImageFile(fileURL) {
-                    if !viewModel.selectedFiles.contains(fileURL) {
-                        viewModel.selectedFiles.append(fileURL)
-                        addedCount += 1
-
-                        // Set first valid image as preview
-                        if viewModel.selectedFileForPreview == nil {
-                            viewModel.selectedFileForPreview = fileURL
-                        }
-                    }
-                }
-            }
-        }
+        viewModel.importURLs([url], replaceExisting: false)
     }
 }
 

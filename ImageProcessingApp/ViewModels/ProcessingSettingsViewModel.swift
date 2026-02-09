@@ -13,18 +13,20 @@ class ProcessingSettingsViewModel: ObservableObject {
     @Published var outputFolder: String = ""
     @Published var selectedPreset: String = ""
     @Published var saveAlongsideOriginals: Bool = false
+    @Published var preserveFolderStructure: Bool = true
+    @Published var collisionPolicy: CollisionPolicy = .rename
 
-    func validateOutputFolder() -> Bool {
-        if saveAlongsideOriginals { return true }
-        return !outputFolder.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    var hasExplicitOutputFolder: Bool {
+        !outputFolder.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    func getProcessingSettings() -> ProcessingSettings? {
-        guard validateOutputFolder() else {
-            return nil
-        }
+    /// Treat an empty output folder as "save alongside originals".
+    var effectivelySavesAlongsideOriginals: Bool {
+        saveAlongsideOriginals || !hasExplicitOutputFolder
+    }
 
-        return ProcessingSettings(
+    func getProcessingSettings() -> ProcessingSettings {
+        ProcessingSettings(
             dpi: Int16(targetResolution) ?? 72,
             maxWidth: Int16(maxWidth) ?? 0,
             maxHeight: Int16(maxHeight) ?? 0,
@@ -32,7 +34,9 @@ class ProcessingSettingsViewModel: ObservableObject {
             compressionLevel: Float(1.0 - (compression / 100.0)),
             outputFormat: outputFormat,
             outputFolder: outputFolder,
-            saveAlongsideOriginals: saveAlongsideOriginals
+            saveAlongsideOriginals: saveAlongsideOriginals,
+            preserveFolderStructure: preserveFolderStructure,
+            collisionPolicy: collisionPolicy
         )
     }
 
@@ -45,7 +49,9 @@ class ProcessingSettingsViewModel: ObservableObject {
             compressionLevel: Float(1.0 - (compression / 100.0)),
             outputFormat: outputFormat,
             outputFolder: outputFolder,  // not used by preview
-            saveAlongsideOriginals: saveAlongsideOriginals
+            saveAlongsideOriginals: saveAlongsideOriginals,
+            preserveFolderStructure: preserveFolderStructure,
+            collisionPolicy: collisionPolicy
         )
     }
 
@@ -80,5 +86,7 @@ class ProcessingSettingsViewModel: ObservableObject {
         outputFormat = preset.outputFormat
         outputFolder = preset.outputFolder
         saveAlongsideOriginals = preset.saveAlongsideOriginals
+        preserveFolderStructure = preset.preserveFolderStructure
+        collisionPolicy = preset.collisionPolicy
     }
 }

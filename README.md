@@ -217,13 +217,12 @@ Build in Xcode (⌘+B) and run.
 
 ## Roadmap
 
-- [ ] Batch rename output files
-- [ ] Custom output naming templates
-- [ ] AVIF format support
-- [ ] Image metadata preservation options
-- [ ] Keyboard shortcuts for processing
-- [ ] Watch folder for auto-processing
-- [ ] CLI version for automation
+- [ ] Preserve source folder structure when exporting to a custom output folder
+- [ ] Add collision policy control (overwrite, skip, rename with suffix)
+- [ ] Add pause/resume controls for long processing queues
+- [ ] Show ETA and throughput metrics (files/sec, remaining time)
+- [ ] Add retry-failed workflow (retry only failed files)
+- [ ] Add drag-and-drop quick preset chips for one-click setup
 
 ---
 

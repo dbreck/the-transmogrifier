@@ -200,6 +200,7 @@ struct PreviewView: View {
                 .cornerRadius(6)
             }
         }
+        .frame(maxHeight: .infinity, alignment: .top)
         .onChange(of: fileSelectionViewModel.selectedFileForPreview) { selectedFile in
             if let selectedFile = selectedFile {
                 previewViewModel.loadImage(for: selectedFile)

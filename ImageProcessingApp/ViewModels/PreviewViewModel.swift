@@ -1,8 +1,12 @@
 import AppKit
-import CoreImage
-import CoreImage.CIFilterBuiltins
 import ImageIO
+import os
 import SwiftUI
+
+private let previewLog = OSLog(
+    subsystem: "app.thetransmogrifier",
+    category: "preview"
+)
 
 @MainActor
 class PreviewViewModel: ObservableObject {
@@ -14,21 +18,47 @@ class PreviewViewModel: ObservableObject {
     @Published var processedImageMetadata: ImageMetadata? = nil
 
     private var currentImageURL: URL? = nil
-    private let engine = ImageProcessingEngine()
-
     // Cache for processed images
     private var processedImageCache: [String: NSImage] = [:]
+    private var loadingTask: Task<Void, Never>? = nil
+    private var previewTask: Task<Void, Never>? = nil
+
+    private let webPDecodingSupported = PreviewViewModel.detectWebPDecodingSupport()
+    private let webPEncodingSupported = ImageProcessingEngine.isWebPEncodingAvailable()
 
     /// Load an image for preview
     /// - Parameter url: URL of the image to load
     func loadImage(for url: URL) {
+        loadingTask?.cancel()
+        previewTask?.cancel()
+
+        currentImageURL = url
         isLoading = true
         errorMessage = nil
 
         // Clear processed image when loading a new image
         processedImage = nil
+        processedImageMetadata = nil
 
-        Task {
+        loadingTask = Task.detached(priority: .userInitiated) { [url] in
+            let signpostID = OSSignpostID(log: previewLog)
+            os_signpost(
+                .begin,
+                log: previewLog,
+                name: "LoadPreviewImage",
+                signpostID: signpostID,
+                "%{public}s",
+                url.lastPathComponent
+            )
+            defer {
+                os_signpost(
+                    .end,
+                    log: previewLog,
+                    name: "LoadPreviewImage",
+                    signpostID: signpostID
+                )
+            }
+
             do {
                 // Load the original image
                 guard let image = NSImage(contentsOf: url) else {
@@ -36,19 +66,23 @@ class PreviewViewModel: ObservableObject {
                 }
 
                 // Get image metadata
-                let metadata = self.extractImageMetadata(from: url, image: image)
+                let metadata = Self.extractImageMetadata(from: url, image: image)
 
                 // Update on main thread
-                await MainActor.run {
+                await MainActor.run { [weak self] in
+                    guard let self, self.currentImageURL == url else { return }
                     self.originalImage = image
                     self.currentImageURL = url
                     self.imageMetadata = metadata
                     self.isLoading = false
+                    self.loadingTask = nil
                 }
             } catch {
-                await MainActor.run {
+                await MainActor.run { [weak self] in
+                    guard let self, self.currentImageURL == url else { return }
                     self.errorMessage = error.localizedDescription
                     self.isLoading = false
+                    self.loadingTask = nil
                 }
             }
         }
@@ -108,66 +142,86 @@ class PreviewViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        Task {
+        previewTask?.cancel()
+        let webPEncodingSupported = self.webPEncodingSupported
+        let webPDecodingSupported = self.webPDecodingSupported
+        previewTask = Task.detached(priority: .userInitiated) { [url, cacheKey] in
+            let signpostID = OSSignpostID(log: previewLog)
+            os_signpost(
+                .begin,
+                log: previewLog,
+                name: "ProcessPreviewImage",
+                signpostID: signpostID,
+                "%{public}s",
+                url.lastPathComponent
+            )
+            defer {
+                os_signpost(
+                    .end,
+                    log: previewLog,
+                    name: "ProcessPreviewImage",
+                    signpostID: signpostID
+                )
+            }
+
             do {
                 // Decide preview format considering runtime support
                 var effectiveFormat = outputFormat
                 if outputFormat.lowercased() == "webp"
-                    && (!supportsWebPEncoding() || !supportsWebPDecoding())
+                    && !(webPEncodingSupported && webPDecodingSupported)
                 {
                     effectiveFormat = "jpg"
                 }
 
-                let tempURL = createTempURL(for: effectiveFormat)
+                let engine = ImageProcessingEngine()
 
-                // Use the engine to process and save to temp file
+                // Process in-memory and decode from Data to avoid preview temp-file I/O.
                 let imageData = try await engine.processImage(
                     inputURL: url,
-                    outputURL: tempURL,
+                    outputURL: url,
                     maxWidth: maxWidth,
                     maxHeight: maxHeight,
                     compressionQuality: compressionQuality,
                     outputFormat: effectiveFormat,
                     targetDPI: targetDPI
                 )
-
-                // Write to temp file to get actual file size
-                try imageData.write(to: tempURL)
+                os_signpost(
+                    .event,
+                    log: previewLog,
+                    name: "PreviewEncodeComplete",
+                    signpostID: signpostID,
+                    "bytes=%{public}d",
+                    imageData.count
+                )
 
                 // Load the processed image for display
-                guard let nsImage = NSImage(contentsOf: tempURL) else {
+                guard let nsImage = NSImage(data: imageData) else {
                     throw PreviewError.failedToProcessImage
                 }
 
-                // Get actual file size from temp file
-                let actualFileSize =
-                    (try? FileManager.default.attributesOfItem(atPath: tempURL.path)[.size]
-                        as? Int64) ?? 0
-
                 // Calculate processed image metadata with actual file size
-                let processedMetadata = self.calculateProcessedImageMetadata(
+                let processedMetadata = Self.calculateProcessedImageMetadata(
                     image: nsImage,
                     outputFormat: outputFormat,  // show intended format
-                    actualFileSize: actualFileSize,
+                    actualFileSize: Int64(imageData.count),
                     targetDPI: targetDPI
                 )
 
-                // Cache the processed image
-                cacheProcessedImage(nsImage, forKey: cacheKey)
-
-                // Clean up temp file
-                try? FileManager.default.removeItem(at: tempURL)
-
                 // Update on main thread
-                await MainActor.run {
+                await MainActor.run { [weak self] in
+                    guard let self, self.currentImageURL == url else { return }
+                    self.cacheProcessedImage(nsImage, forKey: cacheKey)
                     self.processedImage = nsImage
                     self.processedImageMetadata = processedMetadata
                     self.isLoading = false
+                    self.previewTask = nil
                 }
             } catch {
-                await MainActor.run {
+                await MainActor.run { [weak self] in
+                    guard let self, self.currentImageURL == url else { return }
                     self.errorMessage = error.localizedDescription
                     self.isLoading = false
+                    self.previewTask = nil
                 }
             }
         }
@@ -175,6 +229,8 @@ class PreviewViewModel: ObservableObject {
 
     /// Clear the preview
     func clearPreview() {
+        loadingTask?.cancel()
+        previewTask?.cancel()
         originalImage = nil
         processedImage = nil
         currentImageURL = nil
@@ -184,50 +240,6 @@ class PreviewViewModel: ObservableObject {
     }
 
     // MARK: - Private Methods
-
-    /// Process an image for preview (without saving to disk)
-    /// - Parameters:
-    ///   - inputURL: URL of the input image
-    ///   - maxWidth: Maximum width constraint
-    ///   - maxHeight: Maximum height constraint
-    ///   - compressionQuality: Compression quality
-    ///   - outputFormat: Output format
-    /// - Returns: Processed CIImage
-    private func processImageForPreview(
-        inputURL: URL,
-        maxWidth: Int,
-        maxHeight: Int,
-        compressionQuality: Float,
-        outputFormat: String
-    ) async throws -> CIImage {
-        // Load the image
-        guard let image = CIImage(contentsOf: inputURL) else {
-            throw PreviewError.failedToLoadImage
-        }
-
-        // Apply transformations
-        let processedImage = engine.applyTransformations(
-            to: image,
-            maxWidth: maxWidth,
-            maxHeight: maxHeight
-        )
-
-        return processedImage
-    }
-
-    /// Convert CIImage to NSImage
-    /// - Parameter ciImage: Input CIImage
-    /// - Returns: NSImage representation
-    private func convertCIImageToNSImage(_ ciImage: CIImage) -> NSImage {
-        // Use a software CIContext to avoid Metal when rendering previews
-        let context = CIContext(options: [.useSoftwareRenderer: true])
-
-        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
-            return NSImage(size: NSSize(width: 100, height: 100))
-        }
-
-        return NSImage(cgImage: cgImage, size: NSSize(width: cgImage.width, height: cgImage.height))
-    }
 
     /// Generate a cache key for processed images
     /// - Parameters:
@@ -262,10 +274,7 @@ class PreviewViewModel: ObservableObject {
     ///   - image: NSImage to cache
     ///   - key: Cache key
     private func cacheProcessedImage(_ image: NSImage, forKey key: String) {
-        // Ensure mutation happens on the main actor to satisfy isolation
-        Task { @MainActor in
-            self.processedImageCache[key] = image
-        }
+        processedImageCache[key] = image
     }
 
     /// Extract metadata from an image
@@ -273,7 +282,7 @@ class PreviewViewModel: ObservableObject {
     ///   - url: URL of the image file
     ///   - image: NSImage instance
     /// - Returns: ImageMetadata struct
-    private func extractImageMetadata(from url: URL, image: NSImage) -> ImageMetadata {
+    nonisolated private static func extractImageMetadata(from url: URL, image: NSImage) -> ImageMetadata {
         // Get file size
         let fileSize =
             (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int64) ?? 0
@@ -320,7 +329,7 @@ class PreviewViewModel: ObservableObject {
     ///   - actualFileSize: Actual file size from temp file
     ///   - targetDPI: Target DPI for the processed image
     /// - Returns: ImageMetadata for processed image
-    private func calculateProcessedImageMetadata(
+    nonisolated private static func calculateProcessedImageMetadata(
         image: NSImage,
         outputFormat: String,
         actualFileSize: Int64,
@@ -340,28 +349,8 @@ class PreviewViewModel: ObservableObject {
         )
     }
 
-    /// Create a temporary URL for processing
-    /// - Parameter outputFormat: Output format string
-    /// - Returns: Temporary file URL
-    private func createTempURL(for outputFormat: String) -> URL {
-        let tempDir = FileManager.default.temporaryDirectory
-        // Use provided extension verbatim
-        let ext = outputFormat.lowercased()
-        let fileName = "preview_temp.\(ext)"
-        return tempDir.appendingPathComponent(fileName)
-    }
-
-    /// Returns true if the current system can decode WebP via ImageIO/NSImage
-    private func supportsWebPDecoding() -> Bool {
+    nonisolated private static func detectWebPDecodingSupport() -> Bool {
         if let types = CGImageSourceCopyTypeIdentifiers() as? [String] {
-            return types.contains { $0.lowercased().contains("webp") }
-        }
-        return false
-    }
-
-    /// Returns true if the current system can encode WebP via ImageIO
-    private func supportsWebPEncoding() -> Bool {
-        if let types = CGImageDestinationCopyTypeIdentifiers() as? [String] {
             return types.contains { $0.lowercased().contains("webp") }
         }
         return false

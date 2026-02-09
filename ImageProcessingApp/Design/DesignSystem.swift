@@ -173,6 +173,7 @@ public struct TransmogrifierButton: View {
             .overlay(RoundedRectangle(cornerRadius: 6).stroke(borderColor, lineWidth: 1))
             .cornerRadius(6)
         }
+        .focusable(false)
         .disabled(isDisabled)
         .buttonStyle(PlainButtonStyle())
     }

@@ -7,6 +7,8 @@ struct TransmogrifierApp: App {
     var body: some Scene {
         WindowGroup("The Transmogrifier") {
             ContentView(appearanceManager: appearanceManager)
+                .frame(minWidth: 1280, minHeight: 768)
+                .frame(idealWidth: 1500, idealHeight: 900)
                 .preferredColorScheme(.dark)
                 .background(Color(red: 0.047, green: 0.047, blue: 0.047))
         }
@@ -21,13 +23,6 @@ struct TransmogrifierApp: App {
                     )
                 }
                 .keyboardShortcut("?", modifiers: .command)
-
-                Button("Show Tour") {
-                    NotificationCenter.default.post(
-                        name: NSNotification.Name("ShowOnboardingTour"),
-                        object: nil
-                    )
-                }
             }
         }
 

@@ -41,24 +41,6 @@ struct HelpContent {
             keywords: ["quick", "start", "begin", "first", "getting started", "tutorial", "how to"]
         ),
         
-        HelpTopic(
-            title: "First-Time Walkthrough",
-            category: .gettingStarted,
-            content: """
-            # First-Time Walkthrough
-            
-            When you first launch The Transmogrifier, you'll see an interactive tour highlighting each part of the interface. To see it again:
-            
-            1. Go to Help menu → Show Tour
-            2. Follow the spotlight highlights that guide you through each section
-            3. Press ESC or click outside the tour to exit at any time
-            
-            The tour covers all 8 steps of the image processing workflow.
-            """,
-            icon: "hand.point.up.left.fill",
-            keywords: ["tour", "walkthrough", "tutorial", "onboarding", "first time", "guide"]
-        ),
-        
         // MARK: - Features
         HelpTopic(
             title: "Supported File Formats",
@@ -132,7 +114,7 @@ struct HelpContent {
             
             ## Creating Your Own Preset
             1. Set up your desired output format, dimensions, and compression
-            2. Select an output folder (this will be remembered)
+            2. Optionally select an output folder (leave blank to save alongside originals)
             3. Click **Save** button next to the Presets dropdown
             4. Enter a name for your preset
             5. Your preset now appears in the dropdown menu
@@ -347,28 +329,27 @@ struct HelpContent {
         ),
         
         HelpTopic(
-            title: "Output Folder Not Selected",
+            title: "Where Processed Files Are Saved",
             category: .troubleshooting,
             content: """
-            # Output Folder Required Error
+            # Output Location Behavior
             
-            If you see "Please select an output folder" when trying to process:
+            The app supports two output modes:
             
-            ## What's Happening
-            The app needs to know where to save your processed images.
+            ## 1) Save to a specific folder
+            - Set an **Output Folder** in Processing Parameters
+            - Processed images are written there
             
-            ## Solution
-            1. Look for the **Output Folder** section in Processing Parameters
-            2. Click the **Browse** button
-            3. Choose or create a folder
-            4. Try processing again
+            ## 2) Save alongside originals
+            - Turn on **Save alongside originals**, or leave Output Folder blank
+            - Processed images are written next to each source file
             
             ## Tips
-            - You can select your Desktop, Documents, or any folder you have access to
-            - The app will remember your output folder choice
-            - If you save this as a preset, the folder path is saved too
+            - If multiple images share the same file name, overwrites can occur
+            - Presets remember your output folder and alongside setting
+            - Use a dedicated output folder when you want all converted files in one place
             
-            **Tip:** Create a dedicated "Processed Images" folder on your Desktop for easy access.
+            **Tip:** Use "Save alongside originals" for quick one-off conversions.
             """,
             icon: "folder.badge.questionmark",
             keywords: ["output", "folder", "error", "save", "location", "destination"]

@@ -10,6 +10,8 @@ struct Preset: Identifiable, Codable, Hashable {
     var outputFormat: String
     var outputFolder: String
     var saveAlongsideOriginals: Bool
+    var preserveFolderStructure: Bool
+    var collisionPolicy: CollisionPolicy
     var createdAt: Date
     var updatedAt: Date
     var isDefault: Bool
@@ -24,6 +26,8 @@ struct Preset: Identifiable, Codable, Hashable {
         outputFormat: String,
         outputFolder: String,
         saveAlongsideOriginals: Bool = false,
+        preserveFolderStructure: Bool = true,
+        collisionPolicy: CollisionPolicy = .rename,
         isDefault: Bool = false
     ) {
         self.id = id
@@ -35,12 +39,14 @@ struct Preset: Identifiable, Codable, Hashable {
         self.outputFormat = outputFormat
         self.outputFolder = outputFolder
         self.saveAlongsideOriginals = saveAlongsideOriginals
+        self.preserveFolderStructure = preserveFolderStructure
+        self.collisionPolicy = collisionPolicy
         self.isDefault = isDefault
         self.createdAt = Date()
         self.updatedAt = Date()
     }
 
-    // Backward-compatible decoding: old presets without saveAlongsideOriginals still load
+    // Backward-compatible decoding for older presets missing newer fields.
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(UUID.self, forKey: .id)
@@ -52,6 +58,10 @@ struct Preset: Identifiable, Codable, Hashable {
         outputFormat = try container.decode(String.self, forKey: .outputFormat)
         outputFolder = try container.decode(String.self, forKey: .outputFolder)
         saveAlongsideOriginals = try container.decodeIfPresent(Bool.self, forKey: .saveAlongsideOriginals) ?? false
+        preserveFolderStructure = try container.decodeIfPresent(
+            Bool.self, forKey: .preserveFolderStructure) ?? true
+        collisionPolicy = try container.decodeIfPresent(
+            CollisionPolicy.self, forKey: .collisionPolicy) ?? .rename
         createdAt = try container.decode(Date.self, forKey: .createdAt)
         updatedAt = try container.decode(Date.self, forKey: .updatedAt)
         isDefault = try container.decode(Bool.self, forKey: .isDefault)
@@ -65,7 +75,9 @@ struct Preset: Identifiable, Codable, Hashable {
         compressionLevel: Float? = nil,
         outputFormat: String? = nil,
         outputFolder: String? = nil,
-        saveAlongsideOriginals: Bool? = nil
+        saveAlongsideOriginals: Bool? = nil,
+        preserveFolderStructure: Bool? = nil,
+        collisionPolicy: CollisionPolicy? = nil
     ) {
         if let name = name { self.name = name }
         if let dpi = dpi { self.dpi = dpi }
@@ -75,6 +87,10 @@ struct Preset: Identifiable, Codable, Hashable {
         if let outputFormat = outputFormat { self.outputFormat = outputFormat }
         if let outputFolder = outputFolder { self.outputFolder = outputFolder }
         if let saveAlongsideOriginals = saveAlongsideOriginals { self.saveAlongsideOriginals = saveAlongsideOriginals }
+        if let preserveFolderStructure = preserveFolderStructure {
+            self.preserveFolderStructure = preserveFolderStructure
+        }
+        if let collisionPolicy = collisionPolicy { self.collisionPolicy = collisionPolicy }
         self.updatedAt = Date()
     }
 }

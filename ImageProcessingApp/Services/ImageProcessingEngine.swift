@@ -2,6 +2,7 @@ import CoreImage
 import CoreImage.CIFilterBuiltins
 import Foundation
 import ImageIO
+import os
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -10,8 +11,20 @@ import UniformTypeIdentifiers
 #endif
 
 class ImageProcessingEngine: ObservableObject {
-    // Prefer a CPU-based CIContext to avoid Metal cache issues on some systems
-    private let ciContext: CIContext = {
+    private static let processingLog = OSLog(
+        subsystem: "app.thetransmogrifier",
+        category: "image-processing"
+    )
+
+    // Use GPU rendering by default and fall back to software when needed.
+    private let primaryCIContext: CIContext = {
+        let opts: [CIContextOption: Any] = [
+            .useSoftwareRenderer: false
+        ]
+        return CIContext(options: opts)
+    }()
+
+    private let fallbackCIContext: CIContext = {
         let opts: [CIContextOption: Any] = [
             .useSoftwareRenderer: true
         ]
@@ -20,7 +33,7 @@ class ImageProcessingEngine: ObservableObject {
 
     // MARK: - Capabilities
 
-    static func isWebPEncodingAvailable() -> Bool {
+    private static let cachedWebPEncodingAvailability: Bool = {
         #if canImport(libwebp)
             return true
         #else
@@ -35,6 +48,10 @@ class ImageProcessingEngine: ObservableObject {
             }
             return false
         #endif
+    }()
+
+    static func isWebPEncodingAvailable() -> Bool {
+        cachedWebPEncodingAvailability
     }
 
     // MARK: - Public API
@@ -48,6 +65,24 @@ class ImageProcessingEngine: ObservableObject {
         outputFormat: String,
         targetDPI: Double = 72.0
     ) async throws -> Data {
+        let signpostID = OSSignpostID(log: Self.processingLog)
+        os_signpost(
+            .begin,
+            log: Self.processingLog,
+            name: "ProcessImageCore",
+            signpostID: signpostID,
+            "%{public}s",
+            inputURL.lastPathComponent
+        )
+        defer {
+            os_signpost(
+                .end,
+                log: Self.processingLog,
+                name: "ProcessImageCore",
+                signpostID: signpostID
+            )
+        }
+
         guard FileManager.default.fileExists(atPath: inputURL.path) else {
             throw ImageProcessingError.failedToLoadImage
         }
@@ -57,11 +92,18 @@ class ImageProcessingEngine: ObservableObject {
         guard image.extent.width > 0 && image.extent.height > 0 else {
             throw ImageProcessingError.corruptedImageFile
         }
+        os_signpost(.event, log: Self.processingLog, name: "DecodeComplete", signpostID: signpostID)
 
         let processedImage = applyTransformations(
             to: image,
             maxWidth: maxWidth,
             maxHeight: maxHeight
+        )
+        os_signpost(
+            .event,
+            log: Self.processingLog,
+            name: "TransformComplete",
+            signpostID: signpostID
         )
 
         let imageData = try convertToOutputFormat(
@@ -70,6 +112,14 @@ class ImageProcessingEngine: ObservableObject {
             compressionQuality: compressionQuality,
             targetDPI: targetDPI
         )
+        os_signpost(
+            .event,
+            log: Self.processingLog,
+            name: "EncodeComplete",
+            signpostID: signpostID,
+            "bytes=%{public}d",
+            imageData.count
+        )
 
         return imageData
     }
@@ -77,8 +127,20 @@ class ImageProcessingEngine: ObservableObject {
     /// Compute the output URL for a given input file, output folder, and format.
     /// When `outputFolder` is `nil` the file is placed alongside the original.
     /// Appends `_converted` when the output would overwrite the input (e.g. PNG→PNG).
-    static func outputURL(for inputURL: URL, outputFolder: URL?, format: String) -> URL {
-        let folder = outputFolder ?? inputURL.deletingLastPathComponent()
+    static func outputURL(
+        for inputURL: URL,
+        outputFolder: URL?,
+        format: String,
+        preserveFolderStructure: Bool = false,
+        relativeOutputSubfolder: String? = nil,
+        collisionPolicy: CollisionPolicy = .overwrite
+    ) -> URL {
+        let folder = destinationFolder(
+            for: inputURL,
+            outputFolder: outputFolder,
+            preserveFolderStructure: preserveFolderStructure,
+            relativeOutputSubfolder: relativeOutputSubfolder
+        )
         let baseName = inputURL.deletingPathExtension().lastPathComponent
         var candidate = folder
             .appendingPathComponent(baseName)
@@ -88,7 +150,46 @@ class ImageProcessingEngine: ObservableObject {
                 .appendingPathComponent(baseName + "_converted")
                 .appendingPathExtension(format.lowercased())
         }
+
+        if collisionPolicy == .rename {
+            candidate = uniqueOutputURL(startingAt: candidate)
+        }
         return candidate
+    }
+
+    private static func destinationFolder(
+        for inputURL: URL,
+        outputFolder: URL?,
+        preserveFolderStructure: Bool,
+        relativeOutputSubfolder: String?
+    ) -> URL {
+        guard let outputFolder else {
+            return inputURL.deletingLastPathComponent()
+        }
+        guard preserveFolderStructure, let relativeOutputSubfolder, !relativeOutputSubfolder.isEmpty
+        else {
+            return outputFolder
+        }
+        return outputFolder.appendingPathComponent(relativeOutputSubfolder, isDirectory: true)
+    }
+
+    private static func uniqueOutputURL(startingAt url: URL) -> URL {
+        if !FileManager.default.fileExists(atPath: url.path) {
+            return url
+        }
+
+        let directory = url.deletingLastPathComponent()
+        let ext = url.pathExtension
+        let baseName = url.deletingPathExtension().lastPathComponent
+        var counter = 1
+        while true {
+            let candidateName = "\(baseName)_\(counter)"
+            let candidate = directory.appendingPathComponent(candidateName).appendingPathExtension(ext)
+            if !FileManager.default.fileExists(atPath: candidate.path) {
+                return candidate
+            }
+            counter += 1
+        }
     }
 
     func processImages(
@@ -99,9 +200,14 @@ class ImageProcessingEngine: ObservableObject {
         compressionQuality: Float,
         outputFormat: String,
         targetDPI: Double = 72.0,
+        preserveFolderStructure: Bool = false,
+        collisionPolicy: CollisionPolicy = .overwrite,
+        relativeOutputSubfolderByInputPath: [String: String] = [:],
+        processingControl: ProcessingControl? = nil,
         presetId: UUID? = nil,
         progressHandler: @escaping (BatchProgress) -> Void
     ) async -> [ImageProcessingResult] {
+        guard !inputURLs.isEmpty else { return [] }
         let startTime = CFAbsoluteTimeGetCurrent()
 
         if let outputFolder, !FileManager.default.fileExists(atPath: outputFolder.path) {
@@ -114,6 +220,7 @@ class ImageProcessingEngine: ObservableObject {
                         inputURL: url,
                         outputURL: nil,
                         success: false,
+                        skipped: false,
                         error: ImageProcessingError.invalidOutputPath,
                         fileSizeBefore: 0,
                         fileSizeAfter: 0,
@@ -123,150 +230,68 @@ class ImageProcessingEngine: ObservableObject {
             }
         }
 
-        let results = await withTaskGroup(of: (Int, ImageProcessingResult).self) { group in
-            var results: [ImageProcessingResult] = Array(
-                repeating: ImageProcessingResult(
-                    inputURL: URL(fileURLWithPath: ""),
-                    outputURL: nil,
-                    success: false,
-                    error: nil,
-                    fileSizeBefore: 0,
-                    fileSizeAfter: 0,
-                    processingTime: 0
-                ), count: inputURLs.count)
+        let workQueue = ProcessingWorkQueue(urls: inputURLs)
+        let progressTracker = ProcessingProgressTracker(
+            totalFiles: inputURLs.count,
+            startTime: startTime
+        )
+        let workerCount = Self.recommendedWorkerCount(for: inputURLs.count)
 
-            for (index, inputURL) in inputURLs.enumerated() {
+        let indexedResults = await withTaskGroup(of: [(Int, ImageProcessingResult)].self) { group in
+            for _ in 0..<workerCount {
                 group.addTask {
-                    // Check for cancellation before starting each file
-                    if Task.isCancelled {
-                        return (index, ImageProcessingResult(
-                            inputURL: inputURL,
-                            outputURL: nil,
-                            success: false,
-                            error: ImageProcessingError.cancelled,
-                            fileSizeBefore: 0,
-                            fileSizeAfter: 0,
-                            processingTime: 0
-                        ))
+                    var workerResults: [(Int, ImageProcessingResult)] = []
+                    while !Task.isCancelled {
+                        if let processingControl {
+                            await processingControl.waitIfPaused()
+                        }
+                        guard let workItem = await workQueue.next() else { break }
+                        let result = await self.processSingleImage(
+                            inputURL: workItem.url,
+                            outputFolder: outputFolder,
+                            maxWidth: maxWidth,
+                            maxHeight: maxHeight,
+                            compressionQuality: compressionQuality,
+                            outputFormat: outputFormat,
+                            targetDPI: targetDPI,
+                            preserveFolderStructure: preserveFolderStructure,
+                            relativeOutputSubfolder: relativeOutputSubfolderByInputPath[
+                                workItem.url.path
+                            ],
+                            collisionPolicy: collisionPolicy
+                        )
+                        workerResults.append((workItem.index, result))
+
+                        let progress = await progressTracker.advance(
+                            currentFileName: workItem.url.lastPathComponent)
+                        await MainActor.run { progressHandler(progress) }
                     }
-                    let fileStartTime = CFAbsoluteTimeGetCurrent()
-                    do {
-                        let desiredFormat = outputFormat.uppercased()
-                        func makeOutputURL(for format: String) -> URL {
-                            ImageProcessingEngine.outputURL(
-                                for: inputURL, outputFolder: outputFolder, format: format)
-                        }
-
-                        var attemptFormat = desiredFormat
-                        var outputURL = makeOutputURL(for: attemptFormat)
-                        var imageData: Data
-
-                        do {
-                            imageData = try await self.processImage(
-                                inputURL: inputURL,
-                                outputURL: outputURL,
-                                maxWidth: maxWidth,
-                                maxHeight: maxHeight,
-                                compressionQuality: compressionQuality,
-                                outputFormat: attemptFormat,
-                                targetDPI: targetDPI
-                            )
-                        } catch {
-                            if desiredFormat == "WEBP",
-                                case ImageProcessingError.unsupportedOutputFormat = error
-                            {
-                                attemptFormat = "JPG"
-                                outputURL = makeOutputURL(for: attemptFormat)
-                                imageData = try await self.processImage(
-                                    inputURL: inputURL,
-                                    outputURL: outputURL,
-                                    maxWidth: maxWidth,
-                                    maxHeight: maxHeight,
-                                    compressionQuality: compressionQuality,
-                                    outputFormat: attemptFormat,
-                                    targetDPI: targetDPI
-                                )
-                            } else {
-                                throw error
-                            }
-                        }
-
-                        let folder = outputURL.deletingLastPathComponent()
-                        guard FileManager.default.fileExists(atPath: folder.path) else {
-                            throw ImageProcessingError.invalidOutputPath
-                        }
-
-                        do {
-                            let attrs = try FileManager.default.attributesOfFileSystem(
-                                forPath: folder.path)
-                            if let free = attrs[.systemFreeSize] as? NSNumber,
-                                free.int64Value < Int64(imageData.count)
-                            {
-                                throw ImageProcessingError.diskFull
-                            }
-                        } catch {
-                            // ignore disk check errors
-                        }
-
-                        do { try imageData.write(to: outputURL) } catch let error as NSError {
-                            if error.code == NSFileWriteNoPermissionError {
-                                throw ImageProcessingError.permissionDenied
-                            }
-                            if error.code == NSFileWriteOutOfSpaceError {
-                                throw ImageProcessingError.diskFull
-                            }
-                            throw error
-                        }
-
-                        let fileEndTime = CFAbsoluteTimeGetCurrent()
-                        let fileProcessingTime = fileEndTime - fileStartTime
-
-                        let result = ImageProcessingResult(
-                            inputURL: inputURL,
-                            outputURL: outputURL,
-                            success: true,
-                            error: nil,
-                            fileSizeBefore: (try? FileManager.default.attributesOfItem(
-                                atPath: inputURL.path)[.size] as? Int64) ?? 0,
-                            fileSizeAfter: Int64(imageData.count),
-                            processingTime: fileProcessingTime
-                        )
-
-                        let progress = BatchProgress(
-                            currentFile: index + 1,
-                            totalFiles: inputURLs.count,
-                            currentFileName: inputURL.lastPathComponent
-                        )
-                        DispatchQueue.main.async { progressHandler(progress) }
-
-                        return (index, result)
-                    } catch {
-                        let fileEndTime = CFAbsoluteTimeGetCurrent()
-                        let result = ImageProcessingResult(
-                            inputURL: inputURL,
-                            outputURL: nil,
-                            success: false,
-                            error: error,
-                            fileSizeBefore: 0,
-                            fileSizeAfter: 0,
-                            processingTime: fileEndTime - fileStartTime
-                        )
-                        let progress = BatchProgress(
-                            currentFile: index + 1,
-                            totalFiles: inputURLs.count,
-                            currentFileName: inputURL.lastPathComponent
-                        )
-                        DispatchQueue.main.async { progressHandler(progress) }
-                        return (index, result)
-                    }
+                    return workerResults
                 }
             }
 
-            for await (i, r) in group {
-                results[i] = r
-                if Task.isCancelled { group.cancelAll() }
+            var mergedResults: [(Int, ImageProcessingResult)] = []
+            for await workerResults in group {
+                mergedResults.append(contentsOf: workerResults)
             }
-            return results
+            return mergedResults
+        }
+
+        var results: [ImageProcessingResult] = Array(
+            repeating: ImageProcessingResult(
+                inputURL: URL(fileURLWithPath: ""),
+                outputURL: nil,
+                success: false,
+                skipped: false,
+                error: nil,
+                fileSizeBefore: 0,
+                fileSizeAfter: 0,
+                processingTime: 0
+            ),
+            count: inputURLs.count
+        )
+        for (index, result) in indexedResults {
+            results[index] = result
         }
 
         let endTime = CFAbsoluteTimeGetCurrent()
@@ -282,6 +307,183 @@ class ImageProcessingEngine: ObservableObject {
     }
 
     // MARK: - Private
+
+    private static func recommendedWorkerCount(for fileCount: Int) -> Int {
+        let cpuCount = max(1, ProcessInfo.processInfo.activeProcessorCount)
+        let cappedByCPU = max(1, min(4, cpuCount))
+        return min(fileCount, cappedByCPU)
+    }
+
+    private func processSingleImage(
+        inputURL: URL,
+        outputFolder: URL?,
+        maxWidth: Int,
+        maxHeight: Int,
+        compressionQuality: Float,
+        outputFormat: String,
+        targetDPI: Double,
+        preserveFolderStructure: Bool,
+        relativeOutputSubfolder: String?,
+        collisionPolicy: CollisionPolicy
+    ) async -> ImageProcessingResult {
+        let signpostID = OSSignpostID(log: Self.processingLog)
+        os_signpost(
+            .begin,
+            log: Self.processingLog,
+            name: "ProcessSingleImage",
+            signpostID: signpostID,
+            "%{public}s",
+            inputURL.lastPathComponent
+        )
+        defer {
+            os_signpost(
+                .end,
+                log: Self.processingLog,
+                name: "ProcessSingleImage",
+                signpostID: signpostID
+            )
+        }
+
+        if Task.isCancelled {
+            return ImageProcessingResult(
+                inputURL: inputURL,
+                outputURL: nil,
+                success: false,
+                skipped: false,
+                error: ImageProcessingError.cancelled,
+                fileSizeBefore: 0,
+                fileSizeAfter: 0,
+                processingTime: 0
+            )
+        }
+
+        let fileStartTime = CFAbsoluteTimeGetCurrent()
+        do {
+            let desiredFormat = outputFormat.uppercased()
+            func makeOutputURL(for format: String) -> URL {
+                ImageProcessingEngine.outputURL(
+                    for: inputURL,
+                    outputFolder: outputFolder,
+                    format: format,
+                    preserveFolderStructure: preserveFolderStructure,
+                    relativeOutputSubfolder: relativeOutputSubfolder,
+                    collisionPolicy: collisionPolicy
+                )
+            }
+
+            var attemptFormat = desiredFormat
+            var outputURL = makeOutputURL(for: attemptFormat)
+            if collisionPolicy == .skip && FileManager.default.fileExists(atPath: outputURL.path) {
+                let fileEndTime = CFAbsoluteTimeGetCurrent()
+                let inputSize = (try? FileManager.default.attributesOfItem(
+                    atPath: inputURL.path)[.size] as? Int64) ?? 0
+                let outputSize = (try? FileManager.default.attributesOfItem(
+                    atPath: outputURL.path)[.size] as? Int64) ?? 0
+                return ImageProcessingResult(
+                    inputURL: inputURL,
+                    outputURL: outputURL,
+                    success: true,
+                    skipped: true,
+                    error: nil,
+                    fileSizeBefore: inputSize,
+                    fileSizeAfter: outputSize,
+                    processingTime: fileEndTime - fileStartTime
+                )
+            }
+            var imageData: Data
+
+            do {
+                imageData = try await processImage(
+                    inputURL: inputURL,
+                    outputURL: outputURL,
+                    maxWidth: maxWidth,
+                    maxHeight: maxHeight,
+                    compressionQuality: compressionQuality,
+                    outputFormat: attemptFormat,
+                    targetDPI: targetDPI
+                )
+            } catch {
+                if desiredFormat == "WEBP",
+                    case ImageProcessingError.unsupportedOutputFormat = error
+                {
+                    attemptFormat = "JPG"
+                    outputURL = makeOutputURL(for: attemptFormat)
+                    imageData = try await processImage(
+                        inputURL: inputURL,
+                        outputURL: outputURL,
+                        maxWidth: maxWidth,
+                        maxHeight: maxHeight,
+                        compressionQuality: compressionQuality,
+                        outputFormat: attemptFormat,
+                        targetDPI: targetDPI
+                    )
+                } else {
+                    throw error
+                }
+            }
+
+            let folder = outputURL.deletingLastPathComponent()
+            if !FileManager.default.fileExists(atPath: folder.path) {
+                do {
+                    try FileManager.default.createDirectory(
+                        at: folder,
+                        withIntermediateDirectories: true
+                    )
+                } catch {
+                    throw ImageProcessingError.invalidOutputPath
+                }
+            }
+
+            do {
+                let attrs = try FileManager.default.attributesOfFileSystem(forPath: folder.path)
+                if let free = attrs[.systemFreeSize] as? NSNumber,
+                    free.int64Value < Int64(imageData.count)
+                {
+                    throw ImageProcessingError.diskFull
+                }
+            } catch {
+                // Ignore disk check lookup errors and proceed to write attempt.
+            }
+
+            do {
+                try imageData.write(to: outputURL)
+            } catch let error as NSError {
+                if error.code == NSFileWriteNoPermissionError {
+                    throw ImageProcessingError.permissionDenied
+                }
+                if error.code == NSFileWriteOutOfSpaceError {
+                    throw ImageProcessingError.diskFull
+                }
+                throw error
+            }
+            os_signpost(.event, log: Self.processingLog, name: "WriteComplete", signpostID: signpostID)
+
+            let fileEndTime = CFAbsoluteTimeGetCurrent()
+            return ImageProcessingResult(
+                inputURL: inputURL,
+                outputURL: outputURL,
+                success: true,
+                skipped: false,
+                error: nil,
+                fileSizeBefore: (try? FileManager.default.attributesOfItem(
+                    atPath: inputURL.path)[.size] as? Int64) ?? 0,
+                fileSizeAfter: Int64(imageData.count),
+                processingTime: fileEndTime - fileStartTime
+            )
+        } catch {
+            let fileEndTime = CFAbsoluteTimeGetCurrent()
+            return ImageProcessingResult(
+                inputURL: inputURL,
+                outputURL: nil,
+                success: false,
+                skipped: false,
+                error: error,
+                fileSizeBefore: 0,
+                fileSizeAfter: 0,
+                processingTime: fileEndTime - fileStartTime
+            )
+        }
+    }
 
     func applyTransformations(
         to image: CIImage,
@@ -323,7 +525,7 @@ class ImageProcessingEngine: ObservableObject {
         compressionQuality: Float,
         targetDPI: Double = 72.0
     ) throws -> Data {
-        guard let cgImage = ciContext.createCGImage(image, from: image.extent) else {
+        guard let cgImage = createCGImage(from: image) else {
             throw ImageProcessingError.failedToCreateCGImage
         }
         switch format.uppercased() {
@@ -338,6 +540,13 @@ class ImageProcessingEngine: ObservableObject {
         default:
             throw ImageProcessingError.unsupportedOutputFormat
         }
+    }
+
+    private func createCGImage(from image: CIImage) -> CGImage? {
+        if let imageFromPrimary = primaryCIContext.createCGImage(image, from: image.extent) {
+            return imageFromPrimary
+        }
+        return fallbackCIContext.createCGImage(image, from: image.extent)
     }
 
     private func convertToJPG(
@@ -466,6 +675,63 @@ class ImageProcessingEngine: ObservableObject {
     #endif
 }
 
+private actor ProcessingWorkQueue {
+    private let urls: [URL]
+    private var nextIndex: Int = 0
+
+    init(urls: [URL]) {
+        self.urls = urls
+    }
+
+    func next() -> (index: Int, url: URL)? {
+        guard nextIndex < urls.count else { return nil }
+        defer { nextIndex += 1 }
+        return (nextIndex, urls[nextIndex])
+    }
+}
+
+actor ProcessingControl {
+    private var paused = false
+    private var waiters: [CheckedContinuation<Void, Never>] = []
+
+    func setPaused(_ paused: Bool) {
+        self.paused = paused
+        guard !paused else { return }
+        let pending = waiters
+        waiters.removeAll()
+        pending.forEach { $0.resume() }
+    }
+
+    func waitIfPaused() async {
+        guard paused else { return }
+        await withCheckedContinuation { continuation in
+            waiters.append(continuation)
+        }
+    }
+}
+
+private actor ProcessingProgressTracker {
+    private let totalFiles: Int
+    private let startTime: CFAbsoluteTime
+    private var processedFiles: Int = 0
+
+    init(totalFiles: Int, startTime: CFAbsoluteTime) {
+        self.totalFiles = totalFiles
+        self.startTime = startTime
+    }
+
+    func advance(currentFileName: String) -> BatchProgress {
+        processedFiles += 1
+        let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
+        return BatchProgress(
+            currentFile: min(processedFiles, totalFiles),
+            totalFiles: totalFiles,
+            currentFileName: currentFileName,
+            elapsedTime: elapsedTime
+        )
+    }
+}
+
 // MARK: - Error Types
 
 enum ImageProcessingError: Error, LocalizedError {
@@ -504,16 +770,34 @@ struct BatchProgress {
     let currentFile: Int
     let totalFiles: Int
     let currentFileName: String
+    let elapsedTime: Double
     let totalTime: Double?
 
-    init(currentFile: Int, totalFiles: Int, currentFileName: String, totalTime: Double? = nil) {
+    init(
+        currentFile: Int,
+        totalFiles: Int,
+        currentFileName: String,
+        elapsedTime: Double = 0,
+        totalTime: Double? = nil
+    ) {
         self.currentFile = currentFile
         self.totalFiles = totalFiles
         self.currentFileName = currentFileName
+        self.elapsedTime = elapsedTime
         self.totalTime = totalTime
     }
 
     var progressPercentage: Double { Double(currentFile) / Double(totalFiles) }
+    var throughputFilesPerSecond: Double {
+        guard elapsedTime > 0 else { return 0 }
+        return Double(currentFile) / elapsedTime
+    }
+    var remainingFiles: Int { max(0, totalFiles - currentFile) }
+    var estimatedTimeRemaining: Double? {
+        let throughput = throughputFilesPerSecond
+        guard throughput > 0, remainingFiles > 0 else { return nil }
+        return Double(remainingFiles) / throughput
+    }
 
     var progressText: String {
         if let totalTime = totalTime {
@@ -531,6 +815,7 @@ struct ImageProcessingResult {
     let inputURL: URL
     let outputURL: URL?
     let success: Bool
+    let skipped: Bool
     let error: Error?
     let fileSizeBefore: Int64
     let fileSizeAfter: Int64
