@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The Transmogrifier is a native macOS batch image processor built with SwiftUI. It converts images between formats (WebP, JPG, PNG) with compression controls, preset management, and processing history. The repository also contains a marketing website.
 
-- **App version:** 1.1.0 (build 2)
+- **App version:** 1.1.0 (build 3)
 - **Bundle ID:** `app.thetransmogrifier`
 - **Deployment target:** macOS 12.0
 - **Website:** https://thetransmogrifier.app (Cloudflare Pages, auto-deploys from `master` branch)
@@ -137,7 +137,7 @@ See `ImageProcessingApp/Design/ImageProcessingAppStyleGuide.md` for full design 
 
 - Dark mode only (forced via `.preferredColorScheme(.dark)`)
 - Hidden title bar with compact toolbar style
-- Onboarding tour available via Help menu → Show Tour
+- Onboarding tour is temporarily disabled (overlay + menu trigger removed)
 
 ## Key Patterns
 
@@ -170,8 +170,10 @@ Parameterized script that builds, optionally signs, and optionally notarizes a D
 - `--notarize` — submits to Apple notary service using stored credentials profile "transmogrifier"
 
 ### Code Signing Prerequisites
-- **Developer ID Application** certificate required for direct distribution (NOT installed yet)
-- To create: Keychain Access → Certificate Assistant → Request CSR → upload at developer.apple.com/account/resources/certificates/add → select "Developer ID Application"
+- **Developer ID Application** certificate is installed:
+  - `Developer ID Application: Daniel Breckenridge (7DMXWUCLVN)`
+- If this ever needs re-provisioning:
+  - Keychain Access → Certificate Assistant → Request CSR → upload at developer.apple.com/account/resources/certificates/add → select "Developer ID Application"
 
 ### Notarization Prerequisites
 - Store credentials once: `xcrun notarytool store-credentials "transmogrifier" --apple-id <APPLE_ID> --team-id 7DMXWUCLVN --password <APP_SPECIFIC_PASSWORD>`
@@ -217,13 +219,25 @@ Parameterized script that builds, optionally signs, and optionally notarizes a D
 - [x] Generated 2880x1800 App Store screenshots from existing captures
 - [x] Archived and uploaded build to App Store Connect
 - [x] Submitted v1.1.0 for App Store Review
+- [x] Pushed `master` release commit `347582f`
+- [x] Tagged `v1.1.0` and published GitHub Release
+- [x] Built fresh signed DMG and uploaded to release asset:
+  - `The.Transmogrifier.1.1.0.dmg`
+  - SHA256: `24b2afdcf92a44629494379bc4dca3ec461360fe3589e2bfd97eff258a99bd1f`
 
 ### Pending — Do Next
 - [ ] **Wait for App Store Review** — Typically 24-48 hours. Check status at appstoreconnect.apple.com
-- [ ] **Create Developer ID Application certificate** — Needed for direct DMG distribution (not MAS). Guide through creation at developer.apple.com
-- [ ] **Build signed DMG** — Once Developer ID cert is installed: `./build-dmg.sh 1.1.0 --sign --notarize`
-- [ ] **Create GitHub release** — Tag v1.1.0, attach notarized DMG
-- [ ] **Set up notarization credentials** — `xcrun notarytool store-credentials "transmogrifier" --apple-id <APPLE_ID> --team-id 7DMXWUCLVN --password <APP_SPECIFIC_PASSWORD>`
+- [x] **Create Developer ID Application certificate** — installed and in use
+- [x] **Build signed DMG** — completed and uploaded to `v1.1.0` release
+- [x] **Create GitHub release** — published: https://github.com/dbreck/the-transmogrifier/releases/tag/v1.1.0
+- [x] **Set up notarization credentials** — `notarytool` validated
+- [ ] **Resolve Apple notarization queue incident** — submissions stuck in `In Progress`
+  - `8c3aa64a-0720-43ec-9ad2-4446b344864d` (The.Transmogrifier.1.1.0.dmg)
+  - `44f12813-61a4-43f8-91a5-e5d6927d94a4` (The.Transmogrifier.1.1.0.dmg)
+  - older ScreenShawty submissions are also stuck in progress
+  - support escalation sent to Apple Developer Support on 2026-02-09
+- [ ] **When notarization flips to Accepted** — run `stapler`, validate ticket, and re-upload notarized DMG to `v1.1.0`
+- [ ] **Rotate app-specific password** — password was shared in chat for setup; rotate at appleid.apple.com after notarization is stable
 - [ ] **Create Buttondown account** — Must use username `thetransmogrifier` (form action URL on website points to this). Register at buttondown.email/register
 - [ ] **Add Mac App Store badge to website** — Once approved, add "Download on the Mac App Store" badge to hero and final CTA sections
 
@@ -250,12 +264,13 @@ Parameterized script that builds, optionally signs, and optionally notarizes a D
 
 ### Pending — Do Next (Remaining)
 - [ ] **Check App Store Review status** — appstoreconnect.apple.com (v1.1.0 submitted, typically 24-48 hours)
-- [ ] **Commit unstaged changes** — CLAUDE.md, project.pbxproj (build 3), Info.plist (build 3), entitlements (removed downloads.read-write) are modified but not yet committed
+- [ ] **Commit unstaged changes** — local note/docs/files in working tree are still uncommitted
 - [ ] **Version bump decision** — Decide if this becomes v1.2.0 for a new App Store submission or stays as a dev build
-- [ ] **Create Developer ID Application certificate** — Needed for direct DMG distribution (not MAS)
-- [ ] **Build signed DMG** — Once Developer ID cert is installed: `./build-dmg.sh <version> --sign --notarize`
-- [ ] **Create GitHub release** — Tag release, attach notarized DMG
-- [ ] **Set up notarization credentials** — `xcrun notarytool store-credentials "transmogrifier" --apple-id <APPLE_ID> --team-id 7DMXWUCLVN --password <APP_SPECIFIC_PASSWORD>`
+- [x] **Create Developer ID Application certificate** — completed
+- [x] **Build signed DMG** — completed
+- [x] **Create GitHub release** — completed
+- [x] **Set up notarization credentials** — completed
+- [ ] **Finish notarization pipeline** — wait for `Accepted`, staple, re-upload notarized DMG
 - [ ] **Create Buttondown account** — Must use username `thetransmogrifier` (form action URL on website points to this)
 - [ ] **Add Mac App Store badge to website** — Once approved, add badge to hero and final CTA
 
