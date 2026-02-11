@@ -11,7 +11,7 @@ class FileSelectionViewModel: ObservableObject {
     @Published var selectedFiles: [URL] = []
     @Published var selectedFileForPreview: URL? = nil
     @Published var errorMessage: String? = nil
-    @Published var includeSubfolders: Bool = true
+    @Published var includeSubfolders: Bool = false
     @Published private(set) var isSelectingFiles: Bool = false
     @Published private(set) var relativeOutputSubfolderByFilePath: [String: String] = [:]
     
