@@ -105,3 +105,11 @@ tmp/
 website/node_modules/
 website/.astro/
 website/dist/
+
+# Local workspace artifacts
+.claude/
+AGENTS.md
+The Transmogrifier.app/
+Screenshots/1.1.0/
+Screenshots/1.1.1/
+website/src/pages/ui-comp.astro
