@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The Transmogrifier is a native macOS batch image processor built with SwiftUI. It converts images between formats (WebP, JPG, PNG) with compression controls, preset management, and processing history. The repository also contains a marketing website.
 
-- **App version:** 1.1.0 (build 3)
+- **App version:** 1.1.1 (build 4)
 - **Bundle ID:** `app.thetransmogrifier`
 - **Deployment target:** macOS 12.0
 - **Website:** https://thetransmogrifier.app (Cloudflare Pages, auto-deploys from `master` branch)
@@ -313,3 +313,16 @@ Skills are in `.claude/skills/` directory:
 - `astro-publishing/` — Astro SSG patterns, Content Collections, deployment (SpillwaveSolutions)
 - `web-quality/` — Lighthouse audit patterns: accessibility, performance, SEO (addyosmani)
 - `apple-build/` — Xcode build/test/archive automation (kylehughes)
+
+## Session Update (2026-02-11)
+
+- Release `v1.1.1` is published:
+  - `https://github.com/dbreck/the-transmogrifier/releases/tag/v1.1.1`
+- DMG `The.Transmogrifier.1.1.1.dmg` is signed, notarized, stapled, and published.
+  - SHA256: `379ccd7aeeb943ed8a69677b1808c6e90cf9deba97649afd8b36a653aebee34d`
+  - Notary submission: `caebaeae-2c4b-41ff-9374-50da37621ac4` (`Accepted`)
+- `/Applications/The Transmogrifier.app` was updated to `1.1.1 (4)`.
+- App Store Connect:
+  - Build `1.1.1 (4)` uploaded successfully from `build/TheTransmogrifier-1.1.1.xcarchive`
+  - New app version was created and submitted for review by user.
+- Older notarization incident notes for `v1.1.0` are now historical (resolved path established in `v1.1.1` release flow).

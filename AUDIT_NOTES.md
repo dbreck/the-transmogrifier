@@ -85,3 +85,27 @@
   1. Staple the ticket to `The.Transmogrifier.1.1.0.dmg`
   2. Validate stapling
   3. Re-upload notarized DMG to `v1.1.0` GitHub release
+
+---
+
+## Release Ops Note (2026-02-11)
+- Added UX behavior change: default `includeSubfolders` is now OFF.
+  - Commit: `c5187f8` (`Default include-subfolders toggle to off`)
+- Cut and published release `v1.1.1`.
+  - Release commit: `6897660` (`Release 1.1.1`)
+  - Release URL: `https://github.com/dbreck/the-transmogrifier/releases/tag/v1.1.1`
+  - DMG asset: `The.Transmogrifier.1.1.1.dmg`
+  - DMG SHA256: `379ccd7aeeb943ed8a69677b1808c6e90cf9deba97649afd8b36a653aebee34d`
+- Notarization completed successfully.
+  - Submission ID: `caebaeae-2c4b-41ff-9374-50da37621ac4`
+  - Status: `Accepted`
+  - Stapling/validation: succeeded
+- Local app install updated to `/Applications/The Transmogrifier.app` version `1.1.1` build `4`.
+- App Store Connect ops:
+  - Apps Agreement issue was resolved by account holder.
+  - Uploaded archive `build/TheTransmogrifier-1.1.1.xcarchive` to App Store Connect (upload succeeded; processing started).
+  - User then submitted the new version for review in App Store Connect.
+- Screenshot compliance note:
+  - App Store rejected `1400x900` screenshots (invalid size).
+  - Generated valid `1440x900` variants at:
+    - `Screenshots/1.1.1/appstore-1440x900/`
