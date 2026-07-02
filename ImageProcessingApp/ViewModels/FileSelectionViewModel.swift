@@ -109,6 +109,7 @@ class FileSelectionViewModel: ObservableObject {
             .gif,
             .tiff,
             .heic,
+            .webP,
             .icns,
             .ico
         ]

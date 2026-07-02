@@ -55,28 +55,6 @@ class ProcessingSettingsViewModel: ObservableObject {
         )
     }
 
-    func applyPreset(_ presetName: String) {
-        switch presetName {
-        case "High Quality":
-            targetResolution = "300"
-            // High quality => low compression amount
-            compression = 10.0
-            outputFormat = "PNG"
-        case "Web Optimized":
-            targetResolution = "72"
-            // Medium quality => medium compression amount
-            compression = 25.0
-            outputFormat = "JPG"
-            maxWidth = "1920"
-        case "Print Ready":
-            targetResolution = "300"
-            compression = 15.0
-            outputFormat = "PNG"
-        default:
-            break
-        }
-    }
-
     func applyCustomPreset(_ preset: Preset) {
         targetResolution = "\(preset.dpi)"
         maxWidth = preset.maxWidth == 0 ? "" : "\(preset.maxWidth)"
