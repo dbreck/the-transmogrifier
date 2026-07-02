@@ -2,10 +2,10 @@
 
 **Stop wasting hours converting Figma exports.** Batch-process images to WebP in seconds—no subscriptions, no cloud uploads, just fast local processing.
 
-[![Download](https://img.shields.io/badge/Download-v1.0.1-blue?style=for-the-badge&logo=apple)](https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.1/The.Transmogrifier.1.0.1.dmg)
+[![Download](https://img.shields.io/badge/Download-Latest%20DMG-blue?style=for-the-badge&logo=apple)](https://github.com/dbreck/the-transmogrifier/releases/latest)
 [![Latest Release](https://img.shields.io/github/v/release/dbreck/the-transmogrifier?style=for-the-badge)](https://github.com/dbreck/the-transmogrifier/releases/latest)
 
-![macOS](https://img.shields.io/badge/macOS-11.0+-blue)
+![macOS](https://img.shields.io/badge/macOS-12.0+-blue)
 ![Swift](https://img.shields.io/badge/Swift-5.0+-orange)
 ![SwiftUI](https://img.shields.io/badge/SwiftUI-Native-green)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
@@ -132,7 +132,7 @@ After using The Transmogrifier:
 - **Architecture:** MVVM with ViewModels
 - **Image Processing:** Core Image + custom engine
 - **State Management:** @StateObject, @Published, ObservableObject
-- **Minimum macOS:** 11.0 (Big Sur)
+- **Minimum macOS:** 12.0 (Monterey)
 
 ---
 
@@ -140,9 +140,9 @@ After using The Transmogrifier:
 
 ### Download the App
 
-**[⬇️ Download The Transmogrifier v1.0.1 (DMG)](https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.1/The.Transmogrifier.1.0.1.dmg)**
+**[⬇️ Download the latest release (DMG)](https://github.com/dbreck/the-transmogrifier/releases/latest)**
 
-Or [view all releases](https://github.com/dbreck/the-transmogrifier/releases)
+Or buy it on the Mac App Store, or [view all releases](https://github.com/dbreck/the-transmogrifier/releases)
 
 ### Install
 1. Download and open the DMG
@@ -217,12 +217,19 @@ Build in Xcode (⌘+B) and run.
 
 ## Roadmap
 
-- [ ] Preserve source folder structure when exporting to a custom output folder
-- [ ] Add collision policy control (overwrite, skip, rename with suffix)
-- [ ] Add pause/resume controls for long processing queues
-- [ ] Show ETA and throughput metrics (files/sec, remaining time)
-- [ ] Add retry-failed workflow (retry only failed files)
-- [ ] Add drag-and-drop quick preset chips for one-click setup
+- [x] Preserve source folder structure when exporting to a custom output folder
+- [x] Collision policy control (overwrite, skip, rename with suffix)
+- [x] Pause/resume controls for long processing queues
+- [x] ETA and throughput metrics (files/sec, remaining time)
+- [x] Retry-failed workflow (retry only failed files)
+- [x] Drag-and-drop quick preset chips for one-click setup
+- [x] Save alongside originals (no output folder required)
+- [ ] Drop files on the app icon for quick convert
+- [ ] Filename templates and multi-size (1x/2x/3x) export
+- [ ] AVIF output format
+- [ ] Watch folder for automatic processing
+- [ ] Metadata controls (strip or preserve EXIF/GPS)
+- [ ] Shortcuts / CLI support for automation
 
 ---
 

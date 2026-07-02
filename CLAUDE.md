@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The Transmogrifier is a native macOS batch image processor built with SwiftUI. It converts images between formats (WebP, JPG, PNG) with compression controls, preset management, and processing history. The repository also contains a marketing website.
 
-- **App version:** 1.1.1 (build 4)
+- **App version:** 1.2.0 (build 5)
 - **Bundle ID:** `app.thetransmogrifier`
 - **Deployment target:** macOS 12.0
 - **Website:** https://thetransmogrifier.app (Cloudflare Pages, auto-deploys from `master` branch)
@@ -326,3 +326,33 @@ Skills are in `.claude/skills/` directory:
   - Build `1.1.1 (4)` uploaded successfully from `build/TheTransmogrifier-1.1.1.xcarchive`
   - New app version was created and submitted for review by user.
 - Older notarization incident notes for `v1.1.0` are now historical (resolved path established in `v1.1.1` release flow).
+
+## Session Update (2026-07-02) — v1.2.0 on branch `claude/code-review-features-5h9h16`
+
+Code review + fixes, verified locally by user. Changes on the branch:
+
+**App fixes:**
+- EXIF orientation applied on decode (portrait photos no longer rotated in output)
+- Max Width/Height clamp to 1.0 ratio — never upscale smaller images
+- Output-path reservation actor prevents concurrent workers clobbering same-named outputs
+- Folder-picker write probe uses UUID filename (no longer destroys a user's `test.tmp`)
+- Preset dimensions widened Int16 → Int (values > 32767 no longer silently become "Auto")
+- libwebp encode buffer pinned via `withUnsafeMutableBytes` (was UB)
+- Presets consolidated: legacy hardcoded menu entries removed ("Print Ready" gone),
+  menu driven by PresetManager only, save-over-name updates in place
+- WebP added to file-picker content types
+- Shared `ImageProcessingEngine.shared` (was rebuilt with fresh CIContexts per run)
+- HistoryRecord uses cached ByteCountFormatter/DateFormatter
+
+**Website:**
+- Removed hidden Color Configuration dev panel (~350 lines on every page)
+- Added `public/_headers` (CSP, X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy)
+- Fixed stale v1.0.0 download link on features page; bump-version.sh now covers features.astro
+
+**Release state:**
+- Version bumped to 1.2.0 (build 5); changelog, README, JSON-LD updated
+- Website download links point at v1.2.0 DMG — publish the GitHub release with the
+  DMG promptly after merging to master (links 404 until then)
+- Outstanding (user decisions): register Buttondown username `thetransmogrifier`
+  (form posts emails to unclaimed account); resolve MIT-license claims on site/README
+  (no LICENSE file exists; app is paid/proprietary)
