@@ -45,10 +45,7 @@ struct HistoryRecord: Identifiable, Codable {
     
     /// Format the processing date for display
     var formattedDate: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter.string(from: processingDate)
+        Self.dateFormatter.string(from: processingDate)
     }
     
     /// Format the file sizes for display
@@ -66,18 +63,22 @@ struct HistoryRecord: Identifiable, Codable {
     }
     
     // MARK: - Private Methods
-    
+
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter
+    }()
+
+    private static let fileSizeFormatter: ByteCountFormatter = {
+        let formatter = ByteCountFormatter()
+        formatter.countStyle = .file
+        return formatter
+    }()
+
     /// Format file size in human-readable format
     private func formatFileSize(_ size: Int64) -> String {
-        let sizes = ["B", "KB", "MB", "GB"]
-        var sizeDouble = Double(size)
-        var index = 0
-        
-        while sizeDouble >= 1024 && index < sizes.count - 1 {
-            sizeDouble /= 1024
-            index += 1
-        }
-        
-        return String(format: "%.1f %@", sizeDouble, sizes[index])
+        Self.fileSizeFormatter.string(fromByteCount: size)
     }
 }

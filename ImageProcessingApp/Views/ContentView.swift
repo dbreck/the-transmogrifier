@@ -14,7 +14,7 @@ struct ContentView: View {
     @State private var progressValue: Double = 0.0  // 0.0 - 1.0
     @State private var progressPercentText: String = "0%"
     @State private var progressOpacity: Double = 1.0
-    @State private var progressResetWorkItem: DispatchWorkItem? = nil
+    @State private var progressResetTask: Task<Void, Never>? = nil
     // Processing task handle for cancellation
     @State private var processingTask: Task<Void, Never>? = nil
     @State private var processingControl: ProcessingControl? = nil
@@ -186,7 +186,6 @@ struct ContentView: View {
         .background(.gray900)
         .onAppear {
             configureWindowSizeIfNeeded()
-            presetManager.loadPresets()
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("ToggleDarkMode")))
         { _ in
@@ -225,8 +224,8 @@ struct ContentView: View {
             })
 
         // Reset state and cancel any pending auto-reset.
-        progressResetWorkItem?.cancel()
-        progressResetWorkItem = nil
+        progressResetTask?.cancel()
+        progressResetTask = nil
         isProcessing = true
         isPaused = false
         progressText = nil
@@ -237,7 +236,7 @@ struct ContentView: View {
         processingThroughput = 0
         processingETA = nil
         startProcessingIndicator()
-        let engine = ImageProcessingEngine()
+        let engine = ImageProcessingEngine.shared
         let control = ProcessingControl()
         processingControl = control
 
@@ -307,25 +306,27 @@ struct ContentView: View {
                 self.finishProcessingIndicator()
                 withAnimation(.easeInOut(duration: 0.25)) { self.progressValue = 1.0 }
                 self.progressPercentText = "100%"  // flash 100%
-                // Show Done! after a brief flash
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                // Flash Done!, then auto-reset after 5 seconds: fade the bar back
+                // to 0 and restore the 0% label.
+                self.progressResetTask = Task {
+                    try? await Task.sleep(nanoseconds: 350_000_000)
+                    guard !Task.isCancelled else { return }
                     self.progressPercentText = "Done!"
-                }
-                // Auto-reset after 5 seconds: fade and animate bar back to 0, then restore 0%
-                let work = DispatchWorkItem {
+
+                    try? await Task.sleep(nanoseconds: 4_650_000_000)
+                    guard !Task.isCancelled else { return }
                     withAnimation(.easeInOut(duration: 0.6)) {
                         self.progressOpacity = 0.0
                         self.progressValue = 0.0
                     }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.65) {
-                        self.progressPercentText = "0%"
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            self.progressOpacity = 1.0
-                        }
+
+                    try? await Task.sleep(nanoseconds: 650_000_000)
+                    guard !Task.isCancelled else { return }
+                    self.progressPercentText = "0%"
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        self.progressOpacity = 1.0
                     }
                 }
-                self.progressResetWorkItem = work
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: work)
 
                 let successCount = results.filter { $0.success }.count
                 let skippedCount = results.filter { $0.skipped }.count

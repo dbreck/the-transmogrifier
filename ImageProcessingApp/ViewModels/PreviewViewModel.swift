@@ -173,12 +173,9 @@ class PreviewViewModel: ObservableObject {
                     effectiveFormat = "jpg"
                 }
 
-                let engine = ImageProcessingEngine()
-
                 // Process in-memory and decode from Data to avoid preview temp-file I/O.
-                let imageData = try await engine.processImage(
+                let imageData = try await ImageProcessingEngine.shared.processImage(
                     inputURL: url,
-                    outputURL: url,
                     maxWidth: maxWidth,
                     maxHeight: maxHeight,
                     compressionQuality: compressionQuality,

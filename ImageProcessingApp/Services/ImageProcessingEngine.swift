@@ -10,7 +10,11 @@ import UniformTypeIdentifiers
     import libwebp
 #endif
 
-class ImageProcessingEngine: ObservableObject {
+final class ImageProcessingEngine {
+    /// The engine is stateless apart from its CIContexts (which are thread-safe),
+    /// so one shared instance avoids rebuilding contexts for every run.
+    static let shared = ImageProcessingEngine()
+
     private static let processingLog = OSLog(
         subsystem: "app.thetransmogrifier",
         category: "image-processing"
@@ -58,7 +62,6 @@ class ImageProcessingEngine: ObservableObject {
 
     func processImage(
         inputURL: URL,
-        outputURL: URL,
         maxWidth: Int,
         maxHeight: Int,
         compressionQuality: Float,
@@ -310,7 +313,7 @@ class ImageProcessingEngine: ObservableObject {
             currentFileName: "Completed",
             totalTime: totalTime
         )
-        DispatchQueue.main.async { progressHandler(finalProgress) }
+        await MainActor.run { progressHandler(finalProgress) }
         return results
     }
 
@@ -411,7 +414,6 @@ class ImageProcessingEngine: ObservableObject {
             do {
                 imageData = try await processImage(
                     inputURL: inputURL,
-                    outputURL: outputURL,
                     maxWidth: maxWidth,
                     maxHeight: maxHeight,
                     compressionQuality: compressionQuality,
@@ -426,7 +428,6 @@ class ImageProcessingEngine: ObservableObject {
                     outputURL = await makeOutputURL(for: attemptFormat)
                     imageData = try await processImage(
                         inputURL: inputURL,
-                        outputURL: outputURL,
                         maxWidth: maxWidth,
                         maxHeight: maxHeight,
                         compressionQuality: compressionQuality,
