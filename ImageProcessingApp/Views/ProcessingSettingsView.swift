@@ -20,9 +20,9 @@ enum CollisionPolicy: String, CaseIterable, Codable, Hashable {
 }
 
 struct ProcessingSettings {
-    let dpi: Int16
-    let maxWidth: Int16
-    let maxHeight: Int16
+    let dpi: Int
+    let maxWidth: Int
+    let maxHeight: Int
     let compressionLevel: Float
     let outputFormat: String
     let outputFolder: String
@@ -308,9 +308,9 @@ struct ProcessingSettingsView: View {
 
         let preset = Preset(
             name: trimmedName,
-            dpi: Int16(settingsViewModel.targetResolution) ?? 72,
-            maxWidth: Int16(settingsViewModel.maxWidth) ?? 0,
-            maxHeight: Int16(settingsViewModel.maxHeight) ?? 0,
+            dpi: Int(settingsViewModel.targetResolution) ?? 72,
+            maxWidth: Int(settingsViewModel.maxWidth) ?? 0,
+            maxHeight: Int(settingsViewModel.maxHeight) ?? 0,
             // Store encoder quality [0..1]
             compressionLevel: Float(1.0 - (settingsViewModel.compression / 100.0)),
             outputFormat: settingsViewModel.outputFormat,

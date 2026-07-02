@@ -27,9 +27,9 @@ class ProcessingSettingsViewModel: ObservableObject {
 
     func getProcessingSettings() -> ProcessingSettings {
         ProcessingSettings(
-            dpi: Int16(targetResolution) ?? 72,
-            maxWidth: Int16(maxWidth) ?? 0,
-            maxHeight: Int16(maxHeight) ?? 0,
+            dpi: Int(targetResolution) ?? 72,
+            maxWidth: Int(maxWidth) ?? 0,
+            maxHeight: Int(maxHeight) ?? 0,
             // Map UI compression% (higher = more compression) to encoder quality (lower = more compression)
             compressionLevel: Float(1.0 - (compression / 100.0)),
             outputFormat: outputFormat,
@@ -43,9 +43,9 @@ class ProcessingSettingsViewModel: ObservableObject {
     // New: Preview settings do not require an output folder
     func getProcessingSettingsForPreview() -> ProcessingSettings {
         return ProcessingSettings(
-            dpi: Int16(targetResolution) ?? 72,
-            maxWidth: Int16(maxWidth) ?? 0,
-            maxHeight: Int16(maxHeight) ?? 0,
+            dpi: Int(targetResolution) ?? 72,
+            maxWidth: Int(maxWidth) ?? 0,
+            maxHeight: Int(maxHeight) ?? 0,
             compressionLevel: Float(1.0 - (compression / 100.0)),
             outputFormat: outputFormat,
             outputFolder: outputFolder,  // not used by preview

@@ -86,7 +86,8 @@ class ImageProcessingEngine: ObservableObject {
         guard FileManager.default.fileExists(atPath: inputURL.path) else {
             throw ImageProcessingError.failedToLoadImage
         }
-        guard let image = CIImage(contentsOf: inputURL) else {
+        guard let image = CIImage(contentsOf: inputURL, options: [.applyOrientationProperty: true])
+        else {
             throw ImageProcessingError.failedToLoadImage
         }
         guard image.extent.width > 0 && image.extent.height > 0 else {
@@ -497,20 +498,21 @@ class ImageProcessingEngine: ObservableObject {
             let originalHeight = originalExtent.height
             var targetWidth = originalWidth
             var targetHeight = originalHeight
+            // Max dimensions are a cap: never scale up images that already fit.
             if maxWidth > 0 && maxHeight > 0 {
                 let widthRatio = CGFloat(maxWidth) / originalWidth
                 let heightRatio = CGFloat(maxHeight) / originalHeight
-                let ratio = min(widthRatio, heightRatio)
+                let ratio = min(widthRatio, heightRatio, 1.0)
                 targetWidth = originalWidth * ratio
                 targetHeight = originalHeight * ratio
             } else if maxWidth > 0 {
-                let ratio = CGFloat(maxWidth) / originalWidth
-                targetWidth = CGFloat(maxWidth)
+                let ratio = min(CGFloat(maxWidth) / originalWidth, 1.0)
+                targetWidth = originalWidth * ratio
                 targetHeight = originalHeight * ratio
             } else if maxHeight > 0 {
-                let ratio = CGFloat(maxHeight) / originalHeight
+                let ratio = min(CGFloat(maxHeight) / originalHeight, 1.0)
                 targetWidth = originalWidth * ratio
-                targetHeight = CGFloat(maxHeight)
+                targetHeight = originalHeight * ratio
             }
             let scaleX = targetWidth / originalWidth
             let scaleY = targetHeight / originalHeight

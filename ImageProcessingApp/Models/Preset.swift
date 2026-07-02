@@ -3,9 +3,9 @@ import Foundation
 struct Preset: Identifiable, Codable, Hashable {
     let id: UUID
     var name: String
-    var dpi: Int16
-    var maxWidth: Int16
-    var maxHeight: Int16
+    var dpi: Int
+    var maxWidth: Int
+    var maxHeight: Int
     var compressionLevel: Float
     var outputFormat: String
     var outputFolder: String
@@ -19,9 +19,9 @@ struct Preset: Identifiable, Codable, Hashable {
     init(
         id: UUID = UUID(),
         name: String,
-        dpi: Int16,
-        maxWidth: Int16,
-        maxHeight: Int16,
+        dpi: Int,
+        maxWidth: Int,
+        maxHeight: Int,
         compressionLevel: Float,
         outputFormat: String,
         outputFolder: String,
@@ -51,9 +51,9 @@ struct Preset: Identifiable, Codable, Hashable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(UUID.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
-        dpi = try container.decode(Int16.self, forKey: .dpi)
-        maxWidth = try container.decode(Int16.self, forKey: .maxWidth)
-        maxHeight = try container.decode(Int16.self, forKey: .maxHeight)
+        dpi = try container.decode(Int.self, forKey: .dpi)
+        maxWidth = try container.decode(Int.self, forKey: .maxWidth)
+        maxHeight = try container.decode(Int.self, forKey: .maxHeight)
         compressionLevel = try container.decode(Float.self, forKey: .compressionLevel)
         outputFormat = try container.decode(String.self, forKey: .outputFormat)
         outputFolder = try container.decode(String.self, forKey: .outputFolder)
@@ -69,9 +69,9 @@ struct Preset: Identifiable, Codable, Hashable {
 
     mutating func update(
         name: String? = nil,
-        dpi: Int16? = nil,
-        maxWidth: Int16? = nil,
-        maxHeight: Int16? = nil,
+        dpi: Int? = nil,
+        maxWidth: Int? = nil,
+        maxHeight: Int? = nil,
         compressionLevel: Float? = nil,
         outputFormat: String? = nil,
         outputFolder: String? = nil,
