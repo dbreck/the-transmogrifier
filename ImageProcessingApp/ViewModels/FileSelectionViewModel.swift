@@ -109,6 +109,7 @@ class FileSelectionViewModel: ObservableObject {
             .gif,
             .tiff,
             .heic,
+            .webP,
             .icns,
             .ico
         ]
@@ -147,10 +148,12 @@ class FileSelectionViewModel: ObservableObject {
         }
 
         let fileManager = FileManager.default
-        let testFileURL = url.appendingPathComponent("test.tmp")
+        let probeURL = url.appendingPathComponent(
+            ".transmogrifier-write-check-\(UUID().uuidString)"
+        )
         do {
-            try "test".write(to: testFileURL, atomically: true, encoding: .utf8)
-            try fileManager.removeItem(at: testFileURL)
+            try Data().write(to: probeURL, options: .atomic)
+            try fileManager.removeItem(at: probeURL)
             return url
         } catch let error as NSError {
             if error.code == NSFileWriteNoPermissionError {

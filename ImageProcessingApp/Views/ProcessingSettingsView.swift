@@ -20,9 +20,9 @@ enum CollisionPolicy: String, CaseIterable, Codable, Hashable {
 }
 
 struct ProcessingSettings {
-    let dpi: Int16
-    let maxWidth: Int16
-    let maxHeight: Int16
+    let dpi: Int
+    let maxWidth: Int
+    let maxHeight: Int
     let compressionLevel: Float
     let outputFormat: String
     let outputFolder: String
@@ -200,26 +200,10 @@ struct ProcessingSettingsView: View {
 
                     HStack(spacing: Spacing.xs) {
                         Menu {
-                            Button("High Quality") {
-                                settingsViewModel.selectedPreset = "High Quality"
-                                settingsViewModel.applyPreset("High Quality")
-                            }
-                            Button("Web Optimized") {
-                                settingsViewModel.selectedPreset = "Web Optimized"
-                                settingsViewModel.applyPreset("Web Optimized")
-                            }
-                            Button("Print Ready") {
-                                settingsViewModel.selectedPreset = "Print Ready"
-                                settingsViewModel.applyPreset("Print Ready")
-                            }
-
-                            if !presetManager.presets.isEmpty {
-                                Divider()
-                                ForEach(presetManager.presets, id: \.name) { preset in
-                                    Button(preset.name) {
-                                        settingsViewModel.selectedPreset = preset.name
-                                        settingsViewModel.applyCustomPreset(preset)
-                                    }
+                            ForEach(presetManager.presets) { preset in
+                                Button(preset.name) {
+                                    settingsViewModel.selectedPreset = preset.name
+                                    settingsViewModel.applyCustomPreset(preset)
                                 }
                             }
                         } label: {
@@ -250,14 +234,10 @@ struct ProcessingSettingsView: View {
                             "Apply",
                             style: settingsViewModel.selectedPreset.isEmpty ? .secondary : .primary
                         ) {
-                            if !settingsViewModel.selectedPreset.isEmpty {
-                                if let preset = presetManager.presets.first(where: {
-                                    $0.name == settingsViewModel.selectedPreset
-                                }) {
-                                    settingsViewModel.applyCustomPreset(preset)
-                                } else {
-                                    settingsViewModel.applyPreset(settingsViewModel.selectedPreset)
-                                }
+                            if let preset = presetManager.presets.first(where: {
+                                $0.name == settingsViewModel.selectedPreset
+                            }) {
+                                settingsViewModel.applyCustomPreset(preset)
                             }
                         }
                         .frame(width: 88)
@@ -306,11 +286,16 @@ struct ProcessingSettingsView: View {
         let trimmedName = newPresetName.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedName.isEmpty else { return }
 
+        // Saving under an existing user preset's name updates it in place.
+        let existing = presetManager.presets.first {
+            $0.name == trimmedName && !$0.isDefault
+        }
         let preset = Preset(
+            id: existing?.id ?? UUID(),
             name: trimmedName,
-            dpi: Int16(settingsViewModel.targetResolution) ?? 72,
-            maxWidth: Int16(settingsViewModel.maxWidth) ?? 0,
-            maxHeight: Int16(settingsViewModel.maxHeight) ?? 0,
+            dpi: Int(settingsViewModel.targetResolution) ?? 72,
+            maxWidth: Int(settingsViewModel.maxWidth) ?? 0,
+            maxHeight: Int(settingsViewModel.maxHeight) ?? 0,
             // Store encoder quality [0..1]
             compressionLevel: Float(1.0 - (settingsViewModel.compression / 100.0)),
             outputFormat: settingsViewModel.outputFormat,
@@ -320,8 +305,7 @@ struct ProcessingSettingsView: View {
             collisionPolicy: settingsViewModel.collisionPolicy
         )
 
-        presetManager.presets.append(preset)
-        presetManager.savePresets()
+        presetManager.savePreset(preset)
         newPresetName = ""
     }
 

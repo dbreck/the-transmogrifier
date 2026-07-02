@@ -10,7 +10,11 @@ import UniformTypeIdentifiers
     import libwebp
 #endif
 
-class ImageProcessingEngine: ObservableObject {
+final class ImageProcessingEngine {
+    /// The engine is stateless apart from its CIContexts (which are thread-safe),
+    /// so one shared instance avoids rebuilding contexts for every run.
+    static let shared = ImageProcessingEngine()
+
     private static let processingLog = OSLog(
         subsystem: "app.thetransmogrifier",
         category: "image-processing"
@@ -58,7 +62,6 @@ class ImageProcessingEngine: ObservableObject {
 
     func processImage(
         inputURL: URL,
-        outputURL: URL,
         maxWidth: Int,
         maxHeight: Int,
         compressionQuality: Float,
@@ -86,7 +89,8 @@ class ImageProcessingEngine: ObservableObject {
         guard FileManager.default.fileExists(atPath: inputURL.path) else {
             throw ImageProcessingError.failedToLoadImage
         }
-        guard let image = CIImage(contentsOf: inputURL) else {
+        guard let image = CIImage(contentsOf: inputURL, options: [.applyOrientationProperty: true])
+        else {
             throw ImageProcessingError.failedToLoadImage
         }
         guard image.extent.width > 0 && image.extent.height > 0 else {
@@ -152,7 +156,9 @@ class ImageProcessingEngine: ObservableObject {
         }
 
         if collisionPolicy == .rename {
-            candidate = uniqueOutputURL(startingAt: candidate)
+            candidate = firstAvailableOutputURL(startingAt: candidate) {
+                FileManager.default.fileExists(atPath: $0)
+            }
         }
         return candidate
     }
@@ -173,8 +179,11 @@ class ImageProcessingEngine: ObservableObject {
         return outputFolder.appendingPathComponent(relativeOutputSubfolder, isDirectory: true)
     }
 
-    private static func uniqueOutputURL(startingAt url: URL) -> URL {
-        if !FileManager.default.fileExists(atPath: url.path) {
+    fileprivate static func firstAvailableOutputURL(
+        startingAt url: URL,
+        isTaken: (String) -> Bool
+    ) -> URL {
+        if !isTaken(url.path) {
             return url
         }
 
@@ -185,7 +194,7 @@ class ImageProcessingEngine: ObservableObject {
         while true {
             let candidateName = "\(baseName)_\(counter)"
             let candidate = directory.appendingPathComponent(candidateName).appendingPathExtension(ext)
-            if !FileManager.default.fileExists(atPath: candidate.path) {
+            if !isTaken(candidate.path) {
                 return candidate
             }
             counter += 1
@@ -231,6 +240,7 @@ class ImageProcessingEngine: ObservableObject {
         }
 
         let workQueue = ProcessingWorkQueue(urls: inputURLs)
+        let outputReservations = OutputPathReservations()
         let progressTracker = ProcessingProgressTracker(
             totalFiles: inputURLs.count,
             startTime: startTime
@@ -258,7 +268,8 @@ class ImageProcessingEngine: ObservableObject {
                             relativeOutputSubfolder: relativeOutputSubfolderByInputPath[
                                 workItem.url.path
                             ],
-                            collisionPolicy: collisionPolicy
+                            collisionPolicy: collisionPolicy,
+                            outputReservations: outputReservations
                         )
                         workerResults.append((workItem.index, result))
 
@@ -302,7 +313,7 @@ class ImageProcessingEngine: ObservableObject {
             currentFileName: "Completed",
             totalTime: totalTime
         )
-        DispatchQueue.main.async { progressHandler(finalProgress) }
+        await MainActor.run { progressHandler(finalProgress) }
         return results
     }
 
@@ -324,7 +335,8 @@ class ImageProcessingEngine: ObservableObject {
         targetDPI: Double,
         preserveFolderStructure: Bool,
         relativeOutputSubfolder: String?,
-        collisionPolicy: CollisionPolicy
+        collisionPolicy: CollisionPolicy,
+        outputReservations: OutputPathReservations
     ) async -> ImageProcessingResult {
         let signpostID = OSSignpostID(log: Self.processingLog)
         os_signpost(
@@ -360,19 +372,25 @@ class ImageProcessingEngine: ObservableObject {
         let fileStartTime = CFAbsoluteTimeGetCurrent()
         do {
             let desiredFormat = outputFormat.uppercased()
-            func makeOutputURL(for format: String) -> URL {
+            // Rename-uniquing is handled atomically by outputReservations, so the
+            // base candidate is always computed without it.
+            func baseOutputURL(for format: String) -> URL {
                 ImageProcessingEngine.outputURL(
                     for: inputURL,
                     outputFolder: outputFolder,
                     format: format,
                     preserveFolderStructure: preserveFolderStructure,
                     relativeOutputSubfolder: relativeOutputSubfolder,
-                    collisionPolicy: collisionPolicy
+                    collisionPolicy: .overwrite
                 )
+            }
+            func makeOutputURL(for format: String) async -> URL {
+                await outputReservations.claim(
+                    baseOutputURL(for: format), collisionPolicy: collisionPolicy)
             }
 
             var attemptFormat = desiredFormat
-            var outputURL = makeOutputURL(for: attemptFormat)
+            var outputURL = baseOutputURL(for: attemptFormat)
             if collisionPolicy == .skip && FileManager.default.fileExists(atPath: outputURL.path) {
                 let fileEndTime = CFAbsoluteTimeGetCurrent()
                 let inputSize = (try? FileManager.default.attributesOfItem(
@@ -390,12 +408,12 @@ class ImageProcessingEngine: ObservableObject {
                     processingTime: fileEndTime - fileStartTime
                 )
             }
+            outputURL = await outputReservations.claim(outputURL, collisionPolicy: collisionPolicy)
             var imageData: Data
 
             do {
                 imageData = try await processImage(
                     inputURL: inputURL,
-                    outputURL: outputURL,
                     maxWidth: maxWidth,
                     maxHeight: maxHeight,
                     compressionQuality: compressionQuality,
@@ -407,10 +425,9 @@ class ImageProcessingEngine: ObservableObject {
                     case ImageProcessingError.unsupportedOutputFormat = error
                 {
                     attemptFormat = "JPG"
-                    outputURL = makeOutputURL(for: attemptFormat)
+                    outputURL = await makeOutputURL(for: attemptFormat)
                     imageData = try await processImage(
                         inputURL: inputURL,
-                        outputURL: outputURL,
                         maxWidth: maxWidth,
                         maxHeight: maxHeight,
                         compressionQuality: compressionQuality,
@@ -497,20 +514,21 @@ class ImageProcessingEngine: ObservableObject {
             let originalHeight = originalExtent.height
             var targetWidth = originalWidth
             var targetHeight = originalHeight
+            // Max dimensions are a cap: never scale up images that already fit.
             if maxWidth > 0 && maxHeight > 0 {
                 let widthRatio = CGFloat(maxWidth) / originalWidth
                 let heightRatio = CGFloat(maxHeight) / originalHeight
-                let ratio = min(widthRatio, heightRatio)
+                let ratio = min(widthRatio, heightRatio, 1.0)
                 targetWidth = originalWidth * ratio
                 targetHeight = originalHeight * ratio
             } else if maxWidth > 0 {
-                let ratio = CGFloat(maxWidth) / originalWidth
-                targetWidth = CGFloat(maxWidth)
+                let ratio = min(CGFloat(maxWidth) / originalWidth, 1.0)
+                targetWidth = originalWidth * ratio
                 targetHeight = originalHeight * ratio
             } else if maxHeight > 0 {
-                let ratio = CGFloat(maxHeight) / originalHeight
+                let ratio = min(CGFloat(maxHeight) / originalHeight, 1.0)
                 targetWidth = originalWidth * ratio
-                targetHeight = CGFloat(maxHeight)
+                targetHeight = originalHeight * ratio
             }
             let scaleX = targetWidth / originalWidth
             let scaleY = targetHeight / originalHeight
@@ -650,29 +668,54 @@ class ImageProcessingEngine: ObservableObject {
             else {
                 throw ImageProcessingError.failedToCreateCGImage
             }
-            guard
-                let ctx = CGContext(
-                    data: &rgba,
-                    width: width,
-                    height: height,
-                    bitsPerComponent: 8,
-                    bytesPerRow: bytesPerRow,
-                    space: colorSpace,
-                    bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
-                        | CGBitmapInfo.byteOrder32Big.rawValue
-                )
-            else { throw ImageProcessingError.failedToCreateCGImage }
-            ctx.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
-            var outputPtr: UnsafeMutablePointer<UInt8>? = nil
             let q = max(0, min(1, quality)) * 100.0
-            let outSize = WebPEncodeRGBA(
-                &rgba, Int32(width), Int32(height), Int32(bytesPerRow), q, &outputPtr)
-            guard outSize > 0, let outputPtr else { throw ImageProcessingError.failedToCreateWebP }
-            let data = Data(bytes: outputPtr, count: Int(outSize))
-            WebPFree(outputPtr)
-            return data
+            // The CGContext keeps using the buffer after init, so the pointer must
+            // stay valid for the context's whole lifetime.
+            return try rgba.withUnsafeMutableBytes { buffer -> Data in
+                guard
+                    let baseAddress = buffer.baseAddress,
+                    let ctx = CGContext(
+                        data: baseAddress,
+                        width: width,
+                        height: height,
+                        bitsPerComponent: 8,
+                        bytesPerRow: bytesPerRow,
+                        space: colorSpace,
+                        bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+                            | CGBitmapInfo.byteOrder32Big.rawValue
+                    )
+                else { throw ImageProcessingError.failedToCreateCGImage }
+                ctx.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
+                var outputPtr: UnsafeMutablePointer<UInt8>? = nil
+                let outSize = WebPEncodeRGBA(
+                    baseAddress.assumingMemoryBound(to: UInt8.self),
+                    Int32(width), Int32(height), Int32(bytesPerRow), q, &outputPtr)
+                guard outSize > 0, let outputPtr else {
+                    throw ImageProcessingError.failedToCreateWebP
+                }
+                defer { WebPFree(outputPtr) }
+                return Data(bytes: outputPtr, count: Int(outSize))
+            }
         }
     #endif
+}
+
+/// Reserves output paths for a batch so concurrent workers never write the same
+/// file, even when different inputs map to the same output name (e.g. two
+/// folders flattened into one destination both containing "photo.png").
+private actor OutputPathReservations {
+    private var claimedPaths: Set<String> = []
+
+    func claim(_ url: URL, collisionPolicy: CollisionPolicy) -> URL {
+        var candidate = url
+        if collisionPolicy == .rename || claimedPaths.contains(candidate.path) {
+            candidate = ImageProcessingEngine.firstAvailableOutputURL(startingAt: url) { path in
+                claimedPaths.contains(path) || FileManager.default.fileExists(atPath: path)
+            }
+        }
+        claimedPaths.insert(candidate.path)
+        return candidate
+    }
 }
 
 private actor ProcessingWorkQueue {
