@@ -48,4 +48,10 @@ To reproduce the artwork, serve the repository root locally, open the HTML files
 
 ## Status
 
-Uploaded and selected. Final review submission pending screenshot processing.
+**Waiting for Review**, verified September 8, 2026 at 4:04 PM EDT.
+
+Submission ID: `f788daca-06b7-40e6-ae1d-fa3de83c082d`.
+
+[Review submission](https://appstoreconnect.apple.com/apps/6758575017/distribution/reviewsubmissions/details/f788daca-06b7-40e6-ae1d-fa3de83c082d)
+
+Apple accepted both screenshots and version 1.2.0 (6). A stalled budget-screenshot placeholder was deleted and reuploaded through the native file picker before submission. Approval is pending; automatic release is enabled.
