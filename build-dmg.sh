@@ -79,7 +79,8 @@ echo "   Built: ${APP_PATH}"
 if $SIGN; then
   STEP=$((STEP + 1))
   echo "[${STEP}/${TOTAL_STEPS}] Code signing..."
-  codesign --force --deep --options runtime \
+  codesign --force --deep --options runtime --timestamp \
+    --entitlements "${SCRIPT_DIR}/ImageProcessingApp/Resources/ImageProcessingApp.entitlements" \
     --sign "${SIGN_IDENTITY}" \
     "${APP_PATH}"
   echo "   Signed: $(codesign -dv "${APP_PATH}" 2>&1 | grep 'Authority=')"

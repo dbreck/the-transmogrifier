@@ -1,0 +1,19 @@
+---
+const widths = [640, 1280, 1920];
+---
+<div class="bg-gray-800 border border-gray-600 rounded-2xl p-6 sm:p-8 shadow-2xl">
+  <div class="flex items-center justify-between gap-4 border-b border-gray-600 pb-5 mb-6">
+    <span class="text-xs uppercase tracking-widest text-gray-400">Example export recipe</span>
+    <span class="text-accent-green text-sm font-semibold">New in v1.2</span>
+  </div>
+  <h2 class="text-2xl sm:text-3xl font-bold mb-2">One original. Every size.</h2>
+  <p class="text-gray-400 mb-6">Choose your widths, set a file-size limit, and save the recipe for next time.</p>
+  <div class="flex flex-wrap gap-2 mb-7 text-sm">
+    <span class="px-3 py-2 rounded-lg bg-blue-600/15 text-blue-400">WebP + JPG</span>
+    <span class="px-3 py-2 rounded-lg bg-gray-900 text-gray-300">200 KB limit per file</span>
+  </div>
+  <div class="space-y-3">
+    {widths.map(width => <div class="flex items-center justify-between gap-3 bg-gray-900 rounded-lg px-4 py-4"><span class="font-mono text-sm sm:text-base">hero-{width}</span><span class="text-gray-400 text-sm whitespace-nowrap">{width}w · 2 formats</span></div>)}
+  </div>
+  <p class="text-xs leading-relaxed text-gray-400 mt-6">Small originals stay small. If an output cannot meet your limit at the chosen minimum quality, the app reports it before writing that file.</p>
+</div>

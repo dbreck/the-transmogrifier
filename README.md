@@ -6,9 +6,9 @@ A native macOS app for preparing images for the web. Convert, resize and inspect
 
 Requires macOS 12 or later. Built with SwiftUI, Core Image, ImageIO and bundled libwebp.
 
-## Development version: export workflows
+## Version 1.2.0: export workflows
 
-These improvements are implemented on `codex/export-workflows` and have not yet been published as a release:
+Version 1.2.0 adds repeatable export recipes and clearer output controls:
 
 - Automatic before/after previews with accurate encoded sizes, shared zoom, a comparison slider and transparency backgrounds.
 - A direct Quality slider. Existing saved presets retain their previous encoder quality; PNG remains lossless.

@@ -27,6 +27,7 @@ INFO_PLIST="$REPO_ROOT/ImageProcessingApp/Resources/Info.plist"
 BASE_LAYOUT="$REPO_ROOT/website/src/layouts/BaseLayout.astro"
 INDEX_ASTRO="$REPO_ROOT/website/src/pages/index.astro"
 PRICING_ASTRO="$REPO_ROOT/website/src/pages/pricing.astro"
+FEATURES_ASTRO="$REPO_ROOT/website/src/pages/features.astro"
 
 # Determine build number
 if [ $# -ge 2 ]; then
@@ -67,7 +68,7 @@ echo "  Updated BaseLayout.astro softwareVersion"
 OLD_URL_PATTERN='releases/download/v[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/The\.Transmogrifier\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.dmg'
 NEW_URL="releases/download/v$VERSION/The.Transmogrifier.$VERSION.dmg"
 
-for FILE in "$BASE_LAYOUT" "$INDEX_ASTRO" "$PRICING_ASTRO"; do
+for FILE in "$BASE_LAYOUT" "$INDEX_ASTRO" "$PRICING_ASTRO" "$FEATURES_ASTRO"; do
     COUNT=$(grep -c "$OLD_URL_PATTERN" "$FILE" 2>/dev/null || true)
     if [ "$COUNT" -gt 0 ]; then
         sed -i '' "s|$OLD_URL_PATTERN|$NEW_URL|g" "$FILE"

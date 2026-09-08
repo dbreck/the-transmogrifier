@@ -1,6 +1,6 @@
 # Export workflows
 
-Implemented on `codex/export-workflows`, September 8, 2026. This is an unreleased development update.
+Version 1.2.0 (build 6), September 8, 2026. Implemented on `codex/export-workflows` and validated through local testing.
 
 ## Export behavior
 
