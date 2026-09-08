@@ -1,0 +1,59 @@
+[
+  {
+    "version": "1.2.0",
+    "date": "2026-09-08",
+    "title": "Export workflows",
+    "items": [
+      "Per-file size limits with minimum quality and clear feedback when a target cannot be reached.",
+      "Responsive WebP packs with custom widths, actual-width filenames, optional JPG fallbacks and copyable srcset.",
+      "Automatic previews with accurate encoded sizes, shared comparison zoom, a wipe and transparency backgrounds.",
+      "Direct Quality controls, lossless PNG status and explicit destinations with saved folder access.",
+      "Searchable batch history with Reveal outputs, Reuse settings, Run again and Retry unfinished. Cancellation retains completed work.",
+      "Compact layout, keyboard shortcuts and optional saved-preset conversion from Finder or the Dock.",
+      "Existing presets retain encoder quality, and earlier conversion history stays available."
+    ]
+  },
+  {
+    "version": "1.1.2",
+    "date": "2026-07-02",
+    "title": "Reliability update",
+    "items": [
+      "Portrait photos from phones now keep their correct orientation when converted.",
+      "Max Width/Height now act as a cap only — smaller images are never upscaled.",
+      "Batch output filenames can no longer collide — duplicate names are uniquified safely instead of overwriting each other.",
+      "Saving a preset under an existing name now updates it in place instead of creating a duplicate.",
+      "Removed legacy built-in preset entries that conflicted with saved presets.",
+      "WebP files can now be selected in the file picker (drag-and-drop already worked).",
+      "Resize dimensions above 32,767 px are no longer misread as \"Auto\".",
+      "Faster repeat processing — the conversion engine is now reused between runs.",
+      "Stability and memory-safety improvements in the WebP encoder."
+    ]
+  },
+  {
+    "version": "1.1.1",
+    "date": "2026-02-11",
+    "title": "Usability update",
+    "items": [
+      "Folder imports now default to top-level files only (subfolder recursion is opt-in).",
+      "Version and download links updated to point to the latest DMG release.",
+      "New signed and notarized direct-download package for this release."
+    ]
+  },
+  {
+    "version": "1.0.0",
+    "date": "2025-10-21",
+    "title": "The first edition",
+    "items": [
+      "Batch image processing for JPG, PNG, TIFF, BMP, GIF, ICNS, ICO",
+      "Export to WebP, JPG, or PNG formats",
+      "Smart compression with visual before/after preview",
+      "Preset management (save/load custom workflows)",
+      "Built-in presets: High Quality, Web Optimized, Social Media",
+      "Processing history with file size savings tracking",
+      "Drag-and-drop interface",
+      "Dark mode UI matching macOS design language",
+      "100% local processing (no cloud, no internet required)",
+      "Native SwiftUI app with hardware acceleration"
+    ]
+  }
+]

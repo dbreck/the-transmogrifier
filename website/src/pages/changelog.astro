@@ -1,263 +1,173 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import releases from "../data/releases.json";
+import { download, repository } from "../data/product";
 ---
 
-<BaseLayout title="Changelog - The Transmogrifier">
-  <!-- Hero -->
-  <section class="py-24 bg-gradient-to-br from-gray-900 via-blue-900/20 to-gray-900">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-      <h1 class="text-5xl lg:text-6xl lg:leading-[1.1] font-bold mb-6">Changelog</h1>
-      <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-        Track new features, improvements, and bug fixes.
+<BaseLayout
+  title="Release notes — The Transmogrifier"
+  description="The evolving Transmogrifier. Read what's new in version 1.2 and browse the app's release history."
+>
+  <div class="wrap">
+    <header class="page-intro">
+      <p class="eyebrow">Release notes / A work in progress</p><h1
+        class="display"
+      >
+        Small refinements.<br /><em>Better, together.</em>
+      </h1><p class="body-copy">
+        New capabilities, thoughtful fixes, and the occasional fresh start. A
+        record of the work.
       </p>
+    </header>
+    <div class="releases">
+      {
+        releases.map(({ version, date, title, items }, i) => (
+          <article id={`v${version}`}>
+            <>
+              <div class="release-meta">
+                <time class="micro" datetime={date}>
+                  {new Date(date + "T12:00:00Z").toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                    timeZone: "UTC",
+                  })}
+                </time>
+                {i === 0 && (
+                  <span class="current-label micro">Current release</span>
+                )}
+              </div>
+              <div class="reading-section">
+                <>
+                  <h2>{title}</h2>
+                  <ul>
+                    {items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                  <div class="release-links">
+                    <a
+                      href={`${repository}/releases/tag/v${version}`}
+                      class="text-link"
+                    >
+                      Read on GitHub <span aria-hidden="true">↗</span>
+                    </a>
+                    {i === 0 && (
+                      <a class="text-link" href={download}>
+                        Download 1.2.0 <span aria-hidden="true">↗</span>
+                      </a>
+                    )}
+                  </div>
+                </>
+              </div>
+            </>
+          </article>
+        ))
+      }
     </div>
-  </section>
-
-  <!-- Changelog Entries -->
-  <section class="py-24">
-    <div class="max-w-4xl mx-auto px-6 lg:px-8 space-y-12">
-
-      <!-- Version 1.2.0 -->
-      <article class="bg-gray-800 border border-blue-600 rounded-xl p-6 sm:p-8">
-        <div class="flex flex-wrap items-center gap-4 mb-6"><span class="text-accent-green font-semibold">Current Version</span><time datetime="2026-09-08" class="text-gray-400">September 8, 2026</time></div>
-        <h2 class="text-3xl font-bold mb-4">v1.2.0 - Export Workflows</h2>
-        <p class="text-gray-300 mb-6">Prepare a complete image handoff with repeatable settings and a clearer view of every result.</p>
-        <ul class="list-disc pl-6 text-gray-300 space-y-3">
-          <li>Per-file size limits with minimum quality and clear feedback when a target cannot be reached.</li>
-          <li>Responsive WebP packs with custom widths, actual-width filenames, optional JPG fallbacks and copyable srcset.</li>
-          <li>Automatic previews with accurate encoded sizes, shared comparison zoom, a wipe and transparency backgrounds.</li>
-          <li>Direct Quality controls, lossless PNG status and explicit destinations with saved folder access.</li>
-          <li>Searchable batch history with Reveal outputs, Reuse settings, Run again and Retry unfinished. Cancellation retains completed work.</li>
-          <li>Compact layout, keyboard shortcuts and optional saved-preset conversion from Finder or the Dock.</li>
-          <li>Existing presets retain encoder quality, and earlier conversion history stays available.</li>
-        </ul>
-        <div class="mt-8 flex flex-wrap gap-5 items-center"><a href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold">Download v1.2.0</a><a href="https://github.com/dbreck/the-transmogrifier/releases/tag/v1.2.0" class="text-blue-400 hover:underline">View on GitHub →</a></div>
-      </article>
-
-      <!-- Version 1.1.2 -->
-      <div class="relative">
-        <!-- Version badge -->
-        <div class="flex items-center space-x-4 mb-6">
-          <div class="inline-flex items-center space-x-2 px-4 py-2 bg-accent-green/10 border border-accent-green/20 rounded-full text-sm text-accent-green">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-            </svg>
-            <span class="font-medium">Previous release</span>
-          </div>
-          <span class="text-gray-500">July 2, 2026</span>
-        </div>
-
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-3xl font-bold">v1.1.2 - Reliability Update</h2>
-            <a
-              href="https://github.com/dbreck/the-transmogrifier/releases/tag/v1.1.2"
-              class="text-blue-600 hover:text-blue-700 text-sm"
-            >
-              View on GitHub →
-            </a>
-          </div>
-
-          <div class="space-y-6">
-            <div>
-              <h3 class="text-lg font-semibold mb-3 text-accent-green">🐛 Bug Fixes</h3>
-              <ul class="space-y-2 text-gray-400">
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Portrait photos from phones now keep their correct orientation when converted.</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Max Width/Height now act as a cap only — smaller images are never upscaled.</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Batch output filenames can no longer collide — duplicate names are uniquified safely instead of overwriting each other.</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Saving a preset under an existing name now updates it in place instead of creating a duplicate.</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Removed legacy built-in preset entries that conflicted with saved presets.</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>WebP files can now be selected in the file picker (drag-and-drop already worked).</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Resize dimensions above 32,767 px are no longer misread as "Auto".</span>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 class="text-lg font-semibold mb-3 text-accent-green">✨ Improvements</h3>
-              <ul class="space-y-2 text-gray-400">
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Faster repeat processing — the conversion engine is now reused between runs.</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Stability and memory-safety improvements in the WebP encoder.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="mt-8 pt-6 border-t border-gray-600">
-            <a
-              href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.1.2/The.Transmogrifier.1.1.2.dmg"
-              class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Download v1.1.2
-            </a>
-          </div>
-        </div>
+    <section class="endnote">
+      <p class="section-label">
+        <span>Looking ahead</span> On the workbench
+      </p><div>
+        <h2 class="section-heading">There’s more to make.</h2><p
+          class="roadmap-copy"
+        >
+          AVIF, metadata controls, watch folders, and CLI or Shortcuts support
+          are ideas we’re exploring. These are future candidates, rather than
+          features included in the current app.
+        </p><a href={`${repository}/issues/new`} class="text-link"
+          >Suggest something useful <span aria-hidden="true">↗</span></a>
       </div>
-
-      <!-- Version 1.1.1 -->
-      <div class="relative">
-        <div class="flex items-center space-x-4 mb-6">
-          <span class="text-gray-500">February 11, 2026</span>
-        </div>
-
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-3xl font-bold">v1.1.1 - Usability Update</h2>
-            <a
-              href="https://github.com/dbreck/the-transmogrifier/releases/tag/v1.1.1"
-              class="text-blue-600 hover:text-blue-700 text-sm"
-            >
-              View on GitHub →
-            </a>
-          </div>
-
-          <div class="space-y-6">
-            <div>
-              <h3 class="text-lg font-semibold mb-3 text-accent-green">✨ Improvements</h3>
-              <ul class="space-y-2 text-gray-400">
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Folder imports now default to top-level files only (subfolder recursion is opt-in).</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Version and download links updated to point to the latest DMG release.</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>New signed and notarized direct-download package for this release.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="mt-8 pt-6 border-t border-gray-600">
-            <a
-              href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.1.1/The.Transmogrifier.1.1.1.dmg"
-              class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Download v1.1.1
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Version 1.0.0 -->
-      <div class="relative">
-        <div class="flex items-center space-x-4 mb-6">
-          <span class="text-gray-500">October 21, 2025</span>
-        </div>
-
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-3xl font-bold">v1.0.0 - Initial Release</h2>
-            <a
-              href="https://github.com/dbreck/the-transmogrifier/releases/tag/v1.0.0"
-              class="text-blue-600 hover:text-blue-700 text-sm"
-            >
-              View on GitHub →
-            </a>
-          </div>
-
-          <div class="space-y-6">
-            <div>
-              <h3 class="text-lg font-semibold mb-3 text-accent-green">✨ Features</h3>
-              <ul class="space-y-2 text-gray-400">
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Batch image processing for JPG, PNG, TIFF, BMP, GIF, ICNS, ICO</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Export to WebP, JPG, or PNG formats</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Smart compression with visual before/after preview</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Preset management (save/load custom workflows)</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Built-in presets: High Quality, Web Optimized, Social Media</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Processing history with file size savings tracking</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Drag-and-drop interface</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Dark mode UI matching macOS design language</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>100% local processing (no cloud, no internet required)</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                  <span class="text-accent-green mt-1">•</span>
-                  <span>Native SwiftUI app with hardware acceleration</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="mt-8 pt-6 border-t border-gray-600">
-            <a
-              href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.0.0/The.Transmogrifier.1.0.dmg"
-              class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Download v1.0.0
-            </a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="py-20 bg-gray-800/30"><div class="max-w-4xl mx-auto px-6 lg:px-8">
-    <h2 class="text-3xl font-bold mb-8">Roadmap</h2>
-    <div class="space-y-4">
-      {[['AVIF format support', 'Another output format for modern image delivery.'], ['Image metadata options', 'More control over color profiles and embedded metadata.'], ['Watch folders', 'Automatically process images added to a chosen folder.'], ['CLI and Shortcuts', 'Use saved recipes from scripts and Mac automations.']].map(([title, description]) => <article class="border border-gray-600 rounded-xl p-6"><h3 class="font-semibold mb-2">{title}</h3><p class="text-gray-400 text-sm">{description}</p></article>)}
-    </div><p class="mt-8 text-center"><a href="https://github.com/dbreck/the-transmogrifier/issues/new" class="text-blue-400 hover:underline">Suggest a feature on GitHub →</a></p>
-  </div></section>
+    </section>
+  </div>
 </BaseLayout>
+<style>
+  .releases article {
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr);
+    gap: 85px;
+    border-top: 1px solid var(--line);
+    padding: 45px 0;
+  }
+  .release-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .release-version {
+    font: 65px/1 var(--serif);
+    letter-spacing: -0.04em;
+  }
+  .release-meta time {
+    color: var(--muted);
+  }
+  .current-label {
+    color: var(--red);
+    border: 1px solid var(--red);
+    padding: 6px 9px;
+  }
+  .releases .reading-section {
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+  .release-links {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+  }
+  .release-links .text-link {
+    font-size: 13px;
+    text-decoration: none;
+  }
+  .endnote {
+    margin-bottom: 55px;
+  }
+  .roadmap-copy {
+    margin-top: 25px !important;
+    color: var(--muted);
+    font-size: 17px !important;
+  }
+  @media (max-width: 1100px) {
+    .releases article {
+      gap: 45px;
+      grid-template-columns: 225px minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 899px) {
+    .releases article {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .release-meta {
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .release-version {
+      font-size: 50px;
+    }
+    .release-meta time {
+      font-size: 9px;
+    }
+  }
+  @media (max-width: 599px) {
+    .releases article {
+      padding: 30px 0;
+    }
+    .current-label {
+      font-size: 8px;
+    }
+    .release-meta {
+      gap: 15px;
+    }
+    .release-version {
+      font-size: 42px;
+    }
+    .release-links {
+      gap: 10px 24px;
+    }
+  }
+</style>

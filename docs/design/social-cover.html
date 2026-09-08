@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Transmogrifier — sharing image</title>
+    <style>
+      @font-face {
+        font-family: Instrument;
+        src: url("/fonts/instrument-serif.ttf");
+      }
+      @font-face {
+        font-family: Instrument;
+        src: url("/fonts/instrument-serif-italic.ttf");
+        font-style: italic;
+      }
+      @font-face {
+        font-family: DM;
+        src: url("/fonts/dm-sans.ttf");
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        background: #f3f0e9;
+        color: #292923;
+        font-family: DM, sans-serif;
+        padding: 46px 50px;
+        display: grid;
+        grid-template-columns: 1fr 480px;
+        gap: 40px;
+        align-items: center;
+      }
+      .brand {
+        font-size: 21px;
+        letter-spacing: -0.6px;
+        line-height: 1;
+      }
+      .brand span {
+        color: #c73f28;
+        font-size: 30px;
+        margin-right: 12px;
+      }
+      h1 {
+        font:
+          104px/0.93 Instrument,
+          serif;
+        letter-spacing: -3px;
+        margin: 65px 0 35px;
+      }
+      em {
+        color: #c73f28;
+      }
+      p {
+        font-size: 17px;
+        line-height: 1.6;
+        max-width: 375px;
+      }
+      small {
+        display: block;
+        margin-top: 45px;
+        font: 10px monospace;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .image {
+        height: 538px;
+        position: relative;
+      }
+      .image img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: 40%;
+      }
+      .stamp {
+        position: absolute;
+        right: 22px;
+        bottom: 22px;
+        background: #f3f0e9;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font:
+          30px/0.9 Instrument,
+          serif;
+        transform: rotate(10deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div class="brand"><span>↗</span> The Transmogrifier.</div>
+      <h1>Less weight.<br /><em>More image.</em></h1>
+      <p>A thoughtful Mac app for a beautifully finished image handoff.</p>
+      <small>Thetransmogrifier.app / Made for Mac</small>
+    </div>
+    <div class="image">
+      <img src="/images/anthurium.webp" alt="Red anthurium against peach" />
+      <div class="stamp">Made<br />lighter.</div>
+    </div>
+  </body>
+</html>

@@ -1,545 +1,681 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ExportPackPreview from '../components/ExportPackPreview.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { download } from "../data/product";
 ---
 
-<BaseLayout title="The Transmogrifier - Web-ready Images, Repeatable Exports">
-  <!-- Hero Section -->
-  <section class="relative overflow-hidden">
-    <!-- Gradient background -->
-    <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/20 to-gray-900"></div>
-
-    <div class="relative max-w-7xl mx-auto px-6 lg:px-8 py-24 lg:py-32">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <!-- Left: Copy -->
-        <div class="space-y-8">
-          <div class="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600/10 border border-blue-600/20 rounded-full text-sm text-blue-600">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-            </svg>
-            <span class="font-medium">Version 1.2 • Native macOS App</span>
-          </div>
-
-          <h1 class="text-5xl lg:text-6xl lg:leading-[1.1] font-bold leading-tight">
-            Turn your images into <span class="gradient-text">a complete web handoff.</span>
-          </h1>
-
-          <p class="text-xl text-gray-400 leading-relaxed">
-            Set your file-size limit. Export responsive WebP and JPG packs. Save the recipe and run it again, all on your Mac.
-          </p>
-
-          <!-- CTA Buttons -->
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a
-              href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg"
-              class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Download for macOS
-            </a>
-            <a
-              href="https://github.com/dbreck/the-transmogrifier"
-              class="inline-flex items-center justify-center px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg font-semibold text-lg transition-colors"
-            >
-              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-              </svg>
-              View on GitHub
-            </a>
-          </div>
-
-          <!-- Trust Signals -->
-          <div class="flex flex-wrap gap-6 text-sm text-gray-400">
-            <div class="flex items-center space-x-2">
-              <svg class="w-5 h-5 text-accent-green" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-              <span>macOS 12.0+</span>
-            </div>
-            <div class="flex items-center space-x-2">
-              <svg class="w-5 h-5 text-accent-green" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-              <span>Native SwiftUI</span>
-            </div>
-            <div class="flex items-center space-x-2">
-              <svg class="w-5 h-5 text-accent-green" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-              <span>100% Local Processing</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: App Screenshot Placeholder -->
-        <div class="relative">
-          <!-- App Screenshot -->
-          <ExportPackPreview />
-          <!-- Floating accent -->
-          <div class="absolute -bottom-4 -right-4 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl"></div>
-        </div>
+<BaseLayout title="The Transmogrifier — A good image, beautifully delivered.">
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">The image finishing tool / For macOS</p>
+      <h1 class="display">Less weight.<br /><em>More image.</em></h1>
+      <p class="body-copy">
+        For the images you’ve spent time getting right. Resize, compress, and
+        export them for the web, with a clear view of every detail.
+      </p>
+      <div class="hero-actions">
+        <a href={download} class="button"
+          >Download for Mac <span aria-hidden="true">↗</span></a
+        ><a href="#in-the-app" class="quiet-link"
+          >Take a closer look <span aria-hidden="true">↓</span></a>
       </div>
+      <p class="micro hero-footnote">
+        V1.2.0 · Apple notarized · Entirely on your Mac
+      </p>
     </div>
+    <figure class="hero-art">
+      <div class="specimen-top micro">
+        <span>Image study / No. 01</span><span>1536 × 1024 px</span>
+      </div>
+      <div class="specimen-image">
+        <img
+          src="/images/anthurium.webp"
+          srcset="/images/anthurium-480.webp 480w, /images/anthurium-960.webp 960w, /images/anthurium.webp 1536w"
+          sizes="(max-width: 899px) 100vw, 48vw"
+          width="1536"
+          height="1024"
+          alt="A sculptural red anthurium and cobalt glass vase, casting a botanical shadow across a peach backdrop."
+          fetchpriority="high"
+        /><span class="specimen-stamp" aria-hidden="true"
+          >Made<br /><em>lighter.</em><span>↙</span></span>
+      </div>
+      <figcaption>
+        <span>Anthurium, in good form.</span><span class="micro"
+          >PNG → WEBP</span>
+      </figcaption>
+    </figure>
   </section>
-
-  <!-- The Problem Section -->
-  <section class="py-24 bg-gray-800/30">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">You create beautiful work. Then comes the busywork.</h2>
-        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-          Figma exports look perfect. But getting them web-ready? That's where the workflow breaks down.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Problem 1 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
-          <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold">Ready for design exports</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">
-            Design exports often need another pass for the formats, dimensions and file sizes your website needs.
-          </p>
-        </div>
-
-        <!-- Problem 2 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
-          <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold">One at a Time</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">
-            Most tools process images individually. 50 images? That's 50 manual conversions.
-          </p>
-        </div>
-
-        <!-- Problem 3 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
-          <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold">File Size Bloat</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">
-            PNG exports are huge. Your sites load slower, Google penalizes you, users bounce.
-          </p>
-        </div>
-
-        <!-- Problem 4 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
-          <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold">Repetitive Work</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">
-            Every project: export, convert, compress, rename. 15+ minutes of work that should be automated.
-          </p>
-        </div>
-      </div>
-
-      <div class="mt-12 text-center">
-        <p class="text-2xl font-semibold text-gray-300">
-          Image optimization shouldn't take longer than the design.
+  <div class="format-strip wrap">
+    <span class="micro">A better way from here to there</span><p>
+      JPG <span>·</span> PNG <span>·</span> HEIC <span>·</span> TIFF <span
+        class="format-arrow">⟶</span
+      > WebP <span>·</span> JPG <span>·</span> PNG
+    </p><a href="/features/#formats" class="micro">All formats ↗</a>
+  </div>
+  <section class="section wrap" id="in-the-app">
+    <div class="section-intro">
+      <p class="section-label"><span>01</span> A closer look</p><div>
+        <h2 class="section-heading">
+          The last step.<br /><em>Worth getting right.</em>
+        </h2><p class="body-copy intro-copy">
+          Your composition is done. Now make the files fit. See the original and
+          export together, tune the balance, and send the whole batch on its
+          way.
         </p>
       </div>
     </div>
-  </section>
-
-  <section class="py-20 bg-gray-800/30"><div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <h2 class="text-4xl font-bold mb-10 text-center">Your 3-step workflow</h2>
-    <div class="grid md:grid-cols-3 gap-8">
-      <article class="border-t border-blue-600 pt-6"><span class="font-mono text-blue-400">01 / IMPORT</span><h3 class="text-2xl font-semibold my-4">Drop in your images</h3><p class="text-gray-400 leading-relaxed">Add files or folders. Include subfolders when you need them. Choose any image for a live preview.</p></article>
-      <article class="border-t border-blue-600 pt-6"><span class="font-mono text-blue-400">02 / PREPARE</span><h3 class="text-2xl font-semibold my-4">Choose your recipe</h3><p class="text-gray-400 leading-relaxed">Set quality, dimensions and a file-size limit. Add responsive widths and JPG fallbacks, or load a saved preset.</p></article>
-      <article class="border-t border-blue-600 pt-6"><span class="font-mono text-blue-400">03 / EXPORT</span><h3 class="text-2xl font-semibold my-4">Process and hand off</h3><p class="text-gray-400 leading-relaxed">Export to your chosen destination. Find the results, copy srcset or repeat the job from History.</p></article>
-    </div><p class="text-center mt-10"><a href="/changelog/" class="text-blue-400 hover:underline">Explore everything new in v1.2.0 →</a></p>
-  </div></section>
-
-  <!-- Features Grid -->
-  <section class="py-24 bg-gray-800/30">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">Built for speed and control</h2>
-        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-          Everything you need to optimize images fast—and nothing you don't.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Feature 1 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
-          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold">Batch Processing</h3>
-          <p class="text-gray-400 leading-relaxed">
-            Drag folders of images and process them all at once. Supports JPG, PNG, HEIC, TIFF, BMP, GIF, ICNS, ICO.
-          </p>
-        </div>
-
-        <!-- Feature 2 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
-          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold">Quality and size limits</h3>
-          <p class="text-gray-400 leading-relaxed">
-            Set quality directly, choose a file-size budget and inspect the live before/after comparison.
-          </p>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
-          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold">Preset Management</h3>
-          <p class="text-gray-400 leading-relaxed">
-            Save your favorite settings as presets. "Figma to WebP", "Social Media", "Client XYZ"—one click to apply.
-          </p>
-        </div>
-
-        <!-- Feature 4 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
-          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold">Processing History</h3>
-          <p class="text-gray-400 leading-relaxed">
-            Search whole jobs, reveal outputs, reuse settings and retry unfinished variants.
-          </p>
-        </div>
-
-        <!-- Feature 5 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
-          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold">Native macOS Performance</h3>
-          <p class="text-gray-400 leading-relaxed">
-            Built with SwiftUI and Core Image, with batch progress, pause, resume and cancellation.
-          </p>
-        </div>
-
-        <!-- Feature 6 -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
-          <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold">100% Local & Private</h3>
-          <p class="text-gray-400 leading-relaxed">
-            All processing happens on your Mac. No cloud uploads. No tracking. No internet required.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Who It's For -->
-  <section class="py-24">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">Built for people who ship</h2>
-        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-          If you export images from design tools and need them web-ready fast, this is for you.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="text-center space-y-4">
-          <div class="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mx-auto">
-            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold">Web Developers</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">
-            Ship faster sites with optimized WebP images. Stop hand-converting PNGs one at a time.
-          </p>
-        </div>
-
-        <div class="text-center space-y-4">
-          <div class="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mx-auto">
-            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold">UI/UX Designers</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">
-            Bridge the gap between Figma and production. Export once, optimize in batch, hand off clean assets.
-          </p>
-        </div>
-
-        <div class="text-center space-y-4">
-          <div class="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mx-auto">
-            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold">Agencies & Freelancers</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">
-            Save presets per client. Process hundreds of images across projects. Bill for design, not busywork.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Use Cases Section -->
-  <section class="py-24 bg-gray-800/30">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">Built for real workflows</h2>
-        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-          From Figma exports to social media, handle your most common image tasks in seconds.
-        </p>
-      </div>
-
-      <div class="space-y-8">
-        <!-- Use Case 1: Figma to WebP -->
-        <div class="bg-gradient-to-r from-blue-600/10 to-transparent border border-blue-600/20 rounded-xl p-8">
-          <div class="max-w-4xl">
-            <div class="flex items-start space-x-4 mb-4">
-              <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <div class="flex-1">
-                <h3 class="text-2xl font-semibold mb-2">Figma → WebP (The #1 Use Case)</h3>
-                <p class="text-gray-400 mb-4">Turn your design exports into the formats and sizes your website needs.</p>
-
-                <div class="grid md:grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p class="text-accent-red font-medium mb-2">❌ Before:</p>
-                    <p class="text-gray-400">Export PNG from Figma → Open online converter → Upload images → Wait → Download → Repeat for next batch</p>
-                  </div>
-                  <div>
-                    <p class="text-accent-green font-medium mb-2">✅ After:</p>
-                    <p class="text-gray-400">Export PNG from Figma → Drag to Transmogrifier → Done</p>
-                  </div>
-                </div>
-
-                <div class="mt-4 inline-flex items-center space-x-2 text-accent-green text-sm font-medium">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                  </svg>
-                  <span>Result: web-ready formats, responsive widths and a repeatable export recipe.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Use Case 2: Web Optimization -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
-          <div class="max-w-4xl">
-            <h3 class="text-xl font-semibold mb-2">🌐 Web Optimization</h3>
-            <p class="text-gray-400">Set a 200 KB per-file budget and a quality floor. Export several WebP widths with optional JPG fallbacks. Unreachable limits are reported before writing that output.</p>
-          </div>
-        </div>
-
-        <!-- Use Case 3: Social Media -->
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
-          <div class="max-w-4xl">
-            <h3 class="text-xl font-semibold mb-2">📱 Social Media Prep</h3>
-            <p class="text-gray-400">Fit images within your platform’s maximum dimensions while preserving aspect ratio. Save a preset for each destination. Crop separately when you need an exact square.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Success vs. Failure (Transformation) -->
-  <section class="py-24 bg-gray-800/30">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">From tedious busywork → automated efficiency</h2>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-        <!-- Failure State -->
-        <div class="space-y-6">
-          <div class="text-center mb-6">
-            <div class="inline-flex items-center space-x-2 px-4 py-2 bg-accent-red/10 border border-accent-red/20 rounded-full text-sm text-accent-red mb-4">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              <span class="font-medium">Without The Transmogrifier</span>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            <div class="flex items-start space-x-3">
-              <svg class="w-5 h-5 text-accent-red mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-              </svg>
-              <p class="text-gray-400">Your websites load slower than competitors (Google penalizes slow sites)</p>
-            </div>
-            <div class="flex items-start space-x-3">
-              <svg class="w-5 h-5 text-accent-red mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-              </svg>
-              <p class="text-gray-400">You waste billable hours on repetitive tasks</p>
-            </div>
-            <div class="flex items-start space-x-3">
-              <svg class="w-5 h-5 text-accent-red mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-              </svg>
-              <p class="text-gray-400">Your clients get bloated files instead of optimized assets</p>
-            </div>
-            <div class="flex items-start space-x-3">
-              <svg class="w-5 h-5 text-accent-red mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-              </svg>
-              <p class="text-gray-400">You're stuck in outdated workflows while others automate</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Success State -->
-        <div class="space-y-6">
-          <div class="text-center mb-6">
-            <div class="inline-flex items-center space-x-2 px-4 py-2 bg-accent-green/10 border border-accent-green/20 rounded-full text-sm text-accent-green mb-4">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-              <span class="font-medium">With The Transmogrifier</span>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            <div class="flex items-start space-x-3">
-              <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-              <p class="text-gray-300">Your export recipe brings formats, widths and size limits together</p>
-            </div>
-            <div class="flex items-start space-x-3">
-              <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-              <p class="text-gray-300">You deliver appropriately sized images for each screen</p>
-            </div>
-            <div class="flex items-start space-x-3">
-              <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-              <p class="text-gray-300">You can repeat successful jobs directly from History</p>
-            </div>
-            <div class="flex items-start space-x-3">
-              <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-              <p class="text-gray-300">You reclaim hours per week for actual design work</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-16 text-center">
-        <p class="text-2xl text-gray-300 font-semibold mb-4">Time is money. Automate this.</p>
+    <figure class="app-figure">
+      <div class="app-stage">
         <a
-          href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg"
-          class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
-        >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          Download for macOS
-        </a>
-        <p class="mt-4 text-sm text-gray-400">$9.99 • macOS 12.0+ • Native SwiftUI</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Email Capture -->
-  <section class="py-24">
-    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
-      <div class="bg-gray-800 border border-gray-600 rounded-2xl p-10 lg:p-14">
-        <div class="w-14 h-14 bg-blue-600/10 rounded-xl flex items-center justify-center mx-auto mb-6">
-          <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-        </div>
-        <h2 class="text-3xl font-bold mb-3">Get notified about v2.0</h2>
-        <p class="text-gray-400 mb-8 max-w-lg mx-auto">
-          New features are in the works — AVIF support, CLI mode, Shortcuts integration, and more. Join the list to hear first.
+          href="/images/app-preview.webp"
+          target="_blank"
+          rel="noopener"
+          aria-label="Open full-size app screenshot in a new tab"
+          ><img
+            src="/images/app-preview.webp"
+            width="1054"
+            height="768"
+            loading="lazy"
+            alt="The Transmogrifier live preview showing the botanical PNG at 2.2 MB and its WebP preview at 67 KB, with a 200 KB file-size limit."
+          /></a>
+      </div><figcaption>
+        <a
+          href="/images/app-preview.webp"
+          target="_blank"
+          rel="noopener"
+          class="micro">The actual app / View full size ↗</a
+        ><span
+          >2.2 MB → 67 KB <span class="result-note">in this example</span
+          ></span>
+      </figcaption>
+    </figure>
+    <div class="detail-row">
+      <div>
+        <span class="micro">01 / Look closely</span><h3>
+          Keep your eye on the image.
+        </h3><p>
+          Live encoded previews, a comparison wipe, and 100% zoom. Choose the
+          balance with your eyes open.
         </p>
-        <form
-          action="https://buttondown.email/api/emails/embed-subscribe/thetransmogrifier"
-          method="post"
-          target="popupwindow"
-          onsubmit="window.open('https://buttondown.email/thetransmogrifier', 'popupwindow')"
-          class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+      </div><div>
+        <span class="micro">02 / Set the limit</span><h3>
+          Give every file a budget.
+        </h3><p>
+          Choose a file-size ceiling and minimum quality. If a file cannot fit,
+          you’ll know before it goes out.
+        </p>
+      </div><div>
+        <span class="micro">03 / Keep it yours</span><h3>
+          Everything stays on your Mac.
+        </h3><p>
+          Your images, your folders, your workflow. Local processing, with no
+          uploads or account required.
+        </p>
+      </div>
+    </div>
+    <a href="/features/" class="text-link"
+      >Meet the whole toolkit <span aria-hidden="true">↗</span></a
+    >
+  </section>
+  <section class="pack-section">
+    <div class="wrap pack-layout">
+      <div>
+        <p class="section-label"><span>02</span> A considered handoff</p><h2
+          class="section-heading"
         >
-          <input type="hidden" name="tag" value="transmogrifier" />
-          <input
-            type="email"
-            name="email"
-            placeholder="you@example.com"
-            required
-            class="flex-1 px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-colors"
-          />
-          <button
-            type="submit"
-            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all hover:scale-105 whitespace-nowrap"
-          >
-            Notify Me
-          </button>
-        </form>
-        <p class="text-xs text-gray-500 mt-4">No spam. Unsubscribe anytime.</p>
+          One image.<br /><em>Every place it goes.</em>
+        </h2><p class="body-copy">
+          A smaller screen. A bigger display. A JPG fallback, just in case.
+          Export a family of WebP sizes together and copy the srcset when you’re
+          done.
+        </p><a href="/docs/#responsive" class="text-link"
+          >Build your first image pack <span aria-hidden="true">↗</span></a>
+      </div><div class="pack-study">
+        <div class="pack-visual" aria-hidden="true">
+          <div class="print print-large">
+            <img
+              src="/images/anthurium-960.webp"
+              width="960"
+              height="640"
+              alt=""
+              loading="lazy"
+            /><span class="micro">1280w / WebP</span>
+          </div><div class="print print-small">
+            <img
+              src="/images/anthurium-480.webp"
+              width="480"
+              height="320"
+              alt=""
+              loading="lazy"
+            /><span class="micro">640w / WebP</span>
+          </div>
+        </div><div class="pack-caption micro">
+          <span>Illustrated responsive image pack</span><span
+            >↳ Sized to fit.</span>
+        </div>
       </div>
     </div>
   </section>
-
-  <!-- Final CTA -->
-  <section class="py-24 bg-gray-800/30">
-    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-      <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">
-        Stop fighting with image converters.<br />
-        <span class="gradient-text">Start shipping faster websites.</span>
-      </h2>
-
-      <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-        <a
-          href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg"
-          class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
-        >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          Download for macOS
-        </a>
-        <a
-          href="/docs"
-          class="inline-flex items-center justify-center px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg font-semibold text-lg transition-colors"
-        >
-          View Documentation
-        </a>
-      </div>
+  <section class="section wrap routine">
+    <p class="section-label"><span>03</span> Less repetition</p><div>
+      <h2 class="section-heading">
+        Find your settings.<br /><em>Keep your rhythm.</em>
+      </h2><ul class="routine-list">
+        <li>
+          <span class="micro">Save</span><div>
+            <h3>A recipe for the next time.</h3><p>
+              Format, quality, widths, naming, destination. Save the whole setup
+              as a preset.
+            </p>
+          </div><span aria-hidden="true">↗</span>
+        </li><li>
+          <span class="micro">Repeat</span><div>
+            <h3>Your history has a future.</h3><p>
+              Find a batch, reuse its settings, or pick up the exports you
+              didn’t finish.
+            </p>
+          </div><span aria-hidden="true">↗</span>
+        </li><li>
+          <span class="micro">Go</span><div>
+            <h3>At home on your Mac.</h3><p>
+              Keyboard shortcuts and optional Dock conversion keep familiar work
+              moving.
+            </p>
+          </div><span aria-hidden="true">↗</span>
+        </li>
+      </ul><a href="/docs/#presets" class="text-link"
+        >Make it part of your process <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+  <section class="wrap endnote">
+    <p class="section-label"><span>Colophon</span> Why it exists</p><div>
+      <p>
+        Good image work deserves a good handoff. The Transmogrifier is an
+        independent tool by Clear pH, built for the everyday work between a
+        finished design and a finished website.
+      </p><a href="/changelog/" class="text-link"
+        >What’s new in 1.2 <span aria-hidden="true">↗</span></a>
     </div>
   </section>
 </BaseLayout>
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.06fr 1fr;
+    gap: 55px;
+    padding-block: 54px 50px;
+    align-items: center;
+  }
+  .hero-copy {
+    padding-bottom: 10px;
+  }
+  .hero h1 {
+    margin: 36px 0 30px;
+    font-size: clamp(78px, 8.15vw, 128px);
+    white-space: nowrap;
+  }
+  .hero .body-copy {
+    max-width: 390px;
+    font-size: 16px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .quiet-link {
+    font-size: 12px;
+    display: flex;
+    gap: 14px;
+    border-bottom: 1px solid transparent;
+    padding: 10px 0;
+  }
+  .quiet-link:hover {
+    border-color: var(--ink);
+  }
+  .hero-footnote {
+    margin-top: 22px;
+    color: var(--muted);
+    font-size: 9px;
+  }
+  .hero-art {
+    min-width: 0;
+  }
+  .specimen-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    color: var(--muted);
+    font-size: 9px;
+  }
+  .specimen-image {
+    position: relative;
+    aspect-ratio: 1.075;
+    background: #e9ac91;
+    overflow: hidden;
+  }
+  .specimen-image > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 40% 50%;
+    animation: picture-arrive 1s ease-out both;
+  }
+  .specimen-stamp {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    border-radius: 50%;
+    width: 113px;
+    height: 113px;
+    background: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font: 27px/0.9 var(--serif);
+    transform: rotate(10deg);
+  }
+  .specimen-stamp > span {
+    font: 27px/1 var(--sans);
+    margin-top: 7px;
+    color: var(--red);
+  }
+  .hero-art figcaption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 13px;
+    font-size: 12px;
+  }
+  .hero-art figcaption .micro {
+    font-size: 9px;
+  }
+  .format-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    border-block: 1px solid var(--line);
+    padding: 24px 0;
+  }
+  .format-strip > p {
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  .format-strip > p > span {
+    color: #7f8073;
+  }
+  .format-strip > p > .format-arrow {
+    color: var(--red);
+    font-size: 28px;
+    margin-inline: 8px;
+  }
+  .format-strip a:hover {
+    color: var(--red);
+  }
+  .intro-copy {
+    margin-top: 26px;
+  }
+  .app-stage {
+    background: #dfdfd4;
+    padding: 50px 65px;
+  }
+  .app-stage img {
+    width: 100%;
+    max-width: 1054px;
+    margin: auto;
+    border-radius: 12px;
+    box-shadow: 0 25px 40px -25px #29292370;
+  }
+  .app-figure figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 17px;
+    font-size: 14px;
+  }
+  .result-note {
+    color: var(--muted);
+    margin-left: 10px;
+    font-size: 11px;
+  }
+  .detail-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    margin: 55px 0 35px;
+  }
+  .detail-row .micro {
+    color: var(--red);
+  }
+  .detail-row h3 {
+    font-size: 21px;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+    margin: 16px 0 12px;
+  }
+  .detail-row p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+  .pack-section {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 90px 0;
+  }
+  .pack-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    gap: 95px;
+  }
+  .pack-section .section-heading {
+    margin: 33px 0 25px;
+  }
+  .pack-section .section-heading em {
+    color: #dcaf89;
+  }
+  .pack-section .section-label span:first-child {
+    color: #dcaf89;
+  }
+  .pack-section .body-copy {
+    color: #bdbdb0;
+    max-width: 370px;
+    font-size: 15px;
+  }
+  .pack-section .text-link {
+    margin-top: 30px;
+  }
+  .pack-section .text-link:hover {
+    color: #dcaf89;
+  }
+  .pack-visual {
+    position: relative;
+    padding: 15px 0 65px 55px;
+  }
+  .print {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 10px 10px 12px;
+    box-shadow: 0 10px 20px #0002;
+  }
+  .print img {
+    aspect-ratio: 1.15;
+    object-fit: cover;
+    object-position: 40%;
+  }
+  .print .micro {
+    display: block;
+    margin-top: 12px;
+    font-size: 9px;
+  }
+  .print-large {
+    width: 90%;
+    transform: rotate(5deg);
+  }
+  .print-small {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 47%;
+    transform: rotate(-7deg);
+  }
+  .pack-caption {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    color: #bdbdb0;
+    gap: 18px;
+    font-size: 9px;
+  }
+  .routine {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+  }
+  .routine-list {
+    margin-top: 45px;
+    border-top: 1px solid var(--line);
+  }
+  .routine-list li {
+    display: grid;
+    grid-template-columns: 60px 1fr 20px;
+    gap: 28px;
+    padding: 27px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .routine-list .micro {
+    color: var(--red);
+    padding-top: 4px;
+  }
+  .routine-list h3 {
+    font-size: 21px;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .routine-list p {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 430px;
+  }
+  .routine .text-link {
+    margin-top: 25px;
+  }
+  .endnote {
+    margin-bottom: 55px;
+  }
+  @keyframes picture-arrive {
+    from {
+      opacity: 0.5;
+      transform: scale(1.035);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @media (min-width: 1600px) {
+    .hero {
+      gap: 90px;
+      padding-block: 75px;
+    }
+    .hero h1 {
+      font-size: 140px;
+    }
+  }
+  @media (max-width: 1100px) {
+    .hero {
+      gap: 32px;
+    }
+    .hero h1 {
+      font-size: 8.4vw;
+    }
+    .format-strip {
+      gap: 20px;
+    }
+    .format-strip > p {
+      font-size: 16px;
+      gap: 8px;
+    }
+    .format-strip > .micro {
+      max-width: 135px;
+    }
+    .detail-row {
+      gap: 30px;
+    }
+    .pack-layout {
+      gap: 50px;
+    }
+    .app-stage {
+      padding: 40px;
+    }
+  }
+  @media (max-width: 899px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 45px;
+      padding-top: 45px;
+    }
+    .hero h1 {
+      font-size: clamp(78px, 13vw, 120px);
+      margin-top: 28px;
+    }
+    .hero .body-copy {
+      max-width: 440px;
+    }
+    .specimen-image {
+      aspect-ratio: 1.5;
+    }
+    .hero-art {
+      max-width: 680px;
+      width: 100%;
+      margin-left: auto;
+    }
+    .format-strip > p {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .format-strip > a {
+      display: none;
+    }
+    .detail-row {
+      gap: 25px;
+    }
+    .pack-layout {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+    .pack-section .body-copy {
+      max-width: 460px;
+    }
+    .pack-study {
+      width: min(510px, 100%);
+      margin-left: auto;
+    }
+    .routine {
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+    .app-stage {
+      padding: 25px;
+    }
+  }
+  @media (max-width: 599px) {
+    .hero {
+      gap: 35px;
+      padding-block: 36px;
+    }
+    .hero h1 {
+      font-size: clamp(62px, 15.4vw, 90px);
+      margin: 28px 0 24px;
+    }
+    .hero .eyebrow {
+      font-size: 9px;
+      gap: 9px;
+    }
+    .hero-actions {
+      gap: 12px 24px;
+      margin-top: 24px;
+    }
+    .button {
+      padding: 13px 18px;
+      gap: 25px;
+      font-size: 13px;
+    }
+    .hero-footnote {
+      font-size: 8px;
+    }
+    .specimen-stamp {
+      width: 83px;
+      height: 83px;
+      font-size: 22px;
+      right: 15px;
+      bottom: 15px;
+    }
+    .specimen-stamp > span {
+      font-size: 20px;
+    }
+    .specimen-top {
+      font-size: 8px;
+    }
+    .hero-art figcaption {
+      font-size: 11px;
+    }
+    .format-strip {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px 0;
+    }
+    .format-strip > .micro {
+      max-width: none;
+      font-size: 9px;
+    }
+    .format-strip > p {
+      justify-content: flex-start;
+      font-size: 15px;
+      gap: 8px;
+    }
+    .format-strip > p > .format-arrow {
+      font-size: 23px;
+      margin: 0 3px;
+    }
+    .section-intro {
+      margin-bottom: 32px;
+    }
+    .app-stage {
+      padding: 16px 12px;
+      margin-inline: -8px;
+    }
+    .app-stage img {
+      border-radius: 5px;
+    }
+    .app-figure figcaption {
+      flex-direction: column;
+      gap: 7px;
+    }
+    .app-figure figcaption .micro {
+      font-size: 9px;
+    }
+    .detail-row {
+      grid-template-columns: 1fr;
+      gap: 26px;
+      margin: 35px 0 22px;
+    }
+    .detail-row > div {
+      border-top: 1px solid var(--line);
+      padding-top: 22px;
+    }
+    .detail-row h3 {
+      margin: 12px 0 8px;
+    }
+    .pack-section {
+      padding: 64px 0;
+    }
+    .pack-visual {
+      padding-left: 35px;
+    }
+    .pack-caption {
+      font-size: 8px;
+    }
+    .routine-list li {
+      grid-template-columns: 45px 1fr 14px;
+      gap: 16px;
+    }
+    .routine-list h3 {
+      font-size: 19px;
+    }
+    .routine-list .micro {
+      font-size: 9px;
+    }
+    .endnote {
+      margin-bottom: 25px;
+    }
+  }
+</style>
