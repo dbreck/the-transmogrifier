@@ -1,68 +1,93 @@
+import AppKit
 import Foundation
 
 @MainActor
 class HistoryManager: ObservableObject {
-    @Published var historyRecords: [HistoryRecord] = []
-    
-    private let userDefaults = UserDefaults.standard
-    private let historyKey = "ProcessingHistory"
-    
-    init() {
-        loadHistory()
+  @Published private(set) var batches: [HistoryBatch] = []
+  @Published var storageError: String?
+  private let fileURL: URL
+  private var canSave = true
+  private let defaults: UserDefaults
+
+  init(fileURL: URL? = nil, defaults: UserDefaults = .standard) {
+    self.defaults = defaults
+    self.fileURL =
+      fileURL
+      ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+      .appendingPathComponent("The Transmogrifier", isDirectory: true).appendingPathComponent(
+        "history-v2.json")
+    loadHistory()
+  }
+  func loadHistory() {
+    if FileManager.default.fileExists(atPath: fileURL.path) {
+      do {
+        batches = try JSONDecoder().decode([HistoryBatch].self, from: Data(contentsOf: fileURL))
+      } catch {
+        canSave = false
+        storageError =
+          "History could not be loaded. The existing file has been preserved: \(error.localizedDescription)"
+      }
+    } else if let data = defaults.data(forKey: "ProcessingHistory"),
+      let records = try? JSONDecoder().decode([HistoryRecord].self, from: data), !records.isEmpty
+    {
+      batches = [
+        HistoryBatch(
+          name: "Earlier conversions", settings: nil,
+          inputFiles: Array(Set(records.map(\.inputFile))).sorted(), relativeSubfolders: [:],
+          bookmarks: [],
+          records: records, wasCancelled: false)
+      ]
     }
-    
-    /// Load history records from storage
-    func loadHistory() {
-        if let data = userDefaults.data(forKey: historyKey),
-           let records = try? JSONDecoder().decode([HistoryRecord].self, from: data) {
-            historyRecords = records
-        }
+  }
+  func addBatch(_ batch: HistoryBatch) {
+    batches.insert(batch, at: 0)
+    // Retain whole jobs, including a large most-recent job.
+    while batches.count > 100
+      || (batches.count > 1 && batches.reduce(0, { $0 + $1.records.count }) > 10_000)
+    {
+      batches.removeLast()
     }
-    
-    /// Save history records to storage
-    func saveHistory() {
-        if let data = try? JSONEncoder().encode(historyRecords) {
-            userDefaults.set(data, forKey: historyKey)
-        }
+    saveHistory()
+  }
+  func clearHistory() {
+    batches.removeAll()
+    canSave = true
+    saveHistory()
+  }
+  private func saveHistory() {
+    guard canSave else { return }
+    do {
+      try FileManager.default.createDirectory(
+        at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+      try JSONEncoder().encode(batches).write(to: fileURL, options: .atomic)
+      storageError = nil
+    } catch { storageError = "History could not be saved: \(error.localizedDescription)" }
+  }
+  static func bookmarks(for urls: [URL]) -> [Data] {
+    Array(Set(urls)).compactMap {
+      try? $0.bookmarkData(
+        options: .withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil)
     }
-    
-    /// Add a new history record
-    /// - Parameter record: The history record to add
-    func addRecord(_ record: HistoryRecord) {
-        historyRecords.insert(record, at: 0)
-        
-        // Limit to 100 records to prevent excessive storage
-        if historyRecords.count > 100 {
-            historyRecords = Array(historyRecords.prefix(100))
-        }
-        
-        saveHistory()
+  }
+  static func resolveBookmarks(_ bookmarks: [Data]) -> [URL] {
+    bookmarks.compactMap { data in
+      var stale = false
+      return try? URL(
+        resolvingBookmarkData: data, options: [.withSecurityScope, .withoutUI], relativeTo: nil,
+        bookmarkDataIsStale: &stale)
     }
-    
-    /// Delete a history record
-    /// - Parameter record: The history record to delete
-    func deleteRecord(_ record: HistoryRecord) {
-        historyRecords.removeAll { $0.id == record.id }
-        saveHistory()
+  }
+  func reveal(_ batch: HistoryBatch) {
+    let access = Self.resolveBookmarks(batch.bookmarks).filter {
+      $0.startAccessingSecurityScopedResource()
     }
-    
-    /// Clear all history records
-    func clearHistory() {
-        historyRecords.removeAll()
-        saveHistory()
+    defer { access.forEach { $0.stopAccessingSecurityScopedResource() } }
+    let urls = batch.records.compactMap(\.outputFile).map { URL(fileURLWithPath: $0) }
+      .filter { FileManager.default.fileExists(atPath: $0.path) }
+    if urls.isEmpty {
+      storageError = "The output files have moved or are no longer accessible."
+    } else {
+      NSWorkspace.shared.activateFileViewerSelecting(urls)
     }
-    
-    /// Get history records for a specific preset
-    /// - Parameter presetId: The preset ID to filter by
-    /// - Returns: Array of history records for the preset
-    func getRecords(for presetId: UUID) -> [HistoryRecord] {
-        return historyRecords.filter { $0.presetId == presetId }
-    }
-    
-    /// Get recent history records
-    /// - Parameter limit: Maximum number of records to return
-    /// - Returns: Array of recent history records
-    func getRecentRecords(limit: Int = 10) -> [HistoryRecord] {
-        return Array(historyRecords.prefix(limit))
-    }
+  }
 }
