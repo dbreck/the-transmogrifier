@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ExportPackPreview from '../components/ExportPackPreview.astro';
 ---
 
-<BaseLayout title="The Transmogrifier - Stop Wasting Hours Converting Figma Exports">
+<BaseLayout title="The Transmogrifier - Web-ready Images, Repeatable Exports">
   <!-- Hero Section -->
   <section class="relative overflow-hidden">
     <!-- Gradient background -->
     <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/20 to-gray-900"></div>
-    
+
     <div class="relative max-w-7xl mx-auto px-6 lg:px-8 py-24 lg:py-32">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <!-- Left: Copy -->
@@ -16,21 +17,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
             </svg>
-            <span class="font-medium">Native macOS App • $9.99</span>
+            <span class="font-medium">Version 1.2 • Native macOS App</span>
           </div>
-          
+
           <h1 class="text-5xl lg:text-6xl lg:leading-[1.1] font-bold leading-tight">
-            Stop wasting hours converting <span class="gradient-text">Figma exports</span>
+            Turn your images into <span class="gradient-text">a complete web handoff.</span>
           </h1>
-          
+
           <p class="text-xl text-gray-400 leading-relaxed">
-            A transmogrifier is a tool that transforms something in a surprising way. Ours turns image processing busywork into a 30-second task.
+            Set your file-size limit. Export responsive WebP and JPG packs. Save the recipe and run it again, all on your Mac.
           </p>
-          
+
           <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row gap-4">
             <a
-              href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.1.2/The.Transmogrifier.1.1.2.dmg"
+              href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg"
               class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
             >
               <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -38,7 +39,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               </svg>
               Download for macOS
             </a>
-            <a 
+            <a
               href="https://github.com/dbreck/the-transmogrifier"
               class="inline-flex items-center justify-center px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg font-semibold text-lg transition-colors"
             >
@@ -48,7 +49,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               View on GitHub
             </a>
           </div>
-          
+
           <!-- Trust Signals -->
           <div class="flex flex-wrap gap-6 text-sm text-gray-400">
             <div class="flex items-center space-x-2">
@@ -71,11 +72,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
           </div>
         </div>
-        
+
         <!-- Right: App Screenshot Placeholder -->
         <div class="relative">
           <!-- App Screenshot -->
-          <img src="/transmogrifier-ui-02.webp" alt="The Transmogrifier app interface showing batch image processing" class="w-full h-auto" />
+          <ExportPackPreview />
           <!-- Floating accent -->
           <div class="absolute -bottom-4 -right-4 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl"></div>
         </div>
@@ -92,7 +93,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           Figma exports look perfect. But getting them web-ready? That's where the workflow breaks down.
         </p>
       </div>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Problem 1 -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
@@ -101,12 +102,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 class="text-lg font-semibold">No WebP in Figma</h3>
+          <h3 class="text-lg font-semibold">Ready for design exports</h3>
           <p class="text-gray-400 text-sm leading-relaxed">
-            Figma still doesn't export WebP, even though it's the web standard for performance
+            Design exports often need another pass for the formats, dimensions and file sizes your website needs.
           </p>
         </div>
-        
+
         <!-- Problem 2 -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
           <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
@@ -119,7 +120,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             Most tools process images individually. 50 images? That's 50 manual conversions.
           </p>
         </div>
-        
+
         <!-- Problem 3 -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
           <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
@@ -132,7 +133,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             PNG exports are huge. Your sites load slower, Google penalizes you, users bounce.
           </p>
         </div>
-        
+
         <!-- Problem 4 -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 space-y-4">
           <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
@@ -146,7 +147,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </p>
         </div>
       </div>
-      
+
       <div class="mt-12 text-center">
         <p class="text-2xl font-semibold text-gray-300">
           Image optimization shouldn't take longer than the design.
@@ -155,89 +156,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- The Solution: 3-Step Workflow -->
-  <section class="py-24">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">Your 3-step workflow</h2>
-        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-          Fast, simple, automated. The way image processing should work.
-        </p>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Step 1 -->
-        <div class="relative">
-          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 pb-0 h-full flex flex-col overflow-hidden">
-            <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold mb-6">
-              1
-            </div>
-            <h3 class="text-2xl font-semibold mb-6">Drag in your images</h3>
-            <p class="text-gray-400 leading-relaxed mb-6">
-              Drop files or entire folders. Process dozens of images at once.
-            </p>
-            <div class="flex-1 min-h-64 rounded-b-xl overflow-hidden -mx-8" style="background-image: url('/transmogrifier-ui-01.webp'); background-size: 303%; background-position: 6% 22%;">
-            </div>
-          </div>
-          <!-- Arrow connector (hidden on mobile) -->
-          <div class="hidden md:block absolute top-32 z-10" style="right: -3rem;">
-            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
-              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="relative">
-          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 pb-0 h-full flex flex-col overflow-hidden">
-            <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold mb-6">
-              2
-            </div>
-            <h3 class="text-2xl font-semibold mb-6">Tune format & compression</h3>
-            <p class="text-gray-400 leading-relaxed mb-6">
-              Pick WebP, JPG, or PNG. Adjust compression. Or load a preset.
-            </p>
-            <div class="flex-1 min-h-64 rounded-b-xl overflow-hidden -mx-8" style="background-image: url('/transmogrifier-ui-04.webp'); background-size: 255%; background-position: 50% 66%;">
-            </div>
-          </div>
-          <!-- Arrow connector (hidden on mobile) -->
-          <div class="hidden md:block absolute top-32 z-10" style="right: -3rem;">
-            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
-              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="relative">
-          <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 pb-0 h-full flex flex-col overflow-hidden">
-            <div class="w-12 h-12 bg-gradient-blue rounded-lg flex items-center justify-center text-2xl font-bold mb-6">
-              3
-            </div>
-            <h3 class="text-2xl font-semibold mb-6">Click Process Images</h3>
-            <p class="text-gray-400 leading-relaxed mb-6">
-              Done. Your optimized images are ready for upload and sharing.
-            </p>
-            <div class="flex-1 min-h-64 rounded-b-xl overflow-hidden -mx-8" style="background-image: url('/transmogrifier-ui-05.webp'); background-size: 248%; background-position: 20% 84%;">
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="mt-16 text-center">
-        <div class="inline-flex items-center space-x-3 px-6 py-3 bg-accent-green/10 border border-accent-green/20 rounded-full">
-          <svg class="w-5 h-5 text-accent-green" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-          </svg>
-          <span class="font-semibold text-accent-green">25-35% smaller files, same quality</span>
-        </div>
-      </div>
-    </div>
-  </section>
+  <section class="py-20 bg-gray-800/30"><div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <h2 class="text-4xl font-bold mb-10 text-center">Your 3-step workflow</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <article class="border-t border-blue-600 pt-6"><span class="font-mono text-blue-400">01 / IMPORT</span><h3 class="text-2xl font-semibold my-4">Drop in your images</h3><p class="text-gray-400 leading-relaxed">Add files or folders. Include subfolders when you need them. Choose any image for a live preview.</p></article>
+      <article class="border-t border-blue-600 pt-6"><span class="font-mono text-blue-400">02 / PREPARE</span><h3 class="text-2xl font-semibold my-4">Choose your recipe</h3><p class="text-gray-400 leading-relaxed">Set quality, dimensions and a file-size limit. Add responsive widths and JPG fallbacks, or load a saved preset.</p></article>
+      <article class="border-t border-blue-600 pt-6"><span class="font-mono text-blue-400">03 / EXPORT</span><h3 class="text-2xl font-semibold my-4">Process and hand off</h3><p class="text-gray-400 leading-relaxed">Export to your chosen destination. Find the results, copy srcset or repeat the job from History.</p></article>
+    </div><p class="text-center mt-10"><a href="/changelog/" class="text-blue-400 hover:underline">Explore everything new in v1.2.0 →</a></p>
+  </div></section>
 
   <!-- Features Grid -->
   <section class="py-24 bg-gray-800/30">
@@ -248,7 +174,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           Everything you need to optimize images fast—and nothing you don't.
         </p>
       </div>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Feature 1 -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
@@ -262,7 +188,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             Drag folders of images and process them all at once. Supports JPG, PNG, HEIC, TIFF, BMP, GIF, ICNS, ICO.
           </p>
         </div>
-        
+
         <!-- Feature 2 -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
           <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
@@ -270,12 +196,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </div>
-          <h3 class="text-xl font-semibold">Smart Compression</h3>
+          <h3 class="text-xl font-semibold">Quality and size limits</h3>
           <p class="text-gray-400 leading-relaxed">
-            Visual slider for quality vs. file size. Preview before/after. Click to inspect full-size quality.
+            Set quality directly, choose a file-size budget and inspect the live before/after comparison.
           </p>
         </div>
-        
+
         <!-- Feature 3 -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
           <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
@@ -288,7 +214,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             Save your favorite settings as presets. "Figma to WebP", "Social Media", "Client XYZ"—one click to apply.
           </p>
         </div>
-        
+
         <!-- Feature 4 -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
           <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
@@ -298,10 +224,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
           <h3 class="text-xl font-semibold">Processing History</h3>
           <p class="text-gray-400 leading-relaxed">
-            See every file processed with before/after sizes. Track file size savings across all batches.
+            Search whole jobs, reveal outputs, reuse settings and retry unfinished variants.
           </p>
         </div>
-        
+
         <!-- Feature 5 -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
           <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
@@ -311,10 +237,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
           <h3 class="text-xl font-semibold">Native macOS Performance</h3>
           <p class="text-gray-400 leading-relaxed">
-            Built with SwiftUI. Hardware-accelerated with Core Image. Processes 50+ images in seconds.
+            Built with SwiftUI and Core Image, with batch progress, pause, resume and cancellation.
           </p>
         </div>
-        
+
         <!-- Feature 6 -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-8 space-y-4">
           <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
@@ -390,7 +316,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           From Figma exports to social media, handle your most common image tasks in seconds.
         </p>
       </div>
-      
+
       <div class="space-y-8">
         <!-- Use Case 1: Figma to WebP -->
         <div class="bg-gradient-to-r from-blue-600/10 to-transparent border border-blue-600/20 rounded-xl p-8">
@@ -403,8 +329,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               </div>
               <div class="flex-1">
                 <h3 class="text-2xl font-semibold mb-2">Figma → WebP (The #1 Use Case)</h3>
-                <p class="text-gray-400 mb-4">Figma still doesn't export to WebP. We do.</p>
-                
+                <p class="text-gray-400 mb-4">Turn your design exports into the formats and sizes your website needs.</p>
+
                 <div class="grid md:grid-cols-2 gap-4 text-sm">
                   <div>
                     <p class="text-accent-red font-medium mb-2">❌ Before:</p>
@@ -415,31 +341,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                     <p class="text-gray-400">Export PNG from Figma → Drag to Transmogrifier → Done</p>
                   </div>
                 </div>
-                
+
                 <div class="mt-4 inline-flex items-center space-x-2 text-accent-green text-sm font-medium">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                   </svg>
-                  <span>Result: 25-35% smaller files, same quality. Faster websites, better SEO.</span>
+                  <span>Result: web-ready formats, responsive widths and a repeatable export recipe.</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        
+
         <!-- Use Case 2: Web Optimization -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
           <div class="max-w-4xl">
             <h3 class="text-xl font-semibold mb-2">🌐 Web Optimization</h3>
-            <p class="text-gray-400">Batch-compress hero images to &lt; 200 KB. Convert TIFFs to web-ready formats. Resize and optimize dozens of images at once.</p>
+            <p class="text-gray-400">Set a 200 KB per-file budget and a quality floor. Export several WebP widths with optional JPG fallbacks. Unreachable limits are reported before writing that output.</p>
           </div>
         </div>
-        
+
         <!-- Use Case 3: Social Media -->
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
           <div class="max-w-4xl">
             <h3 class="text-xl font-semibold mb-2">📱 Social Media Prep</h3>
-            <p class="text-gray-400">Resize 50 images to 1080×1080 for Instagram in seconds. Use the built-in Social Media preset or create your own for each platform.</p>
+            <p class="text-gray-400">Fit images within your platform’s maximum dimensions while preserving aspect ratio. Save a preset for each destination. Crop separately when you need an exact square.</p>
           </div>
         </div>
       </div>
@@ -452,7 +378,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="text-center mb-16">
         <h2 class="text-4xl lg:text-5xl lg:leading-[1.1] font-bold mb-6">From tedious busywork → automated efficiency</h2>
       </div>
-      
+
       <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
         <!-- Failure State -->
         <div class="space-y-6">
@@ -464,7 +390,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <span class="font-medium">Without The Transmogrifier</span>
             </div>
           </div>
-          
+
           <div class="space-y-4">
             <div class="flex items-start space-x-3">
               <svg class="w-5 h-5 text-accent-red mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -492,7 +418,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
           </div>
         </div>
-        
+
         <!-- Success State -->
         <div class="space-y-6">
           <div class="text-center mb-6">
@@ -503,25 +429,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <span class="font-medium">With The Transmogrifier</span>
             </div>
           </div>
-          
+
           <div class="space-y-4">
             <div class="flex items-start space-x-3">
               <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
               </svg>
-              <p class="text-gray-300">Your Figma-to-web workflow takes 30 seconds instead of 15 minutes</p>
+              <p class="text-gray-300">Your export recipe brings formats, widths and size limits together</p>
             </div>
             <div class="flex items-start space-x-3">
               <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
               </svg>
-              <p class="text-gray-300">Your websites load 25-35% faster with WebP images</p>
+              <p class="text-gray-300">You deliver appropriately sized images for each screen</p>
             </div>
             <div class="flex items-start space-x-3">
               <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
               </svg>
-              <p class="text-gray-300">You never manually convert images again—just drag, process, deploy</p>
+              <p class="text-gray-300">You can repeat successful jobs directly from History</p>
             </div>
             <div class="flex items-start space-x-3">
               <svg class="w-5 h-5 text-accent-green mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -532,11 +458,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
         </div>
       </div>
-      
+
       <div class="mt-16 text-center">
         <p class="text-2xl text-gray-300 font-semibold mb-4">Time is money. Automate this.</p>
         <a
-          href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.1.2/The.Transmogrifier.1.1.2.dmg"
+          href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg"
           class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
         >
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -596,10 +522,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         Stop fighting with image converters.<br />
         <span class="gradient-text">Start shipping faster websites.</span>
       </h2>
-      
+
       <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
         <a
-          href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.1.2/The.Transmogrifier.1.1.2.dmg"
+          href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg"
           class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
         >
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -607,7 +533,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </svg>
           Download for macOS
         </a>
-        <a 
+        <a
           href="/docs"
           class="inline-flex items-center justify-center px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg font-semibold text-lg transition-colors"
         >

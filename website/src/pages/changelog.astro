@@ -17,6 +17,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="py-24">
     <div class="max-w-4xl mx-auto px-6 lg:px-8 space-y-12">
 
+      <!-- Version 1.2.0 -->
+      <article class="bg-gray-800 border border-blue-600 rounded-xl p-6 sm:p-8">
+        <div class="flex flex-wrap items-center gap-4 mb-6"><span class="text-accent-green font-semibold">Current Version</span><time datetime="2026-09-08" class="text-gray-400">September 8, 2026</time></div>
+        <h2 class="text-3xl font-bold mb-4">v1.2.0 - Export Workflows</h2>
+        <p class="text-gray-300 mb-6">Prepare a complete image handoff with repeatable settings and a clearer view of every result.</p>
+        <ul class="list-disc pl-6 text-gray-300 space-y-3">
+          <li>Per-file size limits with minimum quality and clear feedback when a target cannot be reached.</li>
+          <li>Responsive WebP packs with custom widths, actual-width filenames, optional JPG fallbacks and copyable srcset.</li>
+          <li>Automatic previews with accurate encoded sizes, shared comparison zoom, a wipe and transparency backgrounds.</li>
+          <li>Direct Quality controls, lossless PNG status and explicit destinations with saved folder access.</li>
+          <li>Searchable batch history with Reveal outputs, Reuse settings, Run again and Retry unfinished. Cancellation retains completed work.</li>
+          <li>Compact layout, keyboard shortcuts and optional saved-preset conversion from Finder or the Dock.</li>
+          <li>Existing presets retain encoder quality, and earlier conversion history stays available.</li>
+        </ul>
+        <div class="mt-8 flex flex-wrap gap-5 items-center"><a href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold">Download v1.2.0</a><a href="https://github.com/dbreck/the-transmogrifier/releases/tag/v1.2.0" class="text-blue-400 hover:underline">View on GitHub →</a></div>
+      </article>
+
       <!-- Version 1.1.2 -->
       <div class="relative">
         <!-- Version badge -->
@@ -25,7 +42,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
             </svg>
-            <span class="font-medium">Current Version</span>
+            <span class="font-medium">Previous release</span>
           </div>
           <span class="text-gray-500">July 2, 2026</span>
         </div>
@@ -109,18 +126,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="flex items-center space-x-4 mb-6">
           <span class="text-gray-500">February 11, 2026</span>
         </div>
-        
+
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-8">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-3xl font-bold">v1.1.1 - Usability Update</h2>
-            <a 
-              href="https://github.com/dbreck/the-transmogrifier/releases/tag/v1.1.1" 
+            <a
+              href="https://github.com/dbreck/the-transmogrifier/releases/tag/v1.1.1"
               class="text-blue-600 hover:text-blue-700 text-sm"
             >
               View on GitHub →
             </a>
           </div>
-          
+
           <div class="space-y-6">
             <div>
               <h3 class="text-lg font-semibold mb-3 text-accent-green">✨ Improvements</h3>
@@ -140,9 +157,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               </ul>
             </div>
           </div>
-          
+
           <div class="mt-8 pt-6 border-t border-gray-600">
-            <a 
+            <a
               href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.1.1/The.Transmogrifier.1.1.1.dmg"
               class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
             >
@@ -237,81 +254,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Roadmap -->
-  <section class="py-24 bg-gray-800/30">
-    <div class="max-w-4xl mx-auto px-6 lg:px-8">
-      <h2 class="text-3xl font-bold mb-8">Roadmap</h2>
-      <div class="space-y-4">
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
-          <div class="flex items-start space-x-3">
-            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
-            <div>
-              <h3 class="font-semibold mb-1">Batch rename output files</h3>
-              <p class="text-sm text-gray-400">Custom naming templates for processed images</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
-          <div class="flex items-start space-x-3">
-            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
-            <div>
-              <h3 class="font-semibold mb-1">AVIF format support</h3>
-              <p class="text-sm text-gray-400">Next-generation image format with even better compression</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
-          <div class="flex items-start space-x-3">
-            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
-            <div>
-              <h3 class="font-semibold mb-1">Image metadata preservation options</h3>
-              <p class="text-sm text-gray-400">Choose which EXIF data to keep or remove</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
-          <div class="flex items-start space-x-3">
-            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
-            <div>
-              <h3 class="font-semibold mb-1">Keyboard shortcuts for processing</h3>
-              <p class="text-sm text-gray-400">Quick access to common actions</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
-          <div class="flex items-start space-x-3">
-            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
-            <div>
-              <h3 class="font-semibold mb-1">Watch folder for auto-processing</h3>
-              <p class="text-sm text-gray-400">Automatically process images dropped into a folder</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
-          <div class="flex items-start space-x-3">
-            <div class="w-6 h-6 border-2 border-gray-600 rounded flex-shrink-0 mt-1"></div>
-            <div>
-              <h3 class="font-semibold mb-1">CLI version for automation</h3>
-              <p class="text-sm text-gray-400">Command-line tool for scripts and build pipelines</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="mt-8 text-center">
-        <p class="text-gray-400 mb-4">Have a feature request?</p>
-        <a 
-          href="https://github.com/dbreck/the-transmogrifier/issues/new"
-          class="inline-flex items-center text-blue-600 hover:text-blue-700"
-        >
-          Submit an idea on GitHub →
-        </a>
-      </div>
-    </div>
-  </section>
+  <section class="py-20 bg-gray-800/30"><div class="max-w-4xl mx-auto px-6 lg:px-8">
+    <h2 class="text-3xl font-bold mb-8">Roadmap</h2>
+    <div class="space-y-4">
+      {[['AVIF format support', 'Another output format for modern image delivery.'], ['Image metadata options', 'More control over color profiles and embedded metadata.'], ['Watch folders', 'Automatically process images added to a chosen folder.'], ['CLI and Shortcuts', 'Use saved recipes from scripts and Mac automations.']].map(([title, description]) => <article class="border border-gray-600 rounded-xl p-6"><h3 class="font-semibold mb-2">{title}</h3><p class="text-gray-400 text-sm">{description}</p></article>)}
+    </div><p class="mt-8 text-center"><a href="https://github.com/dbreck/the-transmogrifier/issues/new" class="text-blue-400 hover:underline">Suggest a feature on GitHub →</a></p>
+  </div></section>
 </BaseLayout>

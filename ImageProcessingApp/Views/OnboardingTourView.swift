@@ -23,14 +23,14 @@ struct OnboardingTourView: View {
         TourStep(
             title: "2. Adjust Settings & Output",
             description:
-                "Set your output format (JPG, PNG, WebP), dimensions, resolution, and compression level. Choose your output folder and optionally save these settings as a Preset for reuse.",
+                "Choose format, maximum pixel dimensions and Quality in the right panel. Optionally set a file-size limit or responsive pack, choose a destination, and save a preset.",
             highlightArea: .processingSettings,
             position: .bottom
         ),
         TourStep(
             title: "3. Preview & Test",
             description:
-                "Click the Process arrow in the Preview section to test your settings on one image. Then click the preview image to open it full-size and inspect quality. Adjust compression until you're happy.",
+                "Select an image for a live preview. Click Compare for a shared zoom and before/after slider, then adjust Quality while the preview stays visible.",
             highlightArea: .preview,
             position: .center
         ),
