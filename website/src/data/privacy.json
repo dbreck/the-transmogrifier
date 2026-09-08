@@ -1,0 +1,52 @@
+[
+  {
+    "id": "overview",
+    "title": "Overview",
+    "body": "<p>\n            The Transmogrifier is a native macOS application that processes images entirely on your computer. We are committed to protecting your privacy. This policy explains what data the app collects (none) and how it operates.\n          </p>"
+  },
+  {
+    "id": "data-collection",
+    "title": "Data Collection",
+    "body": "<p>\n            The Transmogrifier does <strong>not</strong> collect, store, or transmit any personal data. Specifically:\n          </p>\n<ul>\n<li>No user accounts or registration required</li>\n<li>No analytics or usage tracking in the app</li>\n<li>No crash reporting or telemetry</li>\n<li>No cookies or local tracking identifiers</li>\n<li>No advertising or ad-related tracking</li>\n</ul>"
+  },
+  {
+    "id": "image-processing",
+    "title": "Image Processing",
+    "body": "<p>\n            All image processing happens locally on your Mac using Apple's Core Image framework. Your images are never uploaded to any server. The app does not require an internet connection to function.\n          </p>"
+  },
+  {
+    "id": "local-storage",
+    "title": "Local Storage",
+    "body": "<p>\n            The app stores the following data locally on your Mac:\n          </p>\n<ul>\n<li>Your saved presets (format, compression settings)</li>\n<li>Processing history (file names, sizes, timestamps)</li>\n<li>App preferences (window size, last-used settings)</li>\n</ul>\n<p>\n            This data is stored in the app's sandboxed container and is not accessible to other applications. You can delete this data at any time by removing the app.\n          </p>"
+  },
+  {
+    "id": "network-requests",
+    "title": "Network Requests",
+    "body": "<p>\n            The Transmogrifier makes <strong>no network requests</strong>. It operates entirely offline. No data is sent to or received from external servers.\n          </p>"
+  },
+  {
+    "id": "third-party-services",
+    "title": "Third-Party Services",
+    "body": "<p>\n            The app does not integrate with any third-party services, SDKs, or APIs.\n          </p>"
+  },
+  {
+    "id": "website-analytics",
+    "title": "Website Analytics",
+    "body": "<p>\n            This website (thetransmogrifier.app) uses Google Analytics to understand visitor traffic. This is separate from the macOS app, which contains no analytics. You can opt out of website analytics by using a browser extension or disabling JavaScript.\n          </p>"
+  },
+  {
+    "id": "children-s-privacy",
+    "title": "Children's Privacy",
+    "body": "<p>\n            The app does not collect any personal information from anyone, including children under 13.\n          </p>"
+  },
+  {
+    "id": "changes-to-this-policy",
+    "title": "Changes to This Policy",
+    "body": "<p>\n            If we ever change this privacy policy, we will update this page with the new date. Since the app collects no data, meaningful changes are unlikely.\n          </p>"
+  },
+  {
+    "id": "contact",
+    "title": "Contact",
+    "body": "<p>\n            If you have questions about this privacy policy, contact us at <a href=\"mailto:info@thetransmogrifier.app\">info@thetransmogrifier.app</a>.\n          </p>"
+  }
+]

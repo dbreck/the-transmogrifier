@@ -1,53 +1,210 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ExportPackPreview from '../components/ExportPackPreview.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 const features = [
   [
+    "01",
+    "See what you’re saving.",
+    "Live preview & comparison",
+    "See actual encoded file sizes as you work. Compare the original and export with a wipe, shared zoom, 100% inspection, and backgrounds for transparent images.",
+    "preview",
+  ],
+  [
+    "02",
+    "Make the size part of the brief.",
     "File-size limits",
-    "Set a per-file budget, such as 200 KB, and a minimum acceptable quality. The app searches within your settings and reports outputs that cannot meet the limit."
+    "Set a per-file budget and the lowest quality you’re happy with. The app finds a fit within your settings, and reports any output that cannot meet the limit.",
+    "compression",
   ],
   [
+    "03",
+    "Send every size together.",
     "Responsive image packs",
-    "Export several WebP widths at once, with optional JPG fallbacks. Actual-width filenames and copyable srcset values make website handoffs easier."
+    "Export up to eight WebP widths, with optional JPG fallbacks. Actual-width filenames and copyable srcset make the handoff that little bit easier.",
+    "responsive",
   ],
   [
-    "Live preview and comparison",
-    "See actual encoded sizes as settings change. Compare original and export with a wipe, shared zoom, 100% inspection and transparency backgrounds."
+    "04",
+    "Put a good process on repeat.",
+    "Reusable export recipes",
+    "Save format, dimensions, quality, size limits, widths, naming, and destination as one preset. The next batch starts with the decisions already made.",
+    "presets",
   ],
   [
-    "Recipes you can reuse",
-    "Save format, dimensions, quality, file-size limits, responsive widths, naming and destination together. Existing presets keep their saved encoder quality."
+    "05",
+    "Pick up where you left off.",
+    "History & recovery",
+    "Search jobs, reveal outputs, reuse settings, rerun a batch, or retry unfinished variants. Cancelling a job preserves the work already completed.",
+    "history",
   ],
   [
-    "History that helps you finish",
-    "Search jobs, reveal outputs, reuse settings, run a batch again or retry unfinished variants. Completed files remain recorded when you cancel."
+    "06",
+    "Keep your hands moving.",
+    "A native Mac workflow",
+    "Command-O to add. Command-Return to export. Choose a saved preset for optional automatic conversion when you open files from Finder or drop them on the Dock.",
+    "keyboard",
   ],
-  [
-    "A faster Mac workflow",
-    "Add files with Command-O and export with Command-Return. Designate a saved preset for optional automatic conversion when opening files from Finder or dropping them onto the Dock icon."
-  ]
 ];
 ---
-<BaseLayout title="Features - The Transmogrifier" description="File-size limits, responsive WebP and JPG packs, live comparison, reusable presets and batch recovery in The Transmogrifier 1.2.">
-  <section class="py-20 lg:py-28 max-w-7xl mx-auto px-6 lg:px-8">
-    <div class="grid lg:grid-cols-2 gap-12 items-center">
-      <div><p class="text-blue-400 font-semibold mb-5">NEW IN VERSION 1.2</p><h1 class="text-5xl lg:text-6xl font-bold leading-tight mb-6">Prepare once.<br /><span class="gradient-text">Export every size.</span></h1><p class="text-xl text-gray-400 leading-relaxed">From a single image to a complete website handoff, keep quality, dimensions and file sizes under control. Everything runs locally on your Mac.</p></div>
-      <ExportPackPreview />
+
+<BaseLayout
+  title="The app — The Transmogrifier"
+  description="A closer look at file-size limits, responsive packs, live comparison and reusable recipes in The Transmogrifier for Mac."
+>
+  <div class="wrap">
+    <header class="page-intro">
+      <p class="eyebrow">The app / The details that matter</p><h1
+        class="display"
+      >
+        Consider the image.<br /><em>Then the file.</em>
+      </h1><p class="body-copy">
+        A focused toolkit for the practical side of image making. Native to your
+        Mac, and ready for the way you work.
+      </p>
+    </header>
+    <figure class="feature-image">
+      <img
+        src="/images/app-preview.webp"
+        width="1054"
+        height="768"
+        alt="The Transmogrifier with live original and export previews, quality controls, and a file-size budget."
+      /><figcaption class="micro">
+        The Transmogrifier 1.2 / Made for macOS
+      </figcaption>
+    </figure>
+    <div class="feature-list">
+      {
+        features.map(([number, title, label, body, anchor]) => (
+          <article>
+            <>
+              <span class="micro feature-number">{number}</span>
+              <div>
+                <>
+                  <p class="micro">{label}</p>
+                  <h2>{title}</h2>
+                </>
+              </div>
+              <div>
+                <>
+                  <p class="body-copy">{body}</p>
+                  <a href={`/docs/#${anchor}`} class="text-link">
+                    How it works <span aria-hidden="true">↗</span>
+                  </a>
+                </>
+              </div>
+            </>
+          </article>
+        ))
+      }
     </div>
-  </section>
-  <section class="py-20 bg-gray-800/30"><div class="max-w-7xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {features.map(([title, body], index) => <article class="border-t border-gray-600 pt-7"><span class="text-blue-400 font-mono text-sm">0{index + 1}</span><h2 class="text-2xl font-semibold mt-4 mb-4">{title}</h2><p class="text-gray-400 leading-relaxed">{body}</p></article>)}
-  </div></section>
-  <section class="py-20 max-w-4xl mx-auto px-6 lg:px-8">
-    <h2 class="text-3xl font-bold mb-6">The essentials, included</h2>
-    <ul class="list-disc pl-6 space-y-4 text-gray-300">
-      <li>Import JPG, PNG, WebP, HEIC, TIFF, BMP, GIF, ICNS and ICO. Export WebP, JPG or lossless PNG.</li>
-      <li>Add files or folders in a batch. Include subfolders when you choose to.</li>
-      <li>Resize within maximum dimensions while preserving proportions and orientation. Smaller originals are never enlarged.</li>
-      <li>Save beside originals or to a chosen folder, with Rename, Skip or Overwrite rules and optional folder preservation.</li>
-      <li>Pause, resume and cancel batches. Use the compact layout with the export action always within reach.</li>
-      <li>Native SwiftUI interface and Core Image processing. Intel and Apple Silicon support. macOS 12 or later.</li>
-    </ul>
-  </section>
-  <section class="py-16 bg-gray-800/30 text-center px-6"><h2 class="text-3xl font-bold mb-6">Make your next image handoff easier.</h2><a href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg" class="inline-flex px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold">Download v1.2.0 for macOS</a><p class="mt-5"><a href="/docs/" class="text-blue-400 hover:underline">Read the workflow guide →</a></p></section>
+    <section class="endnote" id="formats">
+      <p class="section-label">
+        <span>Specifications</span> The essentials
+      </p><div>
+        <h2 class="section-heading">Good with your files.</h2><ul
+          class="rule-list specs"
+        >
+          <li>Import JPG, PNG, WebP, HEIC, TIFF, BMP, GIF, ICNS and ICO.</li><li
+          >
+            Export WebP, JPG or lossless PNG. Still images only.
+          </li><li>
+            Resize within maximum dimensions. Keep proportions and orientation.
+            Smaller originals are never enlarged.
+          </li><li>
+            Save beside originals or into a chosen folder. Rename, Skip or
+            Overwrite rules, with optional folder preservation.
+          </li><li>
+            Add files or folders in a batch, including subfolders when you
+            choose.
+          </li><li>Intel and Apple Silicon. macOS 12 Monterey or later.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
+<style>
+  .feature-image {
+    padding: 45px;
+    background: var(--olive);
+    margin-bottom: 75px;
+  }
+  .feature-image img {
+    max-width: 1000px;
+    width: 100%;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 20px 40px -25px #0009;
+  }
+  .feature-image figcaption {
+    margin-top: 25px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .feature-list article {
+    display: grid;
+    grid-template-columns: 55px 1.2fr 1fr;
+    gap: 35px;
+    padding: 45px 0;
+    border-top: 1px solid var(--line);
+  }
+  .feature-number {
+    color: var(--red);
+  }
+  .feature-list article > div > .micro {
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .feature-list h2 {
+    font: 48px/1.06 var(--serif);
+    letter-spacing: -0.02em;
+    max-width: 380px;
+  }
+  .feature-list .body-copy {
+    font-size: 15px;
+  }
+  .feature-list .text-link {
+    margin-top: 15px;
+    font-size: 12px;
+  }
+  .specs {
+    margin: 35px 0;
+    font-size: 15px;
+    color: var(--muted);
+  }
+  @media (max-width: 899px) {
+    .feature-list article {
+      grid-template-columns: 35px 1fr;
+      gap: 20px;
+    }
+    .feature-list article > div:last-child {
+      grid-column: 2;
+    }
+    .feature-image {
+      padding: 25px;
+    }
+    .feature-list h2 {
+      max-width: none;
+    }
+  }
+  @media (max-width: 599px) {
+    .feature-image {
+      padding: 15px 10px;
+      margin-bottom: 45px;
+    }
+    .feature-image img {
+      border-radius: 5px;
+    }
+    .feature-image figcaption {
+      font-size: 8px;
+    }
+    .feature-list h2 {
+      font-size: 40px;
+    }
+    .feature-list article {
+      padding: 30px 0;
+      gap: 15px;
+    }
+    .feature-list article > div > .micro {
+      margin-bottom: 12px;
+    }
+  }
+</style>

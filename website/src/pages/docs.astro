@@ -1,116 +1,45 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-const sections = [
-  {
-    "id": "quick-start",
-    "title": "Quick start",
-    "paragraphs": [
-      "Add images or folders using Browse Files, drag and drop, or Command-O. Folder imports include top-level files by default; enable Include all subfolders when you need the full tree.",
-      "Choose WebP, JPG or PNG, maximum dimensions and quality. Select an image to see its live preview, then choose Beside originals or an Output folder and click Process Images."
-    ]
-  },
-  {
-    "id": "installation",
-    "title": "Install or update",
-    "paragraphs": [
-      "Download the latest DMG, open it, and drag The Transmogrifier into Applications. Quit an older installed copy before replacing it. Your saved presets and history are retained.",
-      "The direct-download app is signed with Developer ID and notarized by Apple. It supports Intel and Apple Silicon Macs running macOS 12 Monterey or later."
-    ]
-  },
-  {
-    "id": "workflow",
-    "title": "Dimensions and destinations",
-    "paragraphs": [
-      "Max width and Max height are caps. Leave a field empty for Auto. Images preserve their proportions and orientation, and smaller images are never enlarged. These settings fit an image within a box; they do not crop it to a square.",
-      "Beside originals saves into each source folder. Output folder requires an explicit destination. Choose a folder with Browse to grant macOS access, then save your preset to remember it. If a folder moves or permission expires, choose it again.",
-      "Advanced contains DPI, Rename/Skip/Overwrite collision rules and source-folder preservation. Originals are protected from being overwritten by their own conversions."
-    ]
-  },
-  {
-    "id": "formats",
-    "title": "Supported formats",
-    "paragraphs": [
-      "Import JPG, PNG, WebP, HEIC, TIFF, BMP, GIF, ICNS and ICO. Export WebP, JPG or PNG. The app prepares still images; animated exports are not supported.",
-      "WebP supports transparency and lossy compression. JPG is suitable for photographs and does not support transparency. PNG is lossless."
-    ]
-  },
-  {
-    "id": "compression",
-    "title": "Quality and file-size limits",
-    "paragraphs": [
-      "Quality directly controls the encoder: higher values generally produce larger, higher-quality files. New settings start at 80%. Existing saved presets retain their previous encoder quality. PNG shows lossless status instead of a quality slider.",
-      "Enable Keep each image under a file-size limit and enter a budget in KB. One KB is 1,000 bytes. Choose a minimum quality at or below your selected quality. The app searches within that range while respecting your dimension caps.",
-      "If the target is unreachable, that output is reported without writing a file. Reduce dimensions, lower the minimum quality or raise the limit. PNG checks its lossless result against the budget. For responsive packs, the budget applies to every output separately."
-    ]
-  },
-  {
-    "id": "responsive",
-    "title": "Responsive packs",
-    "paragraphs": [
-      "Enable Create a responsive image pack and enter up to eight comma-separated widths, such as 640, 1280, 1920. Packs export WebP, with optional JPG fallbacks for each width.",
-      "Use a filename template containing both {name} and {width}, for example {name}-{width}. Widths reflect actual output dimensions. Small originals and dimension caps can reduce them; duplicate capped sizes are exported once.",
-      "After export, Copy srcset in History gives a separate block for each original and format. The values use exported filenames and actual widths. Add the appropriate website path when placing them into your markup."
-    ]
-  },
-  {
-    "id": "preview",
-    "title": "Preview and compare",
-    "paragraphs": [
-      "Preview updates automatically when the selected image or relevant settings change. File sizes describe the actual encoded result. For a responsive pack, the preview shows the largest WebP variant.",
-      "Choose Compare to inspect the original and export with a wipe, shared zoom and scrolling. Use 100% for pixel inspection or Fit to see the whole image. Checkerboard, white and black backgrounds help inspect transparency. Shift-Command-R refreshes the preview."
-    ]
-  },
-  {
-    "id": "presets",
-    "title": "Presets and Dock quick conversion",
-    "paragraphs": [
-      "Choose Save to store your format, quality, dimensions, output options and destination as a preset. Saving under an existing custom preset name updates it in place.",
-      "For automatic conversion, choose a saved preset under Advanced → Dock quick convert. Opening images with the app in Finder or dropping files or folders onto its Dock icon then uses that recipe, including its destination and collision rules. Open for review is the default and starts no export automatically."
-    ]
-  },
-  {
-    "id": "history",
-    "title": "History and recovery",
-    "paragraphs": [
-      "History groups outputs into searchable jobs. Reveal outputs opens them in Finder. Reuse settings loads a recipe, Run again repeats the job, and Retry unfinished processes only unsuccessful or cancelled variants.",
-      "Pause and resume while a batch runs. Cancel retains completed outputs and records unfinished work for retry. If source files have moved or become inaccessible, add them or their folders again.",
-      "Earlier conversions preserves older history. Old records lack saved settings, so rerun is unavailable for those entries. Clear history removes records only, after confirmation; it does not delete original images or exported files."
-    ]
-  },
-  {
-    "id": "keyboard",
-    "title": "Keyboard shortcuts",
-    "paragraphs": [
-      "Command-O: add images. Command-Return: process images. Shift-Command-R: refresh preview. Command-?: open Help."
-    ]
-  },
-  {
-    "id": "troubleshooting",
-    "title": "Troubleshooting",
-    "paragraphs": [
-      "Cannot meet the file-size limit: increase the budget, reduce dimensions or lower the quality floor. No oversized fallback file is written.",
-      "Output folder needs access: use Browse to choose it again and save the preset. Beside-originals exports may ask you to grant access to the source folders.",
-      "A history storage error preserves the existing history file. Keep a backup before clearing damaged history. For other issues, include your macOS version, input format and relevant export settings in a GitHub issue."
-    ]
-  },
-  {
-    "id": "faq",
-    "title": "Frequently asked questions",
-    "paragraphs": [
-      "Do images leave my Mac? No. Image conversion happens locally and does not require an internet connection.",
-      "Will social presets crop to an exact square? No. Maximum dimensions preserve aspect ratio. Crop the original first if your delivery requires a specific shape.",
-      "Are AVIF, watch folders and CLI available? These remain future candidates. Version 1.2 focuses on repeatable image export workflows."
-    ]
-  }
-];
+import BaseLayout from "../layouts/BaseLayout.astro";
+import sections from "../data/guide.json";
 ---
-<BaseLayout title="Documentation - The Transmogrifier" description="Install, preview, set quality and file-size limits, export responsive image packs, save presets and recover batches with The Transmogrifier 1.2.">
-  <section class="py-20 text-center px-6 bg-gray-800/30"><p class="text-blue-400 font-semibold mb-4">VERSION 1.2</p><h1 class="text-5xl lg:text-6xl font-bold mb-6">Your export workflow</h1><p class="text-xl text-gray-400 max-w-2xl mx-auto">From the first image to a repeatable handoff.</p></section>
-  <nav aria-label="Documentation sections" class="max-w-5xl mx-auto px-6 py-12 grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-    {sections.map(({ id, title }) => <a href={`#${id}`} class="text-blue-400 hover:underline">{title}</a>)}
-  </nav>
-  <div class="max-w-4xl mx-auto px-6 lg:px-8 pb-20 space-y-14">
-    {sections.map(({ id, title, paragraphs }) => <section id={id} class="scroll-mt-24 border-t border-gray-600 pt-8"><h2 class="text-3xl font-bold mb-6">{title}</h2><div class="space-y-4 text-gray-300 leading-relaxed">{paragraphs.map(text => <p>{text}</p>)}</div></section>)}
-    <a href="https://github.com/dbreck/the-transmogrifier/issues" class="inline-flex px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold">Get help on GitHub</a>
+
+<BaseLayout
+  title="Field guide — The Transmogrifier"
+  description="A practical guide to installing The Transmogrifier, preparing images, building responsive packs, saving recipes and recovering batches."
+>
+  <div class="wrap">
+    <header class="page-intro">
+      <p class="eyebrow">The field guide / Version 1.2</p><h1 class="display">
+        A little know-how.<br /><em>A better workflow.</em>
+      </h1><p class="body-copy">
+        From your first image to your next hundred. Everything you need to make
+        the app your own.
+      </p>
+    </header>
+    <div class="reading-layout">
+      <nav class="contents" aria-label="Documentation sections">
+        <span class="micro">In this guide</span>{
+          sections.map(({ id, title }, i) => (
+            <a href={`#${id}`}>
+              {String(i + 1).padStart(2, "0")} &nbsp; {title}
+            </a>
+          ))
+        }
+      </nav><div>
+        {
+          sections.map(({ id, title, paragraphs }) => (
+            <section id={id} class="reading-section">
+              <h2>{title}</h2>
+              {paragraphs.map((text) => (
+                <p>{text}</p>
+              ))}
+            </section>
+          ))
+        }<a
+          href="https://github.com/dbreck/the-transmogrifier/issues"
+          class="text-link"
+          >Still need a hand? <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
   </div>
 </BaseLayout>

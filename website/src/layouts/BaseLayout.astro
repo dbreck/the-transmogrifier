@@ -1,239 +1,223 @@
 ---
-import '../styles/global.css';
-
+import "../styles/global.css";
+import { download, repository, version } from "../data/product";
 export interface Props {
   title: string;
   description?: string;
   ogImage?: string;
 }
-
-const { title, description = "Prepare web-ready images with file-size limits, responsive WebP and JPG packs, live previews and reusable export recipes. Everything runs locally on your Mac.", ogImage = "/transmogrifier-ui-01.webp" } = Astro.props;
+const {
+  title,
+  description = "A thoughtful little Mac app for the final mile of image making. Resize, compress and export web-ready images, right on your Mac.",
+  ogImage = "/images/social-cover.jpg",
+} = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const links = [
+  ["/features/", "The app"],
+  ["/docs/", "Field guide"],
+  ["/changelog/", "Release notes"],
+  ["/pricing/", "Pricing"],
+];
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f3f0e9" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <meta name="generator" content={Astro.generator} />
+    <link
+      rel="preload"
+      href="/fonts/instrument-serif.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/dm-sans.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
     <title>{title}</title>
     <link rel="canonical" href={canonicalURL} />
-
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(ogImage, Astro.site)} />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(ogImage, Astro.site)} />
-
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "The Transmogrifier",
-      "description": description,
-      "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "macOS 12.0+",
-      "url": "https://thetransmogrifier.app",
-      "downloadUrl": "https://github.com/dbreck/the-transmogrifier/releases/latest",
-      "screenshot": "https://thetransmogrifier.app/transmogrifier-ui-01.webp",
-      "softwareVersion": "1.2.0",
-      "offers": {
-        "@type": "Offer",
-        "price": "9.99",
-        "priceCurrency": "USD"
-      },
-      "featureList": "File-size limits, Responsive WebP and JPG packs, Live comparison, Saved export recipes, Batch history and recovery, Dock quick conversion",
-      "license": "https://opensource.org/licenses/MIT"
-    })} />
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EGQY1J0Y20"></script>
-    <script>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: "The Transmogrifier",
+        description,
+        applicationCategory: "MultimediaApplication",
+        operatingSystem: "macOS 12.0+",
+        url: "https://thetransmogrifier.app",
+        downloadUrl: download,
+        screenshot: "https://thetransmogrifier.app/images/app-preview.webp",
+        softwareVersion: version,
+        offers: { "@type": "Offer", price: "9.99", priceCurrency: "USD" },
+        featureList:
+          "File-size limits, Responsive WebP and JPG packs, Live comparison, Saved export recipes, Batch history and recovery, Dock quick conversion",
+        license: "https://opensource.org/licenses/MIT",
+      })}
+    />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EGQY1J0Y20"
+    ></script>
+    <script is:inline>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EGQY1J0Y20');
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-EGQY1J0Y20");
     </script>
   </head>
-  <body class="bg-gray-900 text-white antialiased">
-    <!-- Navigation -->
-    <nav class="fixed w-full top-0 z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-600">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <!-- Logo -->
-          <a href="/" class="flex items-center space-x-3 group">
-            <img src="/favicon.png" alt="The Transmogrifier" class="w-10 h-10 rounded-lg" />
-            <span class="text-lg font-semibold group-hover:text-blue-600 transition-colors">The Transmogrifier</span>
-          </a>
-
-          <!-- Desktop Navigation -->
-          <div class="hidden md:flex items-center space-x-8">
-            <a href="/features" class="text-gray-400 hover:text-white transition-colors">Features</a>
-            <a href="/pricing" class="text-gray-400 hover:text-white transition-colors">Pricing</a>
-            <a href="/docs" class="text-gray-400 hover:text-white transition-colors">Docs</a>
-            <a href="/changelog" class="text-gray-400 hover:text-white transition-colors">Changelog</a>
-            <a href="https://github.com/dbreck/the-transmogrifier" target="_blank" class="text-gray-400 hover:text-white transition-colors">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-              </svg>
-            </a>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <header class="site-header wrap">
+      <a href="/" class="wordmark" aria-label="The Transmogrifier home"
+        ><span class="brand-symbol" aria-hidden="true">↳</span><span
+          >The<br />Transmogrifier<span class="wordmark-dot">.</span></span
+        ></a
+      >
+      <nav class="desktop-nav" aria-label="Main navigation">
+        {
+          links.map(([href, label]) => (
             <a
-              href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg"
-              class="px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors"
+              href={href}
+              aria-current={
+                Astro.url.pathname.replace(/\/$/, "") ===
+                href.replace(/\/$/, "")
+                  ? "page"
+                  : undefined
+              }
             >
-              Download
+              {label}
             </a>
+          ))
+        }
+      </nav>
+      <a class="header-download" href={download}
+        >Get the app <span aria-hidden="true">↗</span></a
+      >
+      <button
+        class="menu-toggle"
+        id="menu-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        >Menu <span aria-hidden="true">+</span></button
+      >
+      <nav
+        id="mobile-menu"
+        class="mobile-nav"
+        aria-label="Mobile navigation"
+        hidden
+      >
+        {links.map(([href, label]) => <a href={href}>{label}</a>)}
+        <a href={download}>Download for Mac ↗</a>
+      </nav>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="footer-top">
+          <p>A small tool.<br /><em>A good finish.</em></p><div>
+            <a href={download} class="text-link"
+              >Download for Mac <span aria-hidden="true">↗</span></a
+            ><span class="micro"
+              >V{version} / MACOS 12+ / INTEL & APPLE SILICON</span>
           </div>
-
-          <!-- Mobile menu button -->
-          <button aria-label="Toggle navigation" aria-controls="mobile-menu" aria-expanded="false" id="mobile-menu-button" class="md:hidden p-2 rounded-lg hover:bg-gray-800 transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
         </div>
-      </div>
-
-      <!-- Mobile menu -->
-      <div id="mobile-menu" class="hidden md:hidden border-t border-gray-600">
-        <div class="px-6 py-4 space-y-3">
-          <a href="/features" class="block text-gray-400 hover:text-white transition-colors">Features</a>
-          <a href="/pricing" class="block text-gray-400 hover:text-white transition-colors">Pricing</a>
-          <a href="/docs" class="block text-gray-400 hover:text-white transition-colors">Docs</a>
-          <a href="/changelog" class="block text-gray-400 hover:text-white transition-colors">Changelog</a>
-          <a
-            href="https://github.com/dbreck/the-transmogrifier/releases/download/v1.2.0/The.Transmogrifier.1.2.0.dmg"
-            class="block w-full px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium text-center transition-colors"
-          >
-            Download
-          </a>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="pt-16">
-      <slot />
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-gray-600 bg-gray-800/50 mt-24">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <!-- Brand -->
-          <div class="col-span-1">
-            <div class="flex items-center space-x-3 mb-4">
-              <img src="/favicon.png" alt="The Transmogrifier" class="w-10 h-10 rounded-lg" />
-              <span class="font-semibold">The Transmogrifier</span>
-            </div>
-            <p class="text-sm text-gray-400">
-              Native macOS batch image processing. Fast, local, private.
+        <div class="newsletter">
+          <div>
+            <label for="newsletter-email">Notes on the next edition.</label><p>
+              Occasional updates. Unsubscribe anytime.
             </p>
-          </div>
-
-          <!-- Product -->
-          <div>
-            <h3 class="font-semibold mb-4">Product</h3>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li><a href="/features" class="hover:text-white transition-colors">Features</a></li>
-              <li><a href="/pricing" class="hover:text-white transition-colors">Pricing</a></li>
-              <li><a href="/changelog" class="hover:text-white transition-colors">Changelog</a></li>
-              <li><a href="https://github.com/dbreck/the-transmogrifier/releases" class="hover:text-white transition-colors">Releases</a></li>
-            </ul>
-          </div>
-
-          <!-- Resources -->
-          <div>
-            <h3 class="font-semibold mb-4">Resources</h3>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li><a href="/docs" class="hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="https://github.com/dbreck/the-transmogrifier" class="hover:text-white transition-colors">GitHub</a></li>
-              <li><a href="https://github.com/dbreck/the-transmogrifier/issues" class="hover:text-white transition-colors">Report Issue</a></li>
-            </ul>
-          </div>
-
-          <!-- Legal -->
-          <div>
-            <h3 class="font-semibold mb-4">Legal</h3>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li><a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li class="text-xs leading-relaxed">
-                All processing happens locally on your Mac. No data collection, no tracking.
-              </li>
-            </ul>
-          </div>
+          </div><form
+            action="https://buttondown.email/api/emails/embed-subscribe/thetransmogrifier"
+            method="post"
+          >
+            <input type="hidden" name="tag" value="transmogrifier" /><input
+              id="newsletter-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="Your email address"
+              required
+            /><button type="submit" aria-label="Subscribe to release updates"
+              >Sign me up ↗</button>
+          </form>
         </div>
-
-        <div class="border-t border-gray-600 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-          <p>© {new Date().getFullYear()} The Transmogrifier. MIT License.</p>
+        <div class="footer-bottom">
+          <a href="https://clearph.com" class="maker"
+            >An independent tool by Clear pH ↗</a
+          ><nav aria-label="Footer navigation">
+            <a href={repository}>GitHub ↗</a><a href="/docs/">Help</a><a
+              href="/privacy/">Privacy</a>
+          </nav><span>© {new Date().getFullYear()} The Transmogrifier</span>
         </div>
       </div>
     </footer>
-
-    <!-- Mobile menu toggle script -->
     <script>
-      document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
-        const menu = document.getElementById('mobile-menu');
-        menu?.classList.toggle('hidden');
-        document.getElementById('mobile-menu-button')?.setAttribute('aria-expanded', String(!menu?.classList.contains('hidden')));
+      const toggle = document.getElementById("menu-toggle");
+      const menu = document.getElementById("mobile-menu");
+      const closeMenu = () => {
+        if (menu) menu.hidden = true;
+        toggle?.setAttribute("aria-expanded", "false");
+      };
+      toggle?.addEventListener("click", () => {
+        if (!menu) return;
+        menu.hidden = !menu.hidden;
+        toggle.setAttribute("aria-expanded", String(!menu.hidden));
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && menu && !menu.hidden) {
+          closeMenu();
+          toggle?.focus();
+        }
+      });
+      menu
+        ?.querySelectorAll("a")
+        .forEach((link) => link.addEventListener("click", closeMenu));
+      window
+        .matchMedia("(min-width: 900px)")
+        .addEventListener("change", closeMenu);
+    </script>
+    <script is:inline>
+      document.addEventListener("click", (event) => {
+        const link = event.target.closest("a[href]");
+        if (!link || typeof gtag !== "function") return;
+        if (link.href.includes("releases/download")) {
+          gtag("event", "download", {
+            event_category: "conversion",
+            event_label: link.textContent.trim(),
+            link_url: link.href,
+          });
+          if (link.closest("header"))
+            gtag("event", "click", {
+              event_category: "conversion",
+              event_label: "nav_download_cta",
+            });
+        } else if (link.href.includes("github.com/dbreck/the-transmogrifier")) {
+          gtag("event", "click", {
+            event_category: "outbound",
+            event_label: "github_repo",
+            link_url: link.href,
+          });
+        }
       });
     </script>
-
-    <!-- GA4 CTA Event Tracking -->
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        // Track all download links (DMG releases)
-        document.querySelectorAll('a[href*="releases/download"]').forEach(link => {
-          link.addEventListener('click', () => {
-            if (typeof gtag === 'function') {
-              gtag('event', 'download', {
-                event_category: 'conversion',
-                event_label: link.textContent?.trim() || 'Download',
-                link_url: link.getAttribute('href'),
-              });
-            }
-          });
-        });
-
-        // Track GitHub repo links
-        document.querySelectorAll('a[href*="github.com/dbreck/the-transmogrifier"]').forEach(link => {
-          if (link.getAttribute('href')?.includes('releases/download')) return; // skip download links
-          link.addEventListener('click', () => {
-            if (typeof gtag === 'function') {
-              gtag('event', 'click', {
-                event_category: 'outbound',
-                event_label: 'github_repo',
-                link_url: link.getAttribute('href'),
-              });
-            }
-          });
-        });
-
-        // Track nav CTA button (Download in header)
-        document.querySelectorAll('nav a[href*="releases/download"]').forEach(link => {
-          link.addEventListener('click', () => {
-            if (typeof gtag === 'function') {
-              gtag('event', 'click', {
-                event_category: 'conversion',
-                event_label: 'nav_download_cta',
-              });
-            }
-          });
-        });
-      });
-    </script>
-
   </body>
 </html>
